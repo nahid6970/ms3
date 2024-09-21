@@ -71,23 +71,21 @@ if command -v fzf >/dev/null 2>&1; then
 fi
 
 
-# Enable reverse search with Up/Down keys for partially typed commands
-# This will use arrow keys to search through history based on the typed prefix
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
+# History Managemenst Using .bashrc
+shopt -s histappend
+export HISTCONTROL=ignoreboth:erasedups
+export PROMPT_COMMAND="history -n; history -w; history -c; history -r"
+tac "$HISTFILE" | awk '!x[$0]++' > /tmp/tmpfile  &&
+                tac /tmp/tmpfile > "$HISTFILE"
+rm /tmp/tmpfile
 
-# Export paths (if necessary)
-# export PATH="$HOME/bin:$PATH"
+# Respect default shortcuts.
+$include /etc/inputrc
+## arrow up
+"\e[A":history-search-backward
+## arrow down
+"\e[B":history-search-forward
 
-# History settings
-HISTSIZE=1000      # Number of commands to remember in the command history
-HISTFILESIZE=2000  # Maximum number of lines in the history file
-HISTCONTROL=ignoredups:erasedups  # Don't store duplicate commands in history
-shopt -s histappend  # Append to the history file, don't overwrite it
-
-# Enable auto-completion for partially typed commands
-shopt -s histreedit
-shopt -s histverify
 
 # Ignore some commands from history
 export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:clear"
