@@ -51,4 +51,12 @@ termux-reload-settings
 echo "Setting bash as the default shell..."
 chsh -s bash
 
+# Setup storage permissions
+echo "Setting up storage permissions..."
+termux-setup-storage
+
+# Prompt user to set up a password
+echo "Please set up a password for Termux."
+passwd
+
 echo "Setup complete. Please restart Termux."
