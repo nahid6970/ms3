@@ -2,7 +2,7 @@
 
 # Update and upgrade Termux packages
 echo "Updating and upgrading Termux packages..."
-pkg update && pkg upgrade -y
+pkg update -y && pkg upgrade -y
 
 # Install necessary packages
 echo "Installing necessary packages..."
