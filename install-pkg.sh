@@ -6,6 +6,8 @@ packages=(
     "git"
     "curl"
     "wget"
+    "mpv"
+    "openssh"
     # Add other packages here
 )
 
