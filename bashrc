@@ -32,21 +32,46 @@ fi
 
 # Fuzzy Finder for navigating directories and opening files
 # Fuzzy Finder for navigating directories and opening files in two steps
+# Fuzzy Finder for navigating directories, opening files, going back, and deleting files/directories
 if command -v fzf >/dev/null 2>&1; then
-    fzfm() {
-        # Step 1: Navigate to a directory
-        local dir
-        dir=$(find . -type d | fzf --prompt="Select directory: ")
-        if [[ -n $dir ]]; then
-            cd "$dir" || return
-            # Step 2: Select a file to open within the chosen directory
-            local file
-            file=$(find . -maxdepth 1 -type f | fzf --prompt="Select file: ")
-            if [[ -n $file ]]; then
-                vim "$file"  # Or replace with your preferred editor
+    fzfe() {
+        local current_dir="$PWD"  # Store the initial directory
+        
+        while true; do
+            # List directories and files with special keys for back and delete
+            local selection
+            selection=$(find . -maxdepth 1 \( -type d -o -type f \) | fzf --bind 'backspace:abort, d:abort' --prompt="Select (Backspace=back, d=delete): ")
+            
+            if [[ -z $selection ]]; then
+                # If user presses Backspace, go back to the previous directory
+                if [[ $(bind -p | grep '"\C-h"' | awk '{print $2}') == "abort" ]]; then
+                    cd ..
+                fi
+                
+                # If user presses 'd', delete the selected file or directory after confirmation
+                if [[ $(bind -p | grep -F 'd:abort') ]]; then
+                    read -p "Delete $selection? (y/N): " confirm
+                    if [[ $confirm == [yY] ]]; then
+                        rm -rf "$selection"
+                        echo "$selection deleted."
+                    fi
+                fi
+
+                # Continue looping to allow further actions
+                continue
             fi
-        fi
+
+            # If a directory is selected, enter that directory
+            if [[ -d $selection ]]; then
+                cd "$selection" || return
+            elif [[ -f $selection ]]; then
+                # If a file is selected, open it with the default editor
+                vim "$selection"  # Or replace with your preferred editor
+                return  # Exit after opening a file
+            fi
+        done
     }
+
     # Bind the function to a shortcut, for example Ctrl+O
     bind -x '"\C-o": fzf_cd_or_open'
 fi
