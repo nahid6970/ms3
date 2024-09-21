@@ -5,6 +5,7 @@ PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 
 # Aliases for convenience
 alias ll='ls -la'
+alias la='ls -a'
 alias update='pkg update && pkg upgrade -y'
 alias cls='clear'
 alias rm='rm -f -r'

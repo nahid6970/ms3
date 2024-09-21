@@ -27,38 +27,6 @@ for pkg in "${packages[@]}"; do
     fi
 done
 
-# Setup Termux storage
-termux-setup-storage
-# Set up font variables
-TERMUX_FONT_DIR="$HOME/.termux"
-FONT_TTF="JetBrainsMonoNerdFontMono.ttf"
-FONT_PATH="$TERMUX_FONT_DIR/$FONT_TTF"
-
-# Check if the JetBrains Mono Nerd Font is already installed
-if [[ -f "$FONT_PATH" ]]; then
-    echo "JetBrains Mono Nerd Font is already installed."
-else
-    # Install JetBrains Mono Nerd Font
-    FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/JetBrainsMono.zip"
-    FONT_ZIP="JetBrainsMono.zip"
-
-    # Download and unzip the font
-    echo "Downloading JetBrains Mono Nerd Font..."
-    wget -q $FONT_URL -O $FONT_ZIP
-    unzip -j $FONT_ZIP "$FONT_TTF" -d $TERMUX_FONT_DIR
-
-    # Copy the font to the correct location
-    cp "$TERMUX_FONT_DIR/$FONT_TTF" "$TERMUX_FONT_DIR/font.ttf"
-    rm $FONT_ZIP
-
-    # Reload Termux settings to apply the new font
-    termux-reload-settings
-    echo "JetBrains Mono Nerd Font installed and applied!"
-fi
-
-
-
-
 # Backup existing .bashrc if it exists
 if [ -f ~/.bashrc ]; then
     echo "Backing up existing .bashrc to .bashrc.backup"
