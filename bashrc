@@ -109,7 +109,6 @@ fzfm () {
                     done
                 }
                 clear
-                fzfm
 
 # Enable reverse search with Up/Down keys for partially typed commands
 # This will use arrow keys to search through history based on the typed prefix
