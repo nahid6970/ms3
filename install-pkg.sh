@@ -2,23 +2,16 @@
 
 # List of necessary packages
 packages=(
-    "zsh"
+    "bash"
     "git"
     "curl"
     "wget"
     "mpv"
     "openssh"
-    # Add other necessary packages here
+    # Add other packages here if needed
 )
 
 # Install packages
 for pkg in "${packages[@]}"; do
-    if pkg install "$pkg" -y; then
-        echo "$pkg installed successfully."
-    else
-        echo "Failed to install $pkg. Continuing with the next package..."
-    fi
+    pkg install "$pkg" -y
 done
-
-# Change shell to ZSH
-chsh -s zsh
