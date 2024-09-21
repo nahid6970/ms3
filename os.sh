@@ -15,6 +15,11 @@ packages=(
     # "zsh"           # Z Shell (optional if you want to have both bash and zsh)
     "mpv"
     "openssh"
+    "fzf"
+    "bat"
+    "lsd"
+    "sxiv"
+    "chafa"
 )
 
 # Loop through the package list and install each one
