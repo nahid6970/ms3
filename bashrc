@@ -81,12 +81,22 @@ bind '"\e[B": history-search-forward'
 
 # History settings
 # History Managemenst Using .bashrc
+# Enable appending to the history file
 shopt -s histappend
 export HISTCONTROL=ignoreboth:erasedups
 export PROMPT_COMMAND="history -n; history -w; history -c; history -r"
-tac "$HISTFILE" | awk '!x[$0]++' > /tmp/tmpfile  &&
-                tac /tmp/tmpfile > "$HISTFILE"
-rm /tmp/tmpfile
+
+# Function to clean up the history
+cleanup_history() {
+    local tmpfile="$HOME/.bash_history_tmp"
+    # Create a temporary file in the home directory
+    tac "$HISTFILE" | awk '!x[$0]++' > "$tmpfile" &&
+    tac "$tmpfile" > "$HISTFILE"
+    # Remove the temporary file
+    rm "$tmpfile"
+}
+# Call the cleanup function
+cleanup_history
 
 # Ignore some commands from history
 export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:clear"
