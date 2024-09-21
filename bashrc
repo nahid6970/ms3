@@ -33,33 +33,22 @@ fi
 # Fuzzy Finder for navigating directories and opening files
 # Fuzzy Finder for navigating directories and opening files in two steps
 # Fuzzy Finder for navigating directories, opening files, going back, and deleting files/directories
+# Fuzzy Finder for navigating directories, opening files, going back, and deleting files/directories
 if command -v fzf >/dev/null 2>&1; then
     fzfe() {
-        local current_dir="$PWD"  # Store the initial directory
+        local selection
+        local preview_cmd='[[ -d {} ]] && echo Directory || (bat --color=always {} 2> /dev/null || cat {})'
         
         while true; do
-            # List directories and files with special keys for back and delete
-            local selection
-            selection=$(find . -maxdepth 1 \( -type d -o -type f \) | fzf --bind 'backspace:abort, d:abort' --prompt="Select (Backspace=back, d=delete): ")
-            
-            if [[ -z $selection ]]; then
-                # If user presses Backspace, go back to the previous directory
-                if [[ $(bind -p | grep '"\C-h"' | awk '{print $2}') == "abort" ]]; then
-                    cd ..
-                fi
-                
-                # If user presses 'd', delete the selected file or directory after confirmation
-                if [[ $(bind -p | grep -F 'd:abort') ]]; then
-                    read -p "Delete $selection? (y/N): " confirm
-                    if [[ $confirm == [yY] ]]; then
-                        rm -rf "$selection"
-                        echo "$selection deleted."
-                    fi
-                fi
+            # List directories and files with a preview
+            selection=$(find . -maxdepth 1 \( -type d -o -type f \) \
+                | fzf --preview "$preview_cmd" \
+                      --prompt="Select (Backspace=back, d=delete): " \
+                      --bind 'backspace:execute(cd ..; $0)&abort' \
+                      --bind 'd:execute-silent(echo {} && rm -rf {} && echo Deleted!)+abort')
 
-                # Continue looping to allow further actions
-                continue
-            fi
+            # If nothing is selected, break the loop
+            [[ -z $selection ]] && break
 
             # If a directory is selected, enter that directory
             if [[ -d $selection ]]; then
