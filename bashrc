@@ -34,36 +34,53 @@ fi
 # Fuzzy Finder for navigating directories and opening files in two steps
 # Fuzzy Finder for navigating directories, opening files, going back, and deleting files/directories
 # Fuzzy Finder for navigating directories, opening files, going back, and deleting files/directories
+# Fuzzy Finder for navigating directories, opening files, going back, and deleting
 if command -v fzf >/dev/null 2>&1; then
     fzfe() {
-        local selection
-        local preview_cmd='[[ -d {} ]] && echo Directory || (bat --color=always {} 2> /dev/null || cat {})'
-        
+        local current_dir="$PWD"
         while true; do
-            # List directories and files with a preview
-            selection=$(find . -maxdepth 1 \( -type d -o -type f \) \
-                | fzf --preview "$preview_cmd" \
-                      --prompt="Select (Backspace=back, d=delete): " \
-                      --bind 'backspace:execute(cd ..; $0)&abort' \
-                      --bind 'd:execute-silent(echo {} && rm -rf {} && echo Deleted!)+abort')
+            # Step 1: Navigate or delete with prompt
+            local selection
+            selection=$(find . -mindepth 1 -maxdepth 1 \( -type d -o -type f \) | fzf --prompt="Navigate or select file (DEL to delete, BKSP to go up): " --expect=ctrl-d,backspace)
 
-            # If nothing is selected, break the loop
-            [[ -z $selection ]] && break
+            if [[ -z $selection ]]; then
+                break  # Exit if no selection
+            fi
 
-            # If a directory is selected, enter that directory
+            key=$(head -n1 <<< "$selection")
+            selection=$(tail -n+2 <<< "$selection")
+
+            # If Ctrl+D is pressed, delete the selected file or directory
+            if [[ $key == "ctrl-d" ]]; then
+                rm -rf "$selection" && echo "Deleted $selection"
+                continue
+            fi
+
+            # If Backspace is pressed, go back to the previous directory
+            if [[ $key == "backspace" ]]; then
+                cd .. || break
+                continue
+            fi
+
+            # If a directory is selected, navigate into it
             if [[ -d $selection ]]; then
-                cd "$selection" || return
-            elif [[ -f $selection ]]; then
-                # If a file is selected, open it with the default editor
+                cd "$selection" || break
+                current_dir="$PWD"
+                continue
+            fi
+
+            # If a file is selected, open it
+            if [[ -f $selection ]]; then
                 vim "$selection"  # Or replace with your preferred editor
-                return  # Exit after opening a file
+                break
             fi
         done
     }
 
     # Bind the function to a shortcut, for example Ctrl+O
-    bind -x '"\C-o": fzf_cd_or_open'
+    bind -x '"\C-o": fzfe'
 fi
+
 
 # Enable reverse search with Up/Down keys for partially typed commands
 # This will use arrow keys to search through history based on the typed prefix
