@@ -27,22 +27,29 @@ for pkg in "${packages[@]}"; do
     fi
 done
 
-# Install JetBrains Mono Nerd Font
-FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/JetBrainsMono.zip"
-FONT_ZIP="JetBrainsMono.zip"
-FONT_TTF="JetBrainsMonoNerdFontMono.ttf"
+# Set up font directory
 TERMUX_FONT_DIR="$HOME/.termux"
-# Download and unzip the font
-echo "Downloading JetBrains Mono Nerd Font..."
-wget -q $FONT_URL -O $FONT_ZIP
-unzip -j $FONT_ZIP "$FONT_TTF" -d $TERMUX_FONT_DIR
+FONT_TTF="JetBrainsMonoNerdFontMono.ttf"
+FONT_PATH="$TERMUX_FONT_DIR/$FONT_TTF"
+# Check if the JetBrains Mono Nerd Font is already installed
+if [[ -f "$FONT_PATH" ]]; then
+    echo "JetBrains Mono Nerd Font is already installed."
+else
+    # Install JetBrains Mono Nerd Font
+    FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/JetBrainsMono.zip"
+    FONT_ZIP="JetBrainsMono.zip"
+    # Download and unzip the font
+    echo "Downloading JetBrains Mono Nerd Font..."
+    wget -q $FONT_URL -O $FONT_ZIP
+    unzip -j $FONT_ZIP "$FONT_TTF" -d $TERMUX_FONT_DIR
+    # Set the font in Termux
+    mv "$TERMUX_FONT_DIR/$FONT_TTF" "$TERMUX_FONT_DIR/font.ttf"
+    rm $FONT_ZIP
+    # Reload Termux settings to apply the new font
+    termux-reload-settings
+    echo "JetBrains Mono Nerd Font installed and applied!"
+fi
 
-# Set the font in Termux
-mv "$TERMUX_FONT_DIR/$FONT_TTF" "$TERMUX_FONT_DIR/font.ttf"
-rm $FONT_ZIP
-# Reload Termux settings to apply the new font
-termux-reload-settings
-echo "JetBrains Mono Nerd Font installed and applied!"
 
 
 # Backup existing .bashrc if it exists
