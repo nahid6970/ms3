@@ -6,6 +6,8 @@ PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 # Aliases for convenience
 alias ll='ls -la'
 alias update='pkg update && pkg upgrade -y'
+alias cls='clear'
+alias rm='rm -f -r'
 alias playwwe='echo "playwwe" && mpv /storage/emulated/0/song/wwe/ww.mp3'
 
 # Enable bash completion if available
