@@ -6,5 +6,5 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Customize prompt
 PROMPT='%F{cyan}%n%f@%F{green}%m%f %F{yellow}%1~%f %# '
-clear
-ls
+
+alias playwwe='echo "playwwe" && mpv /storage/emulated/0/song/wwe/ww.mp3'
