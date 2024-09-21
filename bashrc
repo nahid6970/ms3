@@ -6,6 +6,7 @@ PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 # Aliases for convenience
 alias ll='ls -la'
 alias update='pkg update && pkg upgrade -y'
+alias playwwe='echo "playwwe" && mpv /storage/emulated/0/song/wwe/ww.mp3'
 
 # Enable bash completion if available
 if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
@@ -32,3 +33,4 @@ shopt -s histverify
 
 # Ignore some commands from history
 export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:clear"
+
