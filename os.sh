@@ -41,7 +41,6 @@ install_packages() {
     pkg update -y
     echo -e "${GREEN}Upgrading installed packages...${NC}"
     pkg upgrade -y
-
     echo -e "${GREEN}Installing necessary packages...${NC}"
     for pkg in "${packages[@]}"; do
         # Check if the package is already installed
