@@ -1,67 +1,79 @@
 #!/bin/bash
 
-# Update and upgrade Termux packages
-echo "Updating and upgrading Termux packages..."
-pkg update && pkg upgrade -y
+# Define some variables
+REPO_DIR="$HOME/ms3"
+BASHRC_SOURCE="$REPO_DIR/bashrc"
+BASHRC_DEST="$HOME/.bashrc"
+TERMUX_PROPERTIES_SOURCE="$REPO_DIR/termux.properties"
+TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
 
-# Install necessary packages
-echo "Installing necessary packages..."
-# List of packages to install
-packages=(
-    "bash"          # Bash shell (already default in Termux, just for completeness)
-    "git"           # Version control system
-    "curl"          # Command line tool for transferring data with URLs
-    "wget"          # Network downloader
-    # "zsh"           # Z Shell (optional if you want to have both bash and zsh)
-    "mpv"
-    "openssh"
-    "fzf"
-    "bat"
-    "lsd"
-    "sxiv"
-    "chafa"
-)
+# Function to install necessary packages
+install_packages() {
+    echo "Installing necessary packages..."
+    pkg update -y && pkg upgrade -y
+    pkg install -y wget curl git fzf zsh nano bash mpv openssh bat lsd sxiv chafa
+    echo "Packages installed successfully."
+}
 
-# Loop through the package list and install each one
-for pkg in "${packages[@]}"; do
-    if ! command -v $pkg &> /dev/null; then
-        echo "Installing $pkg..."
-        pkg install "$pkg" -y
-    else
-        echo "$pkg is already installed."
-    fi
+# Function to set up storage and password
+setup_storage_passwd() {
+    echo "Setting up storage..."
+    termux-setup-storage
+    echo "Storage setup completed."
+
+    echo "Setting up password..."
+    passwd
+    echo "Password setup completed."
+}
+
+copy_files() {
+    echo "Copying .bashrc and termux.properties..."
+    cp "$BASHRC_SOURCE" "$BASHRC_DEST"
+    mkdir -p "$(dirname $TERMUX_PROPERTIES_DEST)"
+    cp "$TERMUX_PROPERTIES_SOURCE" "$TERMUX_PROPERTIES_DEST"
+    termux-reload-settings
+    echo "Files copied and settings reloaded."
+}
+
+# Function to remove the repository
+remove_repo() {
+    echo "Removing the repository folder ($REPO_DIR)..."
+    rm -rf "$REPO_DIR"
+    echo "Repository folder removed successfully."
+}
+
+
+# Display the menu
+while true; do
+    echo ""
+    echo "Select an option:"
+    echo "1. Initial Setup (install necessary packages, setup storage and password)"
+    echo "2. Copy .bashrc and termux.properties"
+    echo "3. Remove the repo folder (ms3)"
+    echo "4. Exit"
+    echo ""
+    read -p "Enter your choice [1-4]: " choice
+
+    case $choice in
+        1)
+            echo "Starting initial setup..."
+            install_packages
+            setup_storage_passwd
+            ;;
+        2)
+            echo "Copying configuration files..."
+            copy_files
+            ;;
+        3)
+            echo "Removing the repo..."
+            remove_repo
+            ;;
+        4)
+            echo "Exiting the script. Goodbye!"
+            exit 0
+            ;;
+        *)
+            echo "Invalid option. Please try again."
+            ;;
+    esac
 done
-
-# Backup existing .bashrc if it exists
-if [ -f ~/.bashrc ]; then
-    echo "Backing up existing .bashrc to .bashrc.backup"
-    mv ~/.bashrc ~/.bashrc.backup
-fi
-
-# Setup custom .bashrc
-echo "Setting up .bashrc..."
-cp bashrc ~/.bashrc
-
-# Source the .bashrc file to load configurations
-echo "Sourcing .bashrc..."
-source ~/.bashrc
-
-# Setup Termux properties for better key config
-echo "Setting up Termux properties..."
-mkdir -p ~/.termux
-cp termux.properties ~/.termux/termux.properties
-termux-reload-settings
-
-# Ensure bash is the default shell (usually already is in Termux)
-echo "Setting bash as the default shell..."
-chsh -s bash
-
-# Setup storage permissions
-echo "Setting up storage permissions..."
-termux-setup-storage
-
-# Prompt user to set up a password
-echo "Please set up a password for Termux."
-passwd
-
-echo "Setup complete. Please restart Termux."
