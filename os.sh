@@ -26,6 +26,8 @@ packages=(
     "zsh"           # Z Shell (optional if you want to have both bash and zsh)
     "fzf"
     "nano"
+    "vim"
+    "neovim"
     "mpv"
     "openssh"
     "bat"
