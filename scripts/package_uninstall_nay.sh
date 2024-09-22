@@ -1,8 +1,8 @@
 # Function to search and uninstall Termux packages using fzf
 nay() {
-    # Fetch the list of installed packages and remove the ',now' suffix
+    # Fetch the list of installed packages
     local package
-    package=$(pkg list-installed | awk '{print $1}' | sed 's/,now$//' | fzf --prompt="Select a package to uninstall: ")
+    package=$(pkg list-installed | awk '{print $1}' | fzf --prompt="Select a package to uninstall: ")
     
     # If a package is selected, uninstall it
     if [[ -n "$package" ]]; then
