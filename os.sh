@@ -122,6 +122,7 @@ while true; do
             install_packages
             setup_storage_passwd
             install_font_with_oh_my_posh
+            copy_files
             ;;
         2)
             echo -e "${MAGENTA}Copying configuration files...${NC}"
