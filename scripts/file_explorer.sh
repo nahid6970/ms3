@@ -29,7 +29,7 @@ if command -v fzf >/dev/null 2>&1; then
             fi
             # If a file is selected, open it
             if [[ -f $selection ]]; then
-                vim "$selection"  # Or replace with your preferred editor
+                nvim "$selection"  # Or replace with your preferred editor
                 break
             fi
         done
