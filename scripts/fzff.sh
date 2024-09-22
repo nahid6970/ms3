@@ -1,13 +1,17 @@
 # Fuzzy Finder setup
 if command -v fzf >/dev/null 2>&1; then
     # Function to fuzzy find files, including hidden files
-    fzff() {
+    ff() {
         local file
         file=$(find . -type f -name '.*' -o -type f | fzf)
         if [[ -n $file ]]; then
-            nano "$file"  # Or any other command you prefer to open the file
+            # Copy the file path to the clipboard
+            echo -n "$file" | termux-clipboard-set  # Use `pbcopy` on macOS or `xclip` on Linux
+            echo "Copied: $file"  # Optional: Notify that the path was copied
         fi
     }
-    # Bind the function to a shortcut, for example Ctrl+F
-    bind -x '"\C-f": fzf_find'
+    # Bind the function to a shortcut, for example, Ctrl+F
+    bind -x '"\C-f": ff'
+    # Bind Alt+C to copy the file path
+    bind -x '"\e[1;5;67": ff'  # Alt+C in some terminal emulators
 fi
