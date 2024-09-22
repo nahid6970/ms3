@@ -2,7 +2,7 @@
 yay() {
     # Fetch the list of available packages
     local package
-    package=$(pkg list-all | awk '{print $1}' | fzf --prompt="Search for a package: ")
+    package=$(pkg list-all | awk '{print $1}' | sed 's/,now$//' | fzf --prompt="Search for a package: ")
     # If a package is selected, install it
     if [[ -n "$package" ]]; then
         echo "Installing package: $package"
