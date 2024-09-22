@@ -1,6 +1,6 @@
 # Fuzzy Finder for navigating directories, opening files, going back, and deleting
 if command -v fzf >/dev/null 2>&1; then
-    fzfe() {
+    fe() {
         local current_dir="$PWD"
         while true; do
             # Step 1: Navigate or delete with prompt
@@ -35,5 +35,5 @@ if command -v fzf >/dev/null 2>&1; then
         done
     }
     # Bind the function to a shortcut, for example Ctrl+O
-    bind -x '"\C-o": fzfe'
+    bind -x '"\C-o": fe'
 fi
