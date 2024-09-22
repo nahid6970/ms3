@@ -32,7 +32,6 @@ packages=(
     "openssh"
     "bat"
     "lsd"
-    "sxiv"
     "chafa"
     "oh-my-posh"
 )
