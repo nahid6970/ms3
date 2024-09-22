@@ -16,12 +16,46 @@ TERMUX_PROPERTIES_SOURCE="$REPO_DIR/termux.properties"
 BASHRC_DEST="$HOME/.bashrc"
 TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
 
+
+# Function to install necessary packages
+packages=(
+    "bash"          # Bash shell (already default in Termux, just for completeness)
+    "git"           # Version control system
+    "curl"          # Command line tool for transferring data with URLs
+    "wget"          # Network downloader
+    "zsh"           # Z Shell (optional if you want to have both bash and zsh)
+    "fzf"
+    "nano"
+    "mpv"
+    "openssh"
+    "bat"
+    "lsd"
+    "sxiv"
+    "chafa"
+    "oh-my-posh"
+)
+
 # Function to install necessary packages
 install_packages() {
+    echo -e "${GREEN}Updating package list...${NC}"
+    pkg update -y
+    echo -e "${GREEN}Upgrading installed packages...${NC}"
+    pkg upgrade -y
+
     echo -e "${GREEN}Installing necessary packages...${NC}"
-    pkg update -y && pkg upgrade -y
-    pkg install -y wget curl git fzf zsh nano bash mpv openssh bat lsd sxiv chafa oh-my-posh
-    echo -e "${GREEN}Packages installed successfully.${NC}"
+    for pkg in "${packages[@]}"; do
+        # Check if the package is already installed
+        if ! command -v $pkg &> /dev/null; then
+            echo -e "${GREEN}Installing $pkg...${NC}"
+            if pkg install "$pkg" -y; then
+                echo -e "${GREEN}$pkg installed successfully.${NC}"
+            else
+                echo -e "${RED}Failed to install $pkg. Please check your network or package name.${NC}"
+            fi
+        else
+            echo -e "${GREEN}$pkg is already installed.${NC}"
+        fi
+    done
 }
 
 # Function to set up storage and password
