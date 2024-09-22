@@ -20,7 +20,7 @@ TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
 install_packages() {
     echo -e "${GREEN}Installing necessary packages...${NC}"
     pkg update -y && pkg upgrade -y
-    pkg install -y wget curl git fzf zsh nano bash mpv openssh bat lsd sxiv chafa
+    pkg install -y wget curl git fzf zsh nano bash mpv openssh bat lsd sxiv chafa oh-my-posh
     echo -e "${GREEN}Packages installed successfully.${NC}"
 }
 
@@ -33,6 +33,26 @@ setup_storage_passwd() {
     echo -e "${GREEN}Setting up password...${NC}"
     passwd
     echo -e "${GREEN}Password setup completed.${NC}"
+}
+
+install_font_with_oh_my_posh() {
+    echo -e "\e[34mInstalling JetBrainsMono NFP font using oh-my-posh...\e[0m"
+    oh-my-posh font install
+    FONT_PATH="$HOME/.local/share/fonts/jetbrainsmono-nfp/JetBrainsMonoNerdFontPropo-Regular.ttf"
+    TERMUX_FONT_DIR="$HOME/.termux"
+    # Check if the font is installed
+    if [ -f "$FONT_PATH" ]; then
+        echo -e "\e[32mJetBrainsMono NFP font found. Setting it as the default...\e[0m"
+        # Create .termux directory if it doesn't exist
+        mkdir -p "$TERMUX_FONT_DIR"
+        # Copy the font file to the .termux directory as font.ttf
+        cp "$FONT_PATH" "$TERMUX_FONT_DIR/font.ttf"
+        # Reload Termux settings to apply the font
+        termux-reload-settings
+        echo -e "\e[32mFont has been set as default and Termux settings reloaded.\e[0m"
+    else
+        echo -e "\e[31mJetBrainsMono NFP font not found after installation. Please ensure it is installed at $FONT_PATH\e[0m"
+    fi
 }
 
 # Function to copy .bashrc and termux.properties
@@ -68,6 +88,7 @@ while true; do
             echo -e "${MAGENTA}Starting initial setup...${NC}"
             install_packages
             setup_storage_passwd
+            install_font_with_oh_my_posh
             ;;
         2)
             echo -e "${MAGENTA}Copying configuration files...${NC}"
