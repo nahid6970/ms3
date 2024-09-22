@@ -76,7 +76,7 @@ remove_repo() {
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
-    echo -e "${BLUE}1. Initial Setup${NC} (install necessary packages, setup storage and password)"
+    echo -e "${BLUE}1. Initial Setup${NC} ( Packages, Storage, Password, Font)"
     echo -e "${BLUE}2. Copy .bashrc and termux.properties${NC}"
     echo -e "${BLUE}3. Remove the repo folder (ms3)${NC}"
     echo -e "${BLUE}4. Exit${NC}"

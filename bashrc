@@ -1,7 +1,7 @@
 # ~/.bashrc
 
 # Custom PS1 prompt
-PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
+# PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 
 # Aliases for convenience
 alias ll='ls -la'
@@ -58,3 +58,5 @@ cleanup_history
 # Ignore some commands from history
 export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:clear"
 
+# Add this to the end of your ~/.bashrc file
+eval "$(oh-my-posh init bash)"
