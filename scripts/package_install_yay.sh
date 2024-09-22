@@ -12,4 +12,4 @@ yay() {
     fi
 }
 # Bind the function to a shortcut (optional)
-bind -x '"\C-p": pkg_search_install'
+bind -x '"\C-p": yay'
