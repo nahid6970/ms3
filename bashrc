@@ -4,6 +4,7 @@
 # PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 
 # Aliases for convenience
+alias os='bash ms3/os.sh'
 alias ll='ls -la'
 alias la='ls -a'
 alias update='pkg update && pkg upgrade -y'
