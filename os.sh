@@ -19,21 +19,17 @@ TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
 
 # Function to install necessary packages
 packages=(
-    "bash"          # Bash shell (already default in Termux, just for completeness)
-    "git"           # Version control system
-    "curl"          # Command line tool for transferring data with URLs
-    "wget"          # Network downloader
-    "zsh"           # Z Shell (optional if you want to have both bash and zsh)
+    "bash" "zsh"
+    "git" "curl" "wget"
     "fzf"
-    "nano"
-    "vim"
-    "neovim"
+    "nano" "vim" "neovim"
     "mpv"
     "openssh"
     "bat"
     "lsd"
     "chafa"
     "oh-my-posh"
+    "yazi" "rclone"
 )
 
 # Function to install necessary packages
