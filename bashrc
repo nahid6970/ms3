@@ -61,3 +61,21 @@ export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:clear"
 
 # Add this to the end of your ~/.bashrc file
 eval "$(oh-my-posh init bash)"
+
+
+
+# Function to close the front app
+close_front_app() {
+    # Get the PID of the frontmost application using 'ps' and 'grep'
+    # Example using 'pgrep' to find the process of an app, modify as needed
+    # For Termux, we can use 'termux-wm' to get the front activity
+    local front_app_pid=$(pgrep -f "$(termux-wm | grep -oP 'ActivityRecord\{[^ ]+ \K[^/]+')" | head -n 1)
+
+    if [ -n "$front_app_pid" ]; then
+        kill -9 "$front_app_pid"
+        echo "Closed application with PID: $front_app_pid"
+    else
+        echo "No front application found to close."
+    fi
+}
+bind -x '"\e[27;5;120~":close_front_app'
