@@ -1,4 +1,5 @@
 #!/bin/bash
+pkg install dialog
 
 # Define some color variables
 RED='\033[0;31m'
@@ -39,13 +40,13 @@ packages=(
 
 # Function to select packages to install
 select_packages() {
-    local options=()
+    local options=("All" "Select All" off)  # Add "Select All" option
     for pkg in "${packages[@]}"; do
         options+=("$pkg" "" off)
     done
 
     selected_packages=$(dialog --title "Select Packages" --checklist \
-        "Use SPACE to select and ENTER to confirm" 20 50 10 \
+        "Use SPACE to select and ENTER to confirm" 20 50 15 \
         "${options[@]}" 3>&1 1>&2 2>&3)
 
     clear
@@ -58,6 +59,11 @@ select_packages() {
 
     # Convert the selected packages string into an array
     selected_packages=($selected_packages)
+
+    # If "All" is selected, select all packages
+    if [[ " ${selected_packages[*]} " == *"All"* ]]; then
+        selected_packages=("${packages[@]}")
+    fi
 }
 
 # Function to install selected packages
