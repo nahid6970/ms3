@@ -1,5 +1,4 @@
 #!/bin/bash
-pkg install dialog
 
 # Define some color variables
 RED='\033[0;31m'
@@ -17,7 +16,7 @@ TERMUX_PROPERTIES_SOURCE="$REPO_DIR/termux.properties"
 BASHRC_DEST="$HOME/.bashrc"
 TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
 
-# List of packages to install
+# Function to install necessary packages
 packages=(
     "bash"
     "bat"
@@ -38,49 +37,24 @@ packages=(
     "zsh"
 )
 
-# Function to select packages to install
-select_packages() {
-    local options=("All" "Select All" off)  # Add "Select All" option
-    for pkg in "${packages[@]}"; do
-        options+=("$pkg" "" off)
-    done
-
-    selected_packages=$(dialog --title "Select Packages" --checklist \
-        "Use SPACE to select and ENTER to confirm" 20 50 15 \
-        "${options[@]}" 3>&1 1>&2 2>&3)
-
-    clear
-
-    # If no packages are selected, exit
-    if [ -z "$selected_packages" ]; then
-        echo -e "${RED}No packages selected. Exiting.${NC}"
-        exit 1
-    fi
-
-    # Convert the selected packages string into an array
-    selected_packages=($selected_packages)
-
-    # If "All" is selected, select all packages
-    if [[ " ${selected_packages[*]} " == *"All"* ]]; then
-        selected_packages=("${packages[@]}")
-    fi
-}
-
-# Function to install selected packages
+# Function to install necessary packages
 install_packages() {
     echo -e "${GREEN}Updating package list...${NC}"
     pkg update -y
     echo -e "${GREEN}Upgrading installed packages...${NC}"
     pkg upgrade -y
-    echo -e "${GREEN}Installing selected packages...${NC}"
-    for pkg in "${selected_packages[@]}"; do
-        # Remove quotes from the package name
-        pkg=${pkg//\"/}
-        echo -e "${GREEN}Installing $pkg...${NC}"
-        if pkg install "$pkg" -y; then
-            echo -e "${GREEN}$pkg installed successfully.${NC}"
+    echo -e "${GREEN}Installing necessary packages...${NC}"
+    for pkg in "${packages[@]}"; do
+        # Check if the package is already installed
+        if ! command -v $pkg &> /dev/null; then
+            echo -e "${GREEN}Installing $pkg...${NC}"
+            if pkg install "$pkg" -y; then
+                echo -e "${GREEN}$pkg installed successfully.${NC}"
+            else
+                echo -e "${RED}Failed to install $pkg. Please check your network or package name.${NC}"
+            fi
         else
-            echo -e "${RED}Failed to install $pkg. Please check your network or package name.${NC}"
+            echo -e "${GREEN}$pkg is already installed.${NC}"
         fi
     done
 }
@@ -147,7 +121,6 @@ while true; do
     case $choice in
         1)
             echo -e "${MAGENTA}Starting initial setup...${NC}"
-            select_packages
             install_packages
             setup_storage_passwd
             install_font_with_oh_my_posh
