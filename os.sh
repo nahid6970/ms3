@@ -118,9 +118,6 @@ while true; do
     echo ""
     read -p "Enter your choice [1-4]: " choice
 
-    # Capture a single key press
-    read -n 1 -s -r choice
-
     case $choice in
         1)
             echo -e "${MAGENTA}Starting initial setup...${NC}"
@@ -137,7 +134,7 @@ while true; do
             echo -e "${MAGENTA}Removing the repo...${NC}"
             remove_repo
             ;;
-        4 | q)
+        4)
             echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
             exit 0
             ;;
