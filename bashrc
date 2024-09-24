@@ -64,18 +64,20 @@ eval "$(oh-my-posh init bash)"
 
 
 
-# Function to close the front app
-close_front_app() {
-    # Get the PID of the frontmost application using 'ps' and 'grep'
-    # Example using 'pgrep' to find the process of an app, modify as needed
-    # For Termux, we can use 'termux-wm' to get the front activity
-    local front_app_pid=$(pgrep -f "$(termux-wm | grep -oP 'ActivityRecord\{[^ ]+ \K[^/]+')" | head -n 1)
+# Function to clone or update a Git repository
+git_clone() {
+    local repo_url=$1
+    local repo_name=$(basename "$repo_url" .git)
 
-    if [ -n "$front_app_pid" ]; then
-        kill -9 "$front_app_pid"
-        echo "Closed application with PID: $front_app_pid"
+    # Check if the repository already exists
+    if [ -d "$repo_name/.git" ]; then
+        echo "Repository '$repo_name' already exists. Updating..."
+        cd "$repo_name" || exit
+        git pull
+        cd - || exit
     else
-        echo "No front application found to close."
+        # Clone the repository if it doesn't exist
+        echo "Cloning repository '$repo_name'..."
+        git clone "$repo_url"
     fi
 }
-bind -x '"\e[27;5;120~":close_front_app'
