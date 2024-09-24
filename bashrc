@@ -63,12 +63,10 @@ export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:clear"
 eval "$(oh-my-posh init bash)"
 
 
-
-#             Function to clone or update a Git repository
+# Function to clone or update a Git repository
 git_clone() {
     local repo_url=$1
     local repo_name=$(basename "$repo_url" .git)
-
     # Check if the repository already exists
     if [ -d "$repo_name/.git" ]; then
         echo "Repository '$repo_name' already exists. Updating..."
