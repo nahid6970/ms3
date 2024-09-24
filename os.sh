@@ -16,7 +16,6 @@ TERMUX_PROPERTIES_SOURCE="$REPO_DIR/termux.properties"
 BASHRC_DEST="$HOME/.bashrc"
 TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
 
-
 # Function to install necessary packages
 packages=(
     "bash"
@@ -65,12 +64,12 @@ setup_storage_passwd() {
     echo -e "${GREEN}Setting up storage...${NC}"
     termux-setup-storage
     echo -e "${GREEN}Storage setup completed.${NC}"
-
     echo -e "${GREEN}Setting up password...${NC}"
     passwd
     echo -e "${GREEN}Password setup completed.${NC}"
 }
 
+# Font Download and Setup
 install_font_with_oh_my_posh() {
     echo -e "\e[34mInstalling JetBrainsMono NFP font using oh-my-posh...\e[0m"
     oh-my-posh font install
@@ -91,7 +90,7 @@ install_font_with_oh_my_posh() {
     fi
 }
 
-# Function to copy .bashrc and termux.properties
+# Copy .bashrc and termux.properties
 copy_files() {
     echo -e "${CYAN}Copying .bashrc and termux.properties...${NC}"
     cp "$BASHRC_SOURCE" "$BASHRC_DEST"
@@ -119,6 +118,9 @@ while true; do
     echo ""
     read -p "Enter your choice [1-4]: " choice
 
+    # Capture a single key press
+    read -n 1 -s -r choice
+
     case $choice in
         1)
             echo -e "${MAGENTA}Starting initial setup...${NC}"
@@ -135,7 +137,7 @@ while true; do
             echo -e "${MAGENTA}Removing the repo...${NC}"
             remove_repo
             ;;
-        4)
+        4 | q)
             echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
             exit 0
             ;;
