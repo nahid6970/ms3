@@ -64,7 +64,7 @@ eval "$(oh-my-posh init bash)"
 
 
 
-# Function to clone or update a Git repository
+#             Function to clone or update a Git repository
 git_clone() {
     local repo_url=$1
     local repo_name=$(basename "$repo_url" .git)
