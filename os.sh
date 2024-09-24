@@ -19,17 +19,23 @@ TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
 
 # Function to install necessary packages
 packages=(
-    "bash" "zsh"
-    "git" "curl" "wget"
-    "fzf"
-    "nano" "vim" "neovim"
-    "mpv"
-    "openssh"
+    "bash"
     "bat"
-    "lsd"
     "chafa"
+    "curl"
+    "fzf"
+    "git"
+    "lsd"
+    "mpv"
+    "nano"
+    "neovim"
     "oh-my-posh"
-    "yazi" "rclone"
+    "openssh"
+    "rclone"
+    "vim"
+    "wget"
+    "yazi"
+    "zsh"
 )
 
 # Function to install necessary packages
@@ -107,8 +113,8 @@ while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
     echo -e "${BLUE}1. Initial Setup${NC} [Packages, Storage, Password, Font]"
-    echo -e "${BLUE}2. Copy Files${NC}  [.bashrc + termux.properties]"
-    echo -e "${BLUE}3. Remove the repo folder (ms3)${NC}"
+    echo -e "${BLUE}2. Copy Files${NC} [.bashrc + termux.properties]"
+    echo -e "${BLUE}3. Remove Folder [ms3]${NC}"
     echo -e "${BLUE}4. Exit${NC}"
     echo ""
     read -p "Enter your choice [1-4]: " choice
