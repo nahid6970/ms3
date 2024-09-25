@@ -80,6 +80,20 @@ git_clone() {
     fi
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Function to close the active window using Ctrl+X
 function close_window {
     xdotool getactivewindow windowclose
