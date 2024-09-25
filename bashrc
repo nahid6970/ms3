@@ -79,3 +79,6 @@ git_clone() {
         git clone "$repo_url"
     fi
 }
+
+# Custom Ctrl+X shortcut to close the foreground process
+bind '"\C-x":"\C-u kill -9 %1\n"'
