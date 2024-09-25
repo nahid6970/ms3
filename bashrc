@@ -80,5 +80,9 @@ git_clone() {
     fi
 }
 
-# Custom Ctrl+X shortcut to close the foreground process
-bind '"\C-x":"\C-u kill -9 %1\n"'
+# Function to close the active window using Ctrl+X
+function close_window {
+    xdotool getactivewindow windowclose
+}
+# Bind Ctrl+X to the close_window function
+bind -x '"\C-x":close_window'
