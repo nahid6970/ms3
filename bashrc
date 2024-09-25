@@ -86,3 +86,5 @@ function close_window {
 }
 # Bind Ctrl+X to the close_window function
 bind -x '"\C-x":close_window'
+
+export DISPLAY=":1"
