@@ -35,6 +35,8 @@ packages=(
     "wget"
     "yazi"
     "zsh"
+    "x11-repo"
+    "xdotool"
 )
 
 # Function to install necessary packages
