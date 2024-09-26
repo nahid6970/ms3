@@ -127,7 +127,6 @@ while true; do
             echo -e "${MAGENTA}Starting Packages install...${NC}"
             install_packages
             setup_storage_passwd
-            install_font_with_oh_my_posh
             copy_files
             ;;
         2)
