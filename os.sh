@@ -112,15 +112,47 @@ remove_repo() {
     echo -e "${RED}Repository folder removed successfully.${NC}"
 }
 
+# Neovim setup function
+nvim_setup() {
+    echo -e "${BLUE}Setting up Neovim configuration...${NC}"
+    # Create the Neovim config directory if it doesn't exist
+    mkdir -p "$NVIM_CONFIG_DEST"
+    # Copy the init.lua file to the Neovim config directory
+    cp "$NVIM_INIT_SOURCE" "$NVIM_CONFIG_DEST/init.lua"
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Neovim configuration setup successfully.${NC}"
+    else
+        echo -e "${RED}Failed to set up Neovim configuration.${NC}"
+    fi
+}
+
+# Git push repository function
+git_push_repo() {
+    echo -e "${BLUE}Pushing the repository to the remote...${NC}"
+    cd "$REPO_DIR"
+    git add .
+    echo -e "${CYAN}Enter commit message:${NC}"
+    read commit_message
+    git commit -m "$commit_message"
+    git push
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Repository pushed successfully.${NC}"
+    else
+        echo -e "${RED}Failed to push the repository. Please check your Git configuration.${NC}"
+    fi
+}
+
 # Display the menu
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
     echo -e "${BLUE}1. Install Necessary Packages${NC} +Storage +Password"
     echo -e "${BLUE}2. Font Setup${NC}"
-    echo -e "${BLUE}3. Copy Files${NC} +.bashrc +termux.properties"
-    echo -e "${BLUE}4. Remove Folder [ms3]${NC}"
-    echo -e "${BLUE}5. Exit${NC}"
+    echo -e "${BLUE}3. Neovim Setup${NC}"
+    echo -e "${BLUE}4. Copy Files${NC} +.bashrc +termux.properties"
+    echo -e "${BLUE}5. Git Push${NC}"
+    echo -e "${BLUE}6. Remove Folder [ms3]${NC}"
+    echo -e "${BLUE}7. Exit${NC}"
     echo ""
     read -p "Enter choice: " choice
 
@@ -136,14 +168,22 @@ while true; do
             install_font_with_oh_my_posh
             ;;
         3)
+            echo -e "${MAGENTA}Neovim Setup...${NC}"
+            nvim_setup
+            ;;
+        4)
             echo -e "${MAGENTA}Copying configuration files...${NC}"
             copy_files
             ;;
-        4)
+        5)
+            echo -e "${MAGENTA}Git Pushing Files...${NC}"
+            git_push_repo
+            ;;
+        6)
             echo -e "${MAGENTA}Removing the repo...${NC}"
             remove_repo
             ;;
-        5)
+        7)
             echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
             exit 0
             ;;
