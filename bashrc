@@ -60,10 +60,6 @@ cleanup_history
 # Ignore some commands from history
 export HISTIGNORE="ls:ll:cd:cd -:pwd:exit:clear"
 
-# Add this to the end of your ~/.bashrc file
-eval "$(oh-my-posh init bash)"
-
-
 # Function to clone or update a Git repository
 git_clone() {
     local repo_url=$1
@@ -80,3 +76,6 @@ git_clone() {
         git clone "$repo_url"
     fi
 }
+
+# Add this to the end of your ~/.bashrc file
+eval "$(oh-my-posh init bash)"
