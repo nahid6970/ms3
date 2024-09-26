@@ -9,7 +9,7 @@ alias la='ls -a'
 alias ll='ls -la'
 alias os='bash ms3/os.sh'
 alias playwwe='echo "playwwe" && mpv /storage/emulated/0/song/wwe/ww.mp3'
-alias rb='exec termux-reload-settings'
+alias rb='termux-reload-settings'
 alias rm='rm -f -r'
 alias update='pkg update && pkg upgrade -y'
 
