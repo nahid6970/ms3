@@ -31,13 +31,13 @@ packages=(
     "oh-my-posh"
     "openssh"
     "rclone"
+    "sshpass"
     "vim"
     "wget"
     "yazi"
     "zsh"
-    "x11-repo"
-    "xdotool"
-    "sshpass"
+    # "x11-repo"
+    # "xdotool"
 )
 
 # Function to install necessary packages
