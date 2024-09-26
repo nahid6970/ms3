@@ -120,7 +120,7 @@ while true; do
     echo -e "${BLUE}4. Remove Folder [ms3]${NC}"
     echo -e "${BLUE}5. Exit${NC}"
     echo ""
-    read -p "Enter your choice [1-4]: " choice
+    read -p "Enter choice: " choice
 
     case $choice in
         1)
