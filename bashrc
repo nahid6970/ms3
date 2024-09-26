@@ -9,7 +9,7 @@ alias la='ls -a'
 alias ll='ls -la'
 alias os='bash ms3/os.sh'
 alias playwwe='echo "playwwe" && mpv /storage/emulated/0/song/wwe/ww.mp3'
-alias rb='exec termux-reload-settings && exit'
+# alias rb='exec termux-reload-settings && exit'
 alias rm='rm -f -r'
 alias update='pkg update && pkg upgrade -y'
 
@@ -79,4 +79,10 @@ git_clone() {
         echo "Cloning repository '$repo_name'..."
         git clone "$repo_url"
     fi
+}
+
+rb() {
+    echo "Restarting Termux..."
+    am start --user 0 -n com.termux/.app.TermuxActivity
+    exit
 }
