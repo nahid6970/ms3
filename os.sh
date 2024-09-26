@@ -15,6 +15,8 @@ BASHRC_SOURCE="$REPO_DIR/bashrc"
 TERMUX_PROPERTIES_SOURCE="$REPO_DIR/termux.properties"
 BASHRC_DEST="$HOME/.bashrc"
 TERMUX_PROPERTIES_DEST="$HOME/.termux/termux.properties"
+NVIM_INIT_SOURCE="$REPO_DIR/dotfiles/neovim/init.lua"
+NVIM_CONFIG_DEST="$HOME/.config/nvim"
 
 # Function to install necessary packages
 packages=(
