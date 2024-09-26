@@ -114,30 +114,35 @@ remove_repo() {
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
-    echo -e "${BLUE}1. Initial Setup${NC} [Packages, Storage, Password, Font]"
-    echo -e "${BLUE}2. Copy Files${NC} [.bashrc + termux.properties]"
-    echo -e "${BLUE}3. Remove Folder [ms3]${NC}"
-    echo -e "${BLUE}4. Exit${NC}"
+    echo -e "${BLUE}1. Install Necessary Packages${NC} [ +Storage +Password ]"
+    echo -e "${BLUE}2. Font Setup${NC}"
+    echo -e "${BLUE}3. Copy Files${NC} [.bashrc + termux.properties]"
+    echo -e "${BLUE}4. Remove Folder [ms3]${NC}"
+    echo -e "${BLUE}5. Exit${NC}"
     echo ""
     read -p "Enter your choice [1-4]: " choice
 
     case $choice in
         1)
-            echo -e "${MAGENTA}Starting initial setup...${NC}"
+            echo -e "${MAGENTA}Starting Packages install...${NC}"
             install_packages
             setup_storage_passwd
             install_font_with_oh_my_posh
             copy_files
             ;;
         2)
+            echo -e "${MAGENTA}Font Setup...${NC}"
+            install_font_with_oh_my_posh
+            ;;
+        3)
             echo -e "${MAGENTA}Copying configuration files...${NC}"
             copy_files
             ;;
-        3)
+        4)
             echo -e "${MAGENTA}Removing the repo...${NC}"
             remove_repo
             ;;
-        4)
+        5)
             echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
             exit 0
             ;;
