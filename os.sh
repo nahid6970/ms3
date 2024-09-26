@@ -114,9 +114,9 @@ remove_repo() {
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
-    echo -e "${BLUE}1. Install Necessary Packages${NC} [ +Storage +Password ]"
+    echo -e "${BLUE}1. Install Necessary Packages${NC} +Storage +Password"
     echo -e "${BLUE}2. Font Setup${NC}"
-    echo -e "${BLUE}3. Copy Files${NC} [.bashrc + termux.properties]"
+    echo -e "${BLUE}3. Copy Files${NC} +.bashrc +termux.properties"
     echo -e "${BLUE}4. Remove Folder [ms3]${NC}"
     echo -e "${BLUE}5. Exit${NC}"
     echo ""
