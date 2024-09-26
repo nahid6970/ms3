@@ -4,13 +4,14 @@
 # PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 
 # Aliases for convenience
-alias os='bash ms3/os.sh'
-alias ll='ls -la'
-alias la='ls -a'
-alias update='pkg update && pkg upgrade -y'
 alias cls='clear'
-alias rm='rm -f -r'
+alias la='ls -a'
+alias ll='ls -la'
+alias os='bash ms3/os.sh'
 alias playwwe='echo "playwwe" && mpv /storage/emulated/0/song/wwe/ww.mp3'
+alias rb='exec termux-reload-settings && exit'
+alias rm='rm -f -r'
+alias update='pkg update && pkg upgrade -y'
 
 # Enable bash completion if available
 if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
@@ -79,26 +80,3 @@ git_clone() {
         git clone "$repo_url"
     fi
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Function to close the active window using Ctrl+X
-function close_window {
-    xdotool getactivewindow windowclose
-}
-# Bind Ctrl+X to the close_window function
-bind -x '"\C-x":close_window'
-
-export DISPLAY=":1"

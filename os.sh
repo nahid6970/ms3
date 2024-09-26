@@ -37,6 +37,7 @@ packages=(
     "zsh"
     "x11-repo"
     "xdotool"
+    "sshpass"
 )
 
 # Function to install necessary packages
