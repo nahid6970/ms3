@@ -216,9 +216,6 @@ Restore_Songs() {
 
 
 
-
-
-
 # Declare a combined array of menu options and function bindings
 menu_items=(
     "1:Copy Files:copy_files"
