@@ -145,11 +145,17 @@ git_push_repo() {
     fi
 }
 
+
 # Function to set up storage and change directory
 cd_storage() {
-    cd storage/shared/
-
+    echo -e "Changing directory to storage/shared..."
+    cd storage/shared/ || {
+        echo -e "Failed to change directory. Directory does not exist."
+        return 1
+    }
+    echo -e "Directory changed to $(pwd)"
 }
+
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
