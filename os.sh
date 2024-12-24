@@ -174,6 +174,23 @@ Rclone_Song() {
 }
 
 
+# Function to restore songs from the web using rclone
+Restore_Songs() {
+    DEST_DIR="$HOME/storage/shared/song"
+    REMOTE="gu:/song"
+    
+    # Sync the songs from the remote to the destination directory
+    echo -e "Starting rclone sync from $REMOTE to $DEST_DIR..."
+
+    rclone sync "$REMOTE" "$DEST_DIR" -P --check-first --transfers=1 --track-renames --fast-list || {
+        echo -e "Failed to sync songs from $REMOTE to $DEST_DIR. Please check your rclone configuration."
+        return 1
+    }
+    
+    echo -e "Songs restored successfully from $REMOTE to $DEST_DIR"
+}
+
+
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
@@ -185,6 +202,7 @@ menu_items=(
     "6:Git Push:git_push_repo"
     "7:Remove Folder [ms3]:remove_repo"
     "8:Exit:exit_script"
+    "9:Restore Song:Restore_Songs"
 
 )
 
