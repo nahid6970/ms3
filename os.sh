@@ -147,7 +147,7 @@ git_push_repo() {
 
 
 # Function to create an rclone folder and copy rclone.conf file
-Rclone_Song() {
+rclone_setup() {
     RCLONE_CONFIG_DIR="$HOME/.config/rclone"
     SOURCE_CONF_FILE="$HOME/storage/shared/rclone.conf"
 
@@ -197,12 +197,12 @@ menu_items=(
     "1:Copy Files:copy_files"
     "2:Install Necessary Packages:install_packages setup_storage_passwd"
     "3:Font Setup:install_font_with_oh_my_posh"
-    "4:Song Restore:Rclone_Song"
-    "5:Neovim Setup:nvim_setup"
-    "6:Git Push:git_push_repo"
-    "7:Remove Folder [ms3]:remove_repo"
-    "8:Exit:exit_script"
-    "9:Restore Song:Restore_Songs"
+    "4:Rclone Setup:rclone_setup"
+    "5:Song [rs]:Restore_Songs"
+    "6:Neovim Setup:nvim_setup"
+    "7:Git Push:git_push_repo"
+    "8:Remove Folder [ms3]:remove_repo"
+    "9:Exit:exit_script"
 
 )
 
