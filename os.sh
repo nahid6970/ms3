@@ -146,15 +146,33 @@ git_push_repo() {
 }
 
 
-# Function to set up storage and change directory
-cd_storage() {
-    echo -e "Changing directory to storage/shared..."
-    cd "$HOME/storage/shared/" || {
-        echo -e "Failed to change directory. Directory does not exist."
+# Function to create an rclone folder and copy rclone.conf file
+Rclone_Song() {
+    RCLONE_CONFIG_DIR="$HOME/.config/rclone"
+    SOURCE_CONF_FILE="$HOME/storage/shared/rclone.conf"
+
+    # Create the rclone folder if it doesn't exist
+    echo -e "Creating rclone configuration directory at $RCLONE_CONFIG_DIR..."
+    mkdir -p "$RCLONE_CONFIG_DIR" || {
+        echo -e "Failed to create rclone directory. Please check permissions."
         return 1
     }
-    echo -e "Directory changed to $(pwd)"
+    echo -e "Directory created or already exists: $RCLONE_CONFIG_DIR"
+
+    # Copy rclone.conf to the new directory
+    echo -e "Copying rclone.conf from $SOURCE_CONF_FILE to $RCLONE_CONFIG_DIR..."
+    if [ -f "$SOURCE_CONF_FILE" ]; then
+        cp "$SOURCE_CONF_FILE" "$RCLONE_CONFIG_DIR/" || {
+            echo -e "Failed to copy rclone.conf. Please check permissions or the file path."
+            return 1
+        }
+        echo -e "rclone.conf copied successfully to $RCLONE_CONFIG_DIR"
+    else
+        echo -e "Source file $SOURCE_CONF_FILE does not exist. Please ensure the file exists."
+        return 1
+    fi
 }
+
 
 
 # Declare a combined array of menu options and function bindings
@@ -162,11 +180,11 @@ menu_items=(
     "1:Copy Files:copy_files"
     "2:Install Necessary Packages:install_packages setup_storage_passwd"
     "3:Font Setup:install_font_with_oh_my_posh"
-    "4:Neovim Setup:nvim_setup"
-    "5:Git Push:git_push_repo"
-    "6:Remove Folder [ms3]:remove_repo"
-    "7:Exit:exit_script"
-    "8:Internal Storage:cd_storage"
+    "4:Song Restore:Rclone_Song"
+    "5:Neovim Setup:nvim_setup"
+    "6:Git Push:git_push_repo"
+    "7:Remove Folder [ms3]:remove_repo"
+    "8:Exit:exit_script"
 
 )
 
