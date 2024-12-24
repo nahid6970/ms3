@@ -78,7 +78,7 @@ setup_storage_passwd() {
 # Function to set up storage and password
 cd_storage() {
     echo -e "${GREEN}Storage...${NC}"
-    cd $storage
+    cd "$storage"
 }
 
 # Font Download and Setup
