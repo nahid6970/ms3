@@ -10,7 +10,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Define some variables
-storage="$HOME/storage/shared"
+Internal_Storage="$HOME/storage/shared"
 
 REPO_DIR="$HOME/ms3"
 BASHRC_SOURCE="$REPO_DIR/bashrc"
@@ -79,10 +79,10 @@ setup_storage_passwd() {
 # Function to set up storage and change directory
 cd_storage() {
     echo -e "${GREEN}Changing to storage directory...${NC}"
-    if [ -d "$storage" ]; then
-        cd "$storage" || echo -e "${RED}Failed to change directory to $storage${NC}"
+    if [ -d "$Internal_Storage" ]; then
+        cd "$Internal_Storage" || echo -e "${RED}Failed to change directory to $Internal_Storage${NC}"
     else
-        echo -e "${RED}Storage directory does not exist: $storage${NC}"
+        echo -e "${RED}Internal_Storage directory does not exist: $Internal_Storage${NC}"
     fi
 }
 
