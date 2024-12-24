@@ -173,13 +173,16 @@ while true; do
     echo ""
     read -p "Enter choice: " choice
 
-    # Check if the choice is valid before executing the function
+    # Check if the choice is valid before executing the functions
     valid_choice=false
     for item in "${menu_items[@]}"; do
-        IFS=":" read -r number description function <<< "$item"
+        IFS=":" read -r number description functions <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
-            $function
+            IFS=" " read -r -a function_array <<< "$functions"
+            for function in "${function_array[@]}"; do
+                $function
+            done
             break
         fi
     done
