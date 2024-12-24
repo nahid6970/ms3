@@ -149,8 +149,8 @@ menu_items=(
     "3:Font Setup:install_font_with_oh_my_posh"
     "4:Neovim Setup:nvim_setup"
     "5:Git Push:git_push_repo"
-    "7:Exit:exit_script"
     "6:Remove Folder [ms3]:remove_repo"
+    "7:Exit:exit_script"
 )
 
 # Function to handle exit
