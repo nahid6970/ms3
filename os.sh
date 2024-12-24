@@ -10,7 +10,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Define some variables
-Internal_Storage="$HOME/storage/shared"
+# storage="$HOME/storage/shared"
 
 REPO_DIR="$HOME/ms3"
 BASHRC_SOURCE="$REPO_DIR/bashrc"
@@ -76,15 +76,6 @@ setup_storage_passwd() {
     echo -e "${GREEN}Password setup completed.${NC}"
 }
 
-# Function to set up storage and change directory
-cd_storage() {
-    echo -e "${GREEN}Changing to storage directory...${NC}"
-    if [ -d "$Internal_Storage" ]; then
-        cd "$Internal_Storage" || echo -e "${RED}Failed to change directory to $Internal_Storage${NC}"
-    else
-        echo -e "${RED}Internal_Storage directory does not exist: $Internal_Storage${NC}"
-    fi
-}
 
 # Font Download and Setup
 install_font_with_oh_my_posh() {
@@ -154,6 +145,12 @@ git_push_repo() {
     fi
 }
 
+# Function to set up storage and change directory
+cd_storage() {
+    cd storage/shared/
+
+}
+
 # Declare a combined array of menu options and function bindings
 menu_items=(
     "1:Copy Files:copy_files"
@@ -163,7 +160,7 @@ menu_items=(
     "5:Git Push:git_push_repo"
     "6:Remove Folder [ms3]:remove_repo"
     "7:Exit:exit_script"
-    "8:Storage:cd_storage"
+    "8:Internal Storage:cd_storage"
 
 )
 
