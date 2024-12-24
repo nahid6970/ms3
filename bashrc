@@ -12,7 +12,6 @@ alias playwwe='echo "playwwe" && mpv /storage/emulated/0/song/wwe/ww.mp3'
 alias rb='termux-reload-settings'
 alias rm='rm -f -r'
 alias update='pkg update && pkg upgrade -y'
-alias os='bash /ms3/os.sh'
 
 # Enable bash completion if available
 if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
