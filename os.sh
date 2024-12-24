@@ -149,7 +149,7 @@ git_push_repo() {
 # Function to set up storage and change directory
 cd_storage() {
     echo -e "Changing directory to storage/shared..."
-    cd storage/shared/ || {
+    cd "$HOME/storage/shared/" || {
         echo -e "Failed to change directory. Directory does not exist."
         return 1
     }
