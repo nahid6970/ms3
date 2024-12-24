@@ -145,6 +145,30 @@ git_push_repo() {
     fi
 }
 
+update_ms3_repo() {
+    local ms3_folder="$HOME/ms3"
+
+    if [ -d "$ms3_folder" ]; then
+        echo "Changing directory to $ms3_folder..."
+        cd "$ms3_folder" || {
+            echo "Failed to change directory to $ms3_folder."
+            return 1
+        }
+
+        echo "Pulling latest changes from the repository..."
+        git pull || {
+            echo "Failed to pull changes. Please check your repository setup."
+            return 1
+        }
+
+        echo "Repository updated successfully."
+    else
+        echo "The folder $ms3_folder does not exist."
+        return 1
+    fi
+}
+
+
 
 # Function to create an rclone folder and copy rclone.conf file
 rclone_setup() {
@@ -202,7 +226,8 @@ menu_items=(
     "6:Neovim Setup:nvim_setup"
     "7:Git Push:git_push_repo"
     "8:Remove Folder [ms3]:remove_repo"
-    "9:Exit:exit_script"
+    "9:Git Pull [ms3]:update_ms3_repo"
+    "10:Exit:exit_script"
 
 )
 
