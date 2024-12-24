@@ -142,48 +142,55 @@ git_push_repo() {
     fi
 }
 
+
+
+
+
 # Display the menu
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
-    echo -e "${BLUE}1. Install Necessary Packages${NC} +Storage +Password"
-    echo -e "${BLUE}2. Font Setup${NC}"
-    echo -e "${BLUE}3. Neovim Setup${NC}"
-    echo -e "${BLUE}4. Copy Files${NC} +.bashrc +termux.properties"
-    echo -e "${BLUE}5. Git Push${NC}"
-    echo -e "${BLUE}6. Remove Folder [ms3]${NC}"
-    echo -e "${BLUE}7. Exit${NC}"
+    echo -e "${BLUE}install     - Install Necessary Packages + Storage + Password${NC}"
+    echo -e "${BLUE}font        - Font Setup${NC}"
+    echo -e "${BLUE}nvim        - Neovim Setup${NC}"
+    echo -e "${BLUE}copy        - Copy Configuration Files (.bashrc, termux.properties)${NC}"
+    echo -e "${BLUE}git         - Git Push${NC}"
+    echo -e "${BLUE}remove      - Remove Folder [ms3]${NC}"
+    echo -e "${BLUE}exit        - Exit${NC}"
     echo ""
     read -p "Enter choice: " choice
 
+    # Convert choice to lowercase to handle case insensitivity
+    choice=$(echo "$choice" | tr '[:upper:]' '[:lower:]')
+
     case $choice in
-        1)
+        install)
             echo -e "${MAGENTA}Starting Packages install...${NC}"
             install_packages
             setup_storage_passwd
             copy_files
             ;;
-        2)
+        font)
             echo -e "${MAGENTA}Font Setup...${NC}"
             install_font_with_oh_my_posh
             ;;
-        3)
+        nvim)
             echo -e "${MAGENTA}Neovim Setup...${NC}"
             nvim_setup
             ;;
-        4)
+        copy)
             echo -e "${MAGENTA}Copying configuration files...${NC}"
             copy_files
             ;;
-        5)
+        git)
             echo -e "${MAGENTA}Git Pushing Files...${NC}"
             git_push_repo
             ;;
-        6)
+        remove)
             echo -e "${MAGENTA}Removing the repo...${NC}"
             remove_repo
             ;;
-        7)
+        exit)
             echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
             exit 0
             ;;
