@@ -142,53 +142,36 @@ git_push_repo() {
     fi
 }
 
+# Menu options
+declare -A menu_options=(
+    ["Install Necessary Packages"]="install_packages setup_storage_passwd copy_files"
+    ["Font Setup"]="install_font_with_oh_my_posh"
+    ["Neovim Setup"]="nvim_setup"
+    ["Copy Files"]="copy_files"
+    ["Git Push"]="git_push_repo"
+    ["Remove Folder"]="remove_repo"
+    ["Exit"]="exit 0"
+)
+
 # Display the menu
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
-    echo -e "${BLUE}1. Install Necessary Packages${NC} +Storage +Password"
-    echo -e "${BLUE}2. Font Setup${NC}"
-    echo -e "${BLUE}3. Neovim Setup${NC}"
-    echo -e "${BLUE}4. Copy Files${NC} +.bashrc +termux.properties"
-    echo -e "${BLUE}5. Git Push${NC}"
-    echo -e "${BLUE}6. Remove Folder [ms3]${NC}"
-    echo -e "${BLUE}7. Exit${NC}"
+    i=1
+    for key in "${!menu_options[@]}"; do
+        echo -e "${BLUE}$i. $key${NC}"
+        options[$i]="$key"
+        ((i++))
+    done
     echo ""
+
     read -p "Enter choice: " choice
 
-    case $choice in
-        1)
-            echo -e "${MAGENTA}Starting Packages install...${NC}"
-            install_packages
-            setup_storage_passwd
-            copy_files
-            ;;
-        2)
-            echo -e "${MAGENTA}Font Setup...${NC}"
-            install_font_with_oh_my_posh
-            ;;
-        3)
-            echo -e "${MAGENTA}Neovim Setup...${NC}"
-            nvim_setup
-            ;;
-        4)
-            echo -e "${MAGENTA}Copying configuration files...${NC}"
-            copy_files
-            ;;
-        5)
-            echo -e "${MAGENTA}Git Pushing Files...${NC}"
-            git_push_repo
-            ;;
-        6)
-            echo -e "${MAGENTA}Removing the repo...${NC}"
-            remove_repo
-            ;;
-        7)
-            echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
-            exit 0
-            ;;
-        *)
-            echo -e "${RED}Invalid option. Please try again.${NC}"
-            ;;
-    esac
+    selected="${options[$choice]}"
+    if [[ -n "$selected" ]]; then
+        echo -e "${MAGENTA}Starting $selected...${NC}"
+        eval "${menu_options[$selected]}"
+    else
+        echo -e "${RED}Invalid option. Please try again.${NC}"
+    fi
 done
