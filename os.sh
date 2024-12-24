@@ -173,16 +173,19 @@ while true; do
     echo ""
     read -p "Enter choice: " choice
 
-    # Execute the corresponding function if it exists
+    # Check if the choice is valid before executing the function
+    valid_choice=false
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description function <<< "$item"
         if [ "$choice" -eq "$number" ]; then
+            valid_choice=true
             $function
             break
         fi
     done
 
-    if [[ ! " ${menu_items[@]} " =~ " $choice " ]]; then
+    # If the choice is invalid, show an error message
+    if [ "$valid_choice" = false ]; then
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
 done
