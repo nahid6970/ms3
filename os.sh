@@ -145,7 +145,7 @@ git_push_repo() {
 # Declare a combined array of menu options and function bindings
 menu_items=(
     "1:Copy Files:copy_files"
-    "2:Install Necessary Packages:install_packages"
+    "2:Install Necessary Packages:install_packages setup_storage_passwd"
     "3:Font Setup:install_font_with_oh_my_posh"
     "4:Neovim Setup:nvim_setup"
     "5:Git Push:git_push_repo"
