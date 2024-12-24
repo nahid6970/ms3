@@ -142,36 +142,47 @@ git_push_repo() {
     fi
 }
 
-# Menu options
-declare -A menu_options=(
-    ["Install Necessary Packages"]="install_packages setup_storage_passwd copy_files"
-    ["Font Setup"]="install_font_with_oh_my_posh"
-    ["Neovim Setup"]="nvim_setup"
-    ["Copy Files"]="copy_files"
-    ["Git Push"]="git_push_repo"
-    ["Remove Folder"]="remove_repo"
-    ["Exit"]="exit 0"
+# Declare a combined array of menu options and function bindings
+menu_items=(
+    "1:Copy Files:copy_files"
+    "2:Install Necessary Packages:install_packages"
+    "3:Font Setup:install_font_with_oh_my_posh"
+    "4:Neovim Setup:nvim_setup"
+    "5:Git Push:git_push_repo"
+    "6:Remove Folder [ms3]:remove_repo"
+    "7:Exit:exit_script"
 )
 
-# Display the menu
+# Function to handle exit
+exit_script() {
+    echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
+    exit 0
+}
+
+# Display the menu and handle user input
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
-    i=1
-    for key in "${!menu_options[@]}"; do
-        echo -e "${BLUE}$i. $key${NC}"
-        options[$i]="$key"
-        ((i++))
-    done
-    echo ""
 
+    # Display menu options dynamically
+    for item in "${menu_items[@]}"; do
+        IFS=":" read -r number description function <<< "$item"
+        echo -e "${BLUE}$number. $description${NC}"
+    done
+
+    echo ""
     read -p "Enter choice: " choice
 
-    selected="${options[$choice]}"
-    if [[ -n "$selected" ]]; then
-        echo -e "${MAGENTA}Starting $selected...${NC}"
-        eval "${menu_options[$selected]}"
-    else
+    # Execute the corresponding function if it exists
+    for item in "${menu_items[@]}"; do
+        IFS=":" read -r number description function <<< "$item"
+        if [ "$choice" -eq "$number" ]; then
+            $function
+            break
+        fi
+    done
+
+    if [[ ! " ${menu_items[@]} " =~ " $choice " ]]; then
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
 done
