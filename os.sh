@@ -10,6 +10,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Define some variables
+storage="$HOME/storage/shared"
 REPO_DIR="$HOME/ms3"
 BASHRC_SOURCE="$REPO_DIR/bashrc"
 TERMUX_PROPERTIES_SOURCE="$REPO_DIR/termux.properties"
@@ -72,6 +73,12 @@ setup_storage_passwd() {
     echo -e "${GREEN}Setting up password...${NC}"
     passwd
     echo -e "${GREEN}Password setup completed.${NC}"
+}
+
+# Function to set up storage and password
+cd_storage() {
+    echo -e "${GREEN}Storage...${NC}"
+    cd storage
 }
 
 # Font Download and Setup
@@ -151,6 +158,7 @@ menu_items=(
     "5:Git Push:git_push_repo"
     "6:Remove Folder [ms3]:remove_repo"
     "7:Exit:exit_script"
+    "8:Storage:cd_storage"
 )
 
 # Function to handle exit
