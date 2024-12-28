@@ -274,10 +274,10 @@ while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
-    # Display menu options dynamically with colors
+    # Display menu options dynamically
     for item in "${menu_items[@]}"; do
-        IFS=":" read -r number description functions color <<< "$item"
-        echo -e "${color}$number. $description${NC}"
+        IFS=":" read -r number description function <<< "$item"
+        echo -e "${BLUE}$number. $description${NC}"
     done
 
     echo ""
@@ -286,7 +286,7 @@ while true; do
     # Check if the choice is valid before executing the functions
     valid_choice=false
     for item in "${menu_items[@]}"; do
-        IFS=":" read -r number description functions color <<< "$item"
+        IFS=":" read -r number description functions <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
             IFS=" " read -r -a function_array <<< "$functions"
