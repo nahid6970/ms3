@@ -255,7 +255,7 @@ list_large_files() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    "1 :Copy Files:                     copy_files:          $GREEN"
+    "1 :Copy Files:                     copy_files:$GREEN"
     "2 :Install Necessary Packages:     install_packages setup_storage_passwd:$CYAN"
     "3 :Font Setup:                     install_font_with_oh_my_posh:$MAGENTA"
     "4 :Git Pull [ms3]:                 update_ms3_repo:$BLUE"
