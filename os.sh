@@ -255,17 +255,19 @@ list_large_files() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    "1 :Copy Files:                     copy_files:          \e[32m"  # Green
-    "2 :Install Necessary Packages:     install_packages    setup_storage_passwd: \e[34m"  # Blue
-    "3 :Font Setup:                     install_font_with_oh_my_posh: \e[33m"  # Yellow
-    "4 :Git Pull [ms3]:                 update_ms3_repo:     \e[36m"  # Cyan
-    "5 :Rclone Setup:                   rclone_setup:        \e[35m"  # Magenta
-    "6 :Song [rs]:                      Restore_Songs:       \e[31m"  # Red
-    "7 :Neovim Setup:                   nvim_setup:          \e[32m"  # Green
-    "8 :Git Push:                       git_push_repo:       \e[34m"  # Blue
-    "9 :Remove Folder [ms3]:            remove_repo:         \e[33m"  # Yellow
-    "10:Exit:                           exit_script:         \e[31m"  # Red
+    "1 :Copy Files:                     copy_files"
+    "2 :Install Necessary Packages:     install_packages    setup_storage_passwd"
+    "3 :Font Setup:                     install_font_with_oh_my_posh"
+    "4 :Git Pull [ms3]:                 update_ms3_repo"
+    "5 :Rclone Setup:                   rclone_setup"
+    "6 :Song [rs]:                      Restore_Songs"
+    "7 :Neovim Setup:                   nvim_setup"
+    "8 :Git Push:                       git_push_repo"
+    "9 :Remove Folder [ms3]:            remove_repo"
+    "10:Exit:                           exit_script"
+
 )
+
 
 # Display the menu and handle user input
 while true; do
@@ -275,7 +277,7 @@ while true; do
     # Display menu options dynamically with colors
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
-        printf "%s%-2s %-35s${NC}\n" "$color" "$number" "$description"
+        echo -e "${color}$number. $description${NC}"
     done
 
     echo ""
