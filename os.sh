@@ -221,12 +221,12 @@ menu_items=(
     "1 :Copy Files:                     copy_files"
     "2 :Install Necessary Packages:     install_packages    setup_storage_passwd"
     "3 :Font Setup:                     install_font_with_oh_my_posh"
-    "4 :Rclone Setup:                   rclone_setup"
-    "5 :Song [rs]:                      Restore_Songs"
-    "6 :Neovim Setup:                   nvim_setup"
-    "7 :Git Push:                       git_push_repo"
-    "8 :Remove Folder [ms3]:            remove_repo"
-    "9 :Git Pull [ms3]:                 update_ms3_repo"
+    "4 :Git Pull [ms3]:                 update_ms3_repo"
+    "5 :Rclone Setup:                   rclone_setup"
+    "6 :Song [rs]:                      Restore_Songs"
+    "7 :Neovim Setup:                   nvim_setup"
+    "8 :Git Push:                       git_push_repo"
+    "9 :Remove Folder [ms3]:            remove_repo"
     "10:Exit:                           exit_script"
 
 )
