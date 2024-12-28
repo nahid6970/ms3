@@ -255,29 +255,27 @@ list_large_files() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    "1 :Copy Files:                     copy_files"
-    "2 :Install Necessary Packages:     install_packages    setup_storage_passwd"
-    "3 :Font Setup:                     install_font_with_oh_my_posh"
-    "4 :Git Pull [ms3]:                 update_ms3_repo"
-    "5 :Rclone Setup:                   rclone_setup"
-    "6 :Song [rs]:                      Restore_Songs"
-    "7 :Neovim Setup:                   nvim_setup"
-    "8 :Git Push:                       git_push_repo"
-    "9 :Remove Folder [ms3]:            remove_repo"
-    "10:Exit:                           exit_script"
-
+    "1 :Copy Files:                     copy_files:          $GREEN"
+    "2 :Install Necessary Packages:     install_packages setup_storage_passwd:$CYAN"
+    "3 :Font Setup:                     install_font_with_oh_my_posh:$MAGENTA"
+    "4 :Git Pull [ms3]:                 update_ms3_repo:$BLUE"
+    "5 :Rclone Setup:                   rclone_setup:$YELLOW"
+    "6 :Song [rs]:                      Restore_Songs:$RED"
+    "7 :Neovim Setup:                   nvim_setup:$CYAN"
+    "8 :Git Push:                       git_push_repo:$GREEN"
+    "9 :Remove Folder [ms3]:            remove_repo:$MAGENTA"
+    "10:Exit:                           exit_script:$RED"
 )
-
 
 # Display the menu and handle user input
 while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
-    # Display menu options dynamically
+    # Display menu options dynamically with assigned colors
     for item in "${menu_items[@]}"; do
-        IFS=":" read -r number description function <<< "$item"
-        echo -e "${BLUE}$number. $description${NC}"
+        IFS=":" read -r number description functions color <<< "$item"
+        echo -e "${color}$number. $description${NC}"
     done
 
     echo ""
@@ -286,7 +284,7 @@ while true; do
     # Check if the choice is valid before executing the functions
     valid_choice=false
     for item in "${menu_items[@]}"; do
-        IFS=":" read -r number description functions <<< "$item"
+        IFS=":" read -r number description functions color <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
             IFS=" " read -r -a function_array <<< "$functions"
