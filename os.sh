@@ -214,7 +214,11 @@ Restore_Songs() {
     echo -e "Songs restored successfully from $REMOTE to $DEST_DIR"
 }
 
-
+# Function to handle exit
+exit_script() {
+    echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
+    exit 0
+}
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
@@ -231,11 +235,6 @@ menu_items=(
 
 )
 
-# Function to handle exit
-exit_script() {
-    echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
-    exit 0
-}
 
 # Display the menu and handle user input
 while true; do
