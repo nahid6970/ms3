@@ -255,16 +255,16 @@ list_large_files() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    "1 :Copy Files:                     copy_files:$BLUE"
+    "1 :Copy Files:                     copy_files                              :$BLUE"
     "2 :Install Necessary Packages:     install_packages    setup_storage_passwd:$BLUE"
-    "3 :Font Setup:                     install_font_with_oh_my_posh:$BLUE"
-    "4 :Git Pull [ms3]:                 update_ms3_repo:$BLUE"
-    "5 :Rclone Setup:                   rclone_setup:$BLUE"
-    "6 :Song [rs]:                      Restore_Songs:$BLUE"
-    "7 :Neovim Setup:                   nvim_setup:$BLUE"
-    "8 :Git Push:                       git_push_repo:$BLUE"
-    "9 :Remove Folder [ms3]:            remove_repo:$RED"
-    "10:Exit:                           exit_script:$RED"
+    "3 :Font Setup:                     install_font_with_oh_my_posh            :$BLUE"
+    "4 :Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
+    "5 :Rclone Setup:                   rclone_setup                            :$BLUE"
+    "6 :Song [rs]:                      Restore_Songs                           :$BLUE"
+    "7 :Neovim Setup:                   nvim_setup                              :$BLUE"
+    "8 :Git Push:                       git_push_repo                           :$BLUE"
+    "9 :Remove Folder [ms3]:            remove_repo                             :$RED"
+    "10:Exit:                           exit_script                             :$RED"
 )
 
 # Display the menu and handle user input
