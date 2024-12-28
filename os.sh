@@ -218,16 +218,16 @@ Restore_Songs() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    "1 :Copy Files:copy_files"
-    "2 :Install Necessary Packages:install_packages setup_storage_passwd"
-    "3 :Font Setup:install_font_with_oh_my_posh"
-    "4 :Rclone Setup:rclone_setup"
-    "5 :Song [rs]:Restore_Songs"
-    "6 :Neovim Setup:nvim_setup"
-    "7 :Git Push:git_push_repo"
-    "8 :Remove Folder [ms3]:remove_repo"
-    "9 :Git Pull [ms3]:update_ms3_repo"
-    "10:Exit:exit_script"
+    "1 :Copy Files:                     copy_files"
+    "2 :Install Necessary Packages:     install_packages    setup_storage_passwd"
+    "3 :Font Setup:                     install_font_with_oh_my_posh"
+    "4 :Rclone Setup:                   rclone_setup"
+    "5 :Song [rs]:                      Restore_Songs"
+    "6 :Neovim Setup:                   nvim_setup"
+    "7 :Git Push:                       git_push_repo"
+    "8 :Remove Folder [ms3]:            remove_repo"
+    "9 :Git Pull [ms3]:                 update_ms3_repo"
+    "10:Exit:                           exit_script"
 
 )
 
