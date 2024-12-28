@@ -220,6 +220,39 @@ exit_script() {
     exit 0
 }
 
+quick_file_search() {
+    local file_name=$1
+    local search_dir=${2:-$PWD}
+
+    if [ -z "$file_name" ]; then
+        echo "Usage: quick_file_search <file_name> [directory]"
+        return 1
+    fi
+
+    echo "Searching for $file_name in $search_dir..."
+    find "$search_dir" -type f -name "$file_name"
+}
+
+network_speed_test() {
+    echo "Testing network speed..."
+    if command -v speedtest &> /dev/null; then
+        speedtest
+    else
+        echo "speedtest-cli not installed. Installing now..."
+        sudo apt install -y speedtest-cli
+        speedtest
+    fi
+}
+
+list_large_files() {
+    local target_dir=${1:-$PWD}
+
+    echo "Finding large files in $target_dir..."
+    find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
+}
+
+
+
 # Declare a combined array of menu options and function bindings
 menu_items=(
     "1 :Copy Files:                     copy_files"
