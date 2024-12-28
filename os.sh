@@ -267,7 +267,6 @@ menu_items=(
     "10:Exit:                           exit_script:         \e[31m"  # Red
 )
 
-
 # Display the menu and handle user input
 while true; do
     echo ""
@@ -276,7 +275,7 @@ while true; do
     # Display menu options dynamically with colors
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
-        echo -e "${color}$number. $description${NC}"
+        printf "%s%-2s %-35s${NC}\n" "$color" "$number" "$description"
     done
 
     echo ""
