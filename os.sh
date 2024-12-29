@@ -257,15 +257,19 @@ remote_access_goto_d1() {
     local remote_host="192.168.0.101"
     local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
     local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
+
     echo -e "Connecting to the remote server to execute the tasks..."
+
     # Run the AutoHotkey script commands on the remote machine over SSH
     sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
-        "cmd.exe /c 'taskkill /F /IM python.exe && '$psexec_path' -i 1 '$displayswitch_path' /internal'" || {
+        "cmd.exe /c 'taskkill /F /IM dnplayer.exe || echo dnplayer.exe not running; taskkill /F /IM python.exe || echo python.exe not running; '$psexec_path' -i 1 '$displayswitch_path' /internal || echo Failed to execute DisplaySwitch'" || {
         echo -e "${RED}Failed to execute the tasks on the remote server.${NC}"
         return 1
     }
+
     echo -e "${GREEN}Tasks executed successfully on the remote server.${NC}"
 }
+
 
 
 remote_access_goto_d2() {
@@ -297,7 +301,8 @@ menu_items=(
     "8 :Git Push:                       git_push_repo                           :$BLUE"
     "9 :Remove Folder [ms3]:            remove_repo                             :$RED"
     "10:Exit:                           exit_script                             :$RED"
-    "11:Remote Access:                  remote_access_goto_d1                           :$BLUE"
+    "11:goto d1:                        remote_access_goto_d1                   :$CYAN"
+    "12:goto d2:                        remote_access_goto_d1                   :$CYAN"
 )
 
 # Display the menu and handle user input
