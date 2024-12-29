@@ -257,7 +257,7 @@ remote_access() {
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
-    local remote_script_path="/path/to/rrr_access_2nd.ahk" # Update this path on the remote machine
+    local remote_script_path="C:/ms1/scripts/ahk/remote_access/rrr_access_2nd.ahk" # Update this path on the remote machine
 
     echo -e "Connecting to remote server via SSH..."
     sshpass -p "$remote_password" ssh "$remote_user@$remote_host" "AutoHotkey.exe $remote_script_path" || {
