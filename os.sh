@@ -256,16 +256,23 @@ remote_access() {
     local remote_user="nahid"
     local remote_host="192.168.0.101"
     local remote_ahk_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+    local ahk_executable="C:\\Program Files\\AutoHotkey\\AutoHotkey.exe"
 
     echo -e "Connecting to remote server via SSH..."
     sshpass -p "$remote_password" ssh "$remote_user@$remote_host" << EOF
     echo "Running AutoHotkey script on the remote machine..."
-    powershell -Command "& { Start-Process -FilePath 'C:\\Program Files\\AutoHotkey\\AutoHotkey.exe' -ArgumentList '$remote_ahk_path' -NoNewWindow }" || {
-        echo -e "${RED}Failed to execute AutoHotkey script.${NC}"
-    }
+    powershell -Command "
+    try {
+        Start-Process -FilePath '$ahk_executable' -ArgumentList '$remote_ahk_path' -NoNewWindow -Wait
+        Write-Host 'AutoHotkey script executed successfully.'
+    } catch {
+        Write-Host 'Failed to execute AutoHotkey script.' -ForegroundColor Red
+        Write-Error \$_.Exception.Message
+    }"
 EOF
-    echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
+    echo -e "${GREEN}Remote access and script execution completed.${NC}"
 }
+
 
 
 # Declare a combined array of menu options and function bindings
