@@ -253,7 +253,7 @@ list_large_files() {
 
 # Function to SSH into a remote server and run a .ahk script remotely
 remote_access() {
-    local remote_password="password"
+    local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
     local remote_ahk_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
