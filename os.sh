@@ -252,21 +252,31 @@ list_large_files() {
 }
 
 # Function to SSH into a remote server and run a .ahk script remotely
+# Function to SSH into a remote server and run an AutoHotkey script using pexec
 remote_access() {
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
-    local remote_ahk_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+    local ahk_script_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+    local pexec_path="/path/to/pexec.exe" # Update this path as needed
 
-    echo -e "Connecting to remote server via SSH..."
+    echo -e "Connecting to remote server and running AutoHotkey script..."
+
+    # Use pexec to run the script on the remote machine
     sshpass -p "$remote_password" ssh "$remote_user@$remote_host" << EOF
-    echo "Running AutoHotkey script on the remote machine..."
-    "C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" "$remote_ahk_path" || {
-        echo "${RED}Failed to execute AutoHotkey script.${NC}"
-    }
+        "$pexec_path" "$ahk_script_path" || {
+            echo "Failed to execute the AutoHotkey script."
+            exit 1
+        }
 EOF
-    echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
+
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
+    else
+        echo -e "${RED}Failed to connect or execute the script.${NC}"
+    fi
 }
+
 
 
 
