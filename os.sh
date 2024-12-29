@@ -257,15 +257,26 @@ remote_access_goto_d1() {
     local remote_host="192.168.0.101"
     local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
     local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
+
     echo -e "Connecting to the remote server to execute the tasks..."
+
     # Run the AutoHotkey script commands on the remote machine over SSH
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
-        "cmd.exe /c 'taskkill /F /IM dnplayer.exe && taskkill /F /IM python.exe && '$psexec_path' -i 1 '$displayswitch_path' /internal'" || {
-        echo -e "${RED}Failed to execute the tasks on the remote server.${NC}"
-        return 1
-    }
-    echo -e "${GREEN}Tasks executed successfully on the remote server.${NC}"
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" << EOF
+        cmd.exe /c "
+            taskkill /F /IM dnplayer.exe || echo 'dnplayer.exe not found, skipping...'
+            taskkill /F /IM python.exe || echo 'python.exe not found, skipping...'
+            '$psexec_path' -i 1 '$displayswitch_path' /internal || echo 'Failed to run DisplaySwitch.exe'
+        "
+EOF
+
+    # Check if the ssh command was successful
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Tasks executed successfully on the remote server.${NC}"
+    else
+        echo -e "${RED}An error occurred while executing the tasks on the remote server.${NC}"
+    fi
 }
+
 
 
 remote_access_goto_d2() {
