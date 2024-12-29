@@ -286,7 +286,7 @@ menu_items=(
     "8 :Git Push:                       git_push_repo                           :$BLUE"
     "9 :Remove Folder [ms3]:            remove_repo                             :$RED"
     "10:Exit:                           exit_script                             :$RED"
-    "10:Remote Access:                  remote_access                           :$BLUE"
+    "11:Remote Access:                  remote_access                           :$BLUE"
 )
 
 # Display the menu and handle user input
