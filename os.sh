@@ -259,10 +259,10 @@ remote_access() {
     local remote_ahk_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
 
     echo -e "Connecting to remote server via SSH..."
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" << EOF
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" bash << EOF
     echo "Running AutoHotkey script on the remote machine..."
-    powershell -Command "& { Start-Process -FilePath 'C:\\Program Files\\AutoHotkey\\AutoHotkey.exe' -ArgumentList '$remote_ahk_path' -NoNewWindow }" || {
-        echo -e "${RED}Failed to execute AutoHotkey script.${NC}"
+    "\"C:\\Program Files\\AutoHotkey\\AutoHotkey.exe\"" "\"$remote_ahk_path\"" || {
+        echo -e "\033[0;31mFailed to execute AutoHotkey script.\033[0m"
     }
 EOF
     echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
