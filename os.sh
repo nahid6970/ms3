@@ -251,35 +251,30 @@ list_large_files() {
     find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
 }
 
-# Function to SSH into a remote server and run a local AutoHotkey script
-# Function to SSH into a remote server and execute an AHK script remotely
-# Function to SSH into a remote server and run a local AutoHotkey script
 remote_access() {
-    local remote_password="1823"  # Update with the correct password
+    local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
-    local ahk_script_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
-    local ahk_exe_path="C:\\Program Files\\AutoHotkey\\AutoHotkey.exe"  # Default path for AutoHotkey executable
+    local local_ahk_script="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+    local remote_ahk_script="/home/$remote_user/rrr_access_2nd.ahk"
 
-    # Connect to remote server via SSH and run the AHK script
-    echo -e "Connecting to remote server via SSH..."
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" <<EOF
-        echo "Running AutoHotkey script on the remote machine..."
-        # Ensure AutoHotkey is installed and script exists, then run the script
-        if [ -f "$ahk_exe_path" ]; then
-            # Run the AHK script using the AutoHotkey executable
-            "$ahk_exe_path" "$ahk_script_path"
-        else
-            echo "AutoHotkey executable not found at $ahk_exe_path"
-        fi
-EOF
+    echo -e "Connecting to remote server and transferring the AutoHotkey script..."
 
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
-    else
-        echo -e "${RED}Failed to execute the AHK script on the remote machine.${NC}"
-    fi
+    # Copy the AutoHotkey script to the remote server
+    sshpass -p "$remote_password" scp "$(cygpath -w "$local_ahk_script")" "$remote_user@$remote_host:$remote_ahk_script" || {
+        echo -e "${RED}Failed to copy the AutoHotkey script to the remote server.${NC}"
+        return 1
+    }
+
+    echo -e "Executing the AutoHotkey script on the remote server..."
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" "autohotkey \"$remote_ahk_script\"" || {
+        echo -e "${RED}Failed to execute the AutoHotkey script on the remote server.${NC}"
+        return 1
+    }
+
+    echo -e "${GREEN}Remote script execution completed successfully.${NC}"
 }
+
 
 
 
