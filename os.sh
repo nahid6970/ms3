@@ -258,17 +258,32 @@ remote_access_goto_d1() {
     local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
     local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
 
-    echo -e "Connecting to the remote server to kill processes and execute DisplaySwitch..."
+    echo -e "Connecting to the remote server to execute tasks..."
 
-    # Run the AHK commands sequentially on the Windows remote system
+    # Kill dnplayer.exe
     sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
-        "cmd.exe /c 'taskkill /F /IM dnplayer.exe && taskkill /F /IM python.exe && $psexec_path -i 1 $displayswitch_path /internal'" || {
-        echo -e "${RED}Failed to execute remote commands.${NC}"
+        "taskkill /F /IM dnplayer.exe" || {
+        echo -e "${RED}Failed to kill dnplayer.exe on the remote server.${NC}"
         return 1
     }
 
-    echo -e "${GREEN}Commands executed successfully on the remote server.${NC}"
+    # Kill python.exe
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
+        "taskkill /F /IM python.exe" || {
+        echo -e "${RED}Failed to kill python.exe on the remote server.${NC}"
+        return 1
+    }
+
+    # Run DisplaySwitch.exe using PsExec
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
+        "cmd.exe /c '$psexec_path' -i 1 '$displayswitch_path' /internal" || {
+        echo -e "${RED}Failed to execute DisplaySwitch on the remote server.${NC}"
+        return 1
+    }
+
+    echo -e "${GREEN}Remote tasks completed successfully.${NC}"
 }
+
 
 
 
