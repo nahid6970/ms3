@@ -306,8 +306,8 @@ menu_items=(
     "12:goto d2:                        remote_access_goto_d2                   :$CYAN"
 )
 
-# Display the menu and handle user input
-while true; do
+# Function to display the menu
+display_menu() {
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
@@ -316,8 +316,14 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
-
     echo ""
+}
+
+# Display the menu and handle user input
+while true; do
+    clear  # Clear the terminal screen to show the updated menu
+    display_menu  # Reload the menu
+
     read -p "Enter choice: " choice
 
     # Check if the choice is valid before executing the functions
