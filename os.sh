@@ -308,9 +308,6 @@ menu_items=(
 
 # Display the menu and handle user input
 while true; do
-    # Clear the screen before showing the updated menu
-    clear
-
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
@@ -336,6 +333,9 @@ while true; do
             break
         fi
     done
+
+    # Reload the script from home/ms3/os.sh to apply any changes
+    source /home/ms3/os.sh
 
     # If the choice is invalid, show an error message
     if [ "$valid_choice" = false ]; then
