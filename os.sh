@@ -262,12 +262,13 @@ remote_access_goto_d1() {
 
     # Run the AutoHotkey script commands on the remote machine over SSH
     sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
-        "cmd.exe /c 'taskkill /F /IM dnplayer.exe || echo dnplayer.exe not running; taskkill /F /IM python.exe || echo python.exe not running; '$psexec_path' -i 1 '$displayswitch_path' /internal || echo Failed to execute DisplaySwitch'" || {
-        echo -e "${RED}Failed to execute the tasks on the remote server.${NC}"
-        return 1
-    }
+        "cmd.exe /c 'taskkill /F /IM dnplayer.exe || echo Taskkill dnplayer.exe failed; taskkill /F /IM python.exe || echo Taskkill python.exe failed; '$psexec_path' -i 1 '$displayswitch_path' /internal || echo PsExec failed'" 
 
-    echo -e "${GREEN}Tasks executed successfully on the remote server.${NC}"
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Tasks executed successfully on the remote server.${NC}"
+    else
+        echo -e "${RED}One or more tasks failed to execute on the remote server.${NC}"
+    fi
 }
 
 
