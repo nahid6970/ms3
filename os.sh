@@ -270,7 +270,7 @@ remote_access_goto_d2() {
 }
 
 
-remote_access() {
+remote_access_goto_d1() {
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
