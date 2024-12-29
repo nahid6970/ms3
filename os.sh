@@ -251,41 +251,6 @@ list_large_files() {
     find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
 }
 
-remote_access_goto_d1() {
-    local remote_password="1823"
-    local remote_user="nahid"
-    local remote_host="192.168.0.101"
-    local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
-    local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
-
-    echo -e "Connecting to the remote server to execute tasks..."
-
-    # Kill dnplayer.exe
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
-        "taskkill /F /IM dnplayer.exe" || {
-        echo -e "${RED}Failed to kill dnplayer.exe on the remote server.${NC}"
-        return 1
-    }
-
-    # Kill python.exe
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
-        "taskkill /F /IM python.exe" || {
-        echo -e "${RED}Failed to kill python.exe on the remote server.${NC}"
-        return 1
-    }
-
-    # Run DisplaySwitch.exe using PsExec
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
-        "cmd.exe /c '$psexec_path' -i 1 '$displayswitch_path' /internal" || {
-        echo -e "${RED}Failed to execute DisplaySwitch on the remote server.${NC}"
-        return 1
-    }
-
-    echo -e "${GREEN}Remote tasks completed successfully.${NC}"
-}
-
-
-
 
 
 remote_access_goto_d2() {
@@ -302,6 +267,31 @@ remote_access_goto_d2() {
         return 1
     }
     echo -e "${GREEN}Remote DisplaySwitch execution completed successfully.${NC}"
+}
+
+
+remote_access() {
+    local remote_password="1823"
+    local remote_user="nahid"
+    local remote_host="192.168.0.101"
+    local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
+    local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
+    echo -e "Connecting to the remote server to execute AHK script..."
+    # Run the taskkill commands to kill the processes
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
+        "taskkill /F /IM dnplayer.exe || echo 'dnplayer.exe not running';
+         taskkill /F /IM python.exe || echo 'python.exe not running';" || {
+        echo -e "${RED}Failed to kill processes on the remote server.${NC}"
+        return 1
+    }
+    echo -e "Processes killed successfully. Now executing DisplaySwitch..."
+    # Run the PsExec command on the Windows remote system to run DisplaySwitch
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
+        "cmd.exe /c '$psexec_path' -i 1 '$displayswitch_path' /internal" || {
+        echo -e "${RED}Failed to execute DisplaySwitch on the remote server.${NC}"
+        return 1
+    }
+    echo -e "${GREEN}Remote operations completed successfully.${NC}"
 }
 
 
