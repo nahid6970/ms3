@@ -252,22 +252,22 @@ list_large_files() {
 }
 
 # Function to SSH into a remote server and run a local AutoHotkey script
+# Function to SSH into a remote server and execute an AHK script remotely
 remote_access() {
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
-    local ahk_script_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+    local remote_script_path="/path/to/rrr_access_2nd.ahk" # Update this path on the remote machine
 
     echo -e "Connecting to remote server via SSH..."
-    
-    # Connect to the remote server and run the AHK script remotely
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" "start C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk" || {
-        echo -e "${RED}Failed to connect to remote server or run AutoHotkey script.${NC}"
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" "AutoHotkey.exe $remote_script_path" || {
+        echo -e "${RED}Failed to connect to remote server or execute the script.${NC}"
         return 1
     }
 
-    echo -e "${GREEN}Remote access and script execution started successfully.${NC}"
+    echo -e "${GREEN}Remote script execution completed successfully.${NC}"
 }
+
 
 
 
