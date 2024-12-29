@@ -253,20 +253,34 @@ list_large_files() {
 
 # Function to SSH into a remote server and run a local AutoHotkey script
 # Function to SSH into a remote server and execute an AHK script remotely
+# Function to SSH into a remote server and run a local AutoHotkey script
 remote_access() {
-    local remote_password="1823"
+    local remote_password="1823"  # Update with the correct password
     local remote_user="nahid"
     local remote_host="192.168.0.101"
-    local remote_script_path="C:/ms1/scripts/ahk/remote_access/rrr_access_2nd.ahk" # Update this path on the remote machine
+    local ahk_script_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+    local ahk_exe_path="C:\\Program Files\\AutoHotkey\\AutoHotkey.exe"  # Default path for AutoHotkey executable
 
+    # Connect to remote server via SSH and run the AHK script
     echo -e "Connecting to remote server via SSH..."
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" "AutoHotkey.exe $remote_script_path" || {
-        echo -e "${RED}Failed to connect to remote server or execute the script.${NC}"
-        return 1
-    }
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" <<EOF
+        echo "Running AutoHotkey script on the remote machine..."
+        # Ensure AutoHotkey is installed and script exists, then run the script
+        if [ -f "$ahk_exe_path" ]; then
+            # Run the AHK script using the AutoHotkey executable
+            "$ahk_exe_path" "$ahk_script_path"
+        else
+            echo "AutoHotkey executable not found at $ahk_exe_path"
+        fi
+EOF
 
-    echo -e "${GREEN}Remote script execution completed successfully.${NC}"
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
+    else
+        echo -e "${RED}Failed to execute the AHK script on the remote machine.${NC}"
+    fi
 }
+
 
 
 
