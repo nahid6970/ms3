@@ -251,27 +251,23 @@ list_large_files() {
     find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
 }
 
-# Function to SSH into a remote server and run a local AutoHotkey script
+# Function to SSH into a remote server and run a .ahk script remotely
 remote_access() {
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
-    local ahk_script_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+    local remote_ahk_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
 
     echo -e "Connecting to remote server via SSH..."
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" || {
-        echo -e "${RED}Failed to connect to remote server.${NC}"
-        return 1
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" << EOF
+    echo "Running AutoHotkey script on the remote machine..."
+    "C:\\Program Files\\AutoHotkey\\AutoHotkey.exe" "$remote_ahk_path" || {
+        echo "${RED}Failed to execute AutoHotkey script.${NC}"
     }
-
-    echo -e "Running AutoHotkey script..."
-    start "" "$ahk_script_path" || {
-        echo -e "${RED}Failed to run AutoHotkey script.${NC}"
-        return 1
-    }
-
+EOF
     echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
 }
+
 
 
 # Declare a combined array of menu options and function bindings
