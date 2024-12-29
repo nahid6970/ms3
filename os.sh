@@ -251,25 +251,38 @@ list_large_files() {
     find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
 }
 
-remote_access() {
+remote_access_goto_d1() {
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
     local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
     local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
+    echo -e "Connecting to the remote server to execute the tasks..."
+    # Run the AutoHotkey script commands on the remote machine over SSH
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
+        "cmd.exe /c 'taskkill /F /IM dnplayer.exe && taskkill /F /IM python.exe && '$psexec_path' -i 1 '$displayswitch_path' /internal'" || {
+        echo -e "${RED}Failed to execute the tasks on the remote server.${NC}"
+        return 1
+    }
+    echo -e "${GREEN}Tasks executed successfully on the remote server.${NC}"
+}
 
+
+remote_access_goto_d2() {
+    local remote_password="1823"
+    local remote_user="nahid"
+    local remote_host="192.168.0.101"
+    local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
+    local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
     echo -e "Connecting to the remote server to execute DisplaySwitch..."
-
     # Run the PsExec command on the Windows remote system
     sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
         "cmd.exe /c '$psexec_path' -i 1 '$displayswitch_path' /external" || {
         echo -e "${RED}Failed to execute DisplaySwitch on the remote server.${NC}"
         return 1
     }
-
     echo -e "${GREEN}Remote DisplaySwitch execution completed successfully.${NC}"
 }
-
 
 
 # Declare a combined array of menu options and function bindings
@@ -284,7 +297,7 @@ menu_items=(
     "8 :Git Push:                       git_push_repo                           :$BLUE"
     "9 :Remove Folder [ms3]:            remove_repo                             :$RED"
     "10:Exit:                           exit_script                             :$RED"
-    "11:Remote Access:                  remote_access                           :$BLUE"
+    "11:Remote Access:                  remote_access_goto_d1                           :$BLUE"
 )
 
 # Display the menu and handle user input
