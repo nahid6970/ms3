@@ -303,10 +303,10 @@ menu_items=(
     "9 :Remove Folder [ms3]:            remove_repo                             :$RED"
     "10:Exit:                           exit_script                             :$RED"
     "11:goto d1:                        remote_access_goto_d1                   :$CYAN"
-    "12:gotoss d2:                        remote_access_goto_d2                   :$CYAN"
+    "12:goto d2:                        remote_access_goto_d2                   :$CYAN"
 )
 
-# Function to display the menu
+# Function to display the menu dynamically
 display_menu() {
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
@@ -316,14 +316,15 @@ display_menu() {
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
-    echo ""
 }
 
 # Display the menu and handle user input
 while true; do
-    clear  # Clear the terminal screen to show the updated menu
-    display_menu  # Reload the menu
+    clear  # Clear the screen to show updated menu
 
+    display_menu  # Display the updated menu
+
+    echo ""
     read -p "Enter choice: " choice
 
     # Check if the choice is valid before executing the functions
