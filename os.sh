@@ -147,20 +147,17 @@ git_push_repo() {
 
 update_ms3_repo() {
     local ms3_folder="$HOME/ms3"
-
     if [ -d "$ms3_folder" ]; then
         echo "Changing directory to $ms3_folder..."
         cd "$ms3_folder" || {
             echo "Failed to change directory to $ms3_folder."
             return 1
         }
-
         echo "Pulling latest changes from the repository..."
         git pull || {
             echo "Failed to pull changes. Please check your repository setup."
             return 1
         }
-
         echo "Repository updated successfully."
     else
         echo "The folder $ms3_folder does not exist."
@@ -174,7 +171,6 @@ update_ms3_repo() {
 rclone_setup() {
     RCLONE_CONFIG_DIR="$HOME/.config/rclone"
     SOURCE_CONF_FILE="$HOME/storage/shared/rclone.conf"
-
     # Create the rclone folder if it doesn't exist
     echo -e "Creating rclone configuration directory at $RCLONE_CONFIG_DIR..."
     mkdir -p "$RCLONE_CONFIG_DIR" || {
@@ -182,7 +178,6 @@ rclone_setup() {
         return 1
     }
     echo -e "Directory created or already exists: $RCLONE_CONFIG_DIR"
-
     # Copy rclone.conf to the new directory
     echo -e "Copying rclone.conf from $SOURCE_CONF_FILE to $RCLONE_CONFIG_DIR..."
     if [ -f "$SOURCE_CONF_FILE" ]; then
@@ -202,17 +197,15 @@ rclone_setup() {
 Restore_Songs() {
     DEST_DIR="$HOME/storage/shared/song"
     REMOTE="gu:/song"
-    
     # Sync the songs from the remote to the destination directory
     echo -e "Starting rclone sync from $REMOTE to $DEST_DIR..."
-
     rclone sync "$REMOTE" "$DEST_DIR" -P --check-first --transfers=1 --track-renames --fast-list || {
         echo -e "Failed to sync songs from $REMOTE to $DEST_DIR. Please check your rclone configuration."
         return 1
     }
-    
     echo -e "Songs restored successfully from $REMOTE to $DEST_DIR"
 }
+
 
 # Function to handle exit
 exit_script() {
@@ -220,15 +213,14 @@ exit_script() {
     exit 0
 }
 
+
 quick_file_search() {
     local file_name=$1
     local search_dir=${2:-$PWD}
-
     if [ -z "$file_name" ]; then
         echo "Usage: quick_file_search <file_name> [directory]"
         return 1
     fi
-
     echo "Searching for $file_name in $search_dir..."
     find "$search_dir" -type f -name "$file_name"
 }
@@ -246,7 +238,6 @@ network_speed_test() {
 
 list_large_files() {
     local target_dir=${1:-$PWD}
-
     echo "Finding large files in $target_dir..."
     find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
 }
