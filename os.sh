@@ -306,8 +306,8 @@ menu_items=(
     "12:goto d2:                        remote_access_goto_d2                   :$CYAN"
 )
 
-# Function to display the menu dynamically
-display_menu() {
+# Display the menu and handle user input
+while true; do
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
@@ -316,13 +316,6 @@ display_menu() {
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
-}
-
-# Display the menu and handle user input
-while true; do
-    clear  # Clear the screen to show updated menu
-
-    display_menu  # Display the updated menu
 
     echo ""
     read -p "Enter choice: " choice
