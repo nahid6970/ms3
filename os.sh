@@ -251,6 +251,27 @@ list_large_files() {
     find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
 }
 
+# Function to SSH into a remote server and run a local AutoHotkey script
+remote_access() {
+    local remote_password="password"
+    local remote_user="nahid"
+    local remote_host="192.168.0.101"
+    local ahk_script_path="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
+
+    echo -e "Connecting to remote server via SSH..."
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" || {
+        echo -e "${RED}Failed to connect to remote server.${NC}"
+        return 1
+    }
+
+    echo -e "Running AutoHotkey script..."
+    start "" "$ahk_script_path" || {
+        echo -e "${RED}Failed to run AutoHotkey script.${NC}"
+        return 1
+    }
+
+    echo -e "${GREEN}Remote access and script execution completed successfully.${NC}"
+}
 
 
 # Declare a combined array of menu options and function bindings
@@ -265,6 +286,7 @@ menu_items=(
     "8 :Git Push:                       git_push_repo                           :$BLUE"
     "9 :Remove Folder [ms3]:            remove_repo                             :$RED"
     "10:Exit:                           exit_script                             :$RED"
+    "10:Remote Access:                  remote_access                           :$BLUE"
 )
 
 # Display the menu and handle user input
