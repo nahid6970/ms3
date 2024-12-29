@@ -303,7 +303,7 @@ menu_items=(
     "9 :Remove Folder [ms3]:            remove_repo                             :$RED"
     "10:Exit:                           exit_script                             :$RED"
     "11:goto d1:                        remote_access_goto_d1                   :$CYAN"
-    "12:goto d2:                        remote_access_goto_d2                   :$CYAN"
+    "12:test d2:                        remote_access_goto_d2                   :$CYAN"
 )
 
 # Display the menu and handle user input
