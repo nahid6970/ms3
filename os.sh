@@ -255,29 +255,20 @@ remote_access() {
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
-    local local_ahk_script="C:\\ms1\\scripts\\ahk\\remote_access\\rrr_access_2nd.ahk"
-    local remote_ahk_script="/home/$remote_user/rrr_access_2nd.ahk"
+    local psexec_path="C:/msBackups/PSTools/PsExec64.exe"
+    local displayswitch_path="C:/msBackups/Display/DisplaySwitch.exe"
 
-    echo -e "Connecting to remote server and transferring the AutoHotkey script..."
+    echo -e "Connecting to the remote server to execute DisplaySwitch..."
 
-    # Copy the AutoHotkey script to the remote server
-    sshpass -p "$remote_password" scp "$(cygpath -w "$local_ahk_script")" "$remote_user@$remote_host:$remote_ahk_script" || {
-        echo -e "${RED}Failed to copy the AutoHotkey script to the remote server.${NC}"
+    # Run the PsExec command on the Windows remote system
+    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" \
+        "cmd.exe /c '$psexec_path' -i 1 '$displayswitch_path' /external" || {
+        echo -e "${RED}Failed to execute DisplaySwitch on the remote server.${NC}"
         return 1
     }
 
-    echo -e "Executing the AutoHotkey script on the remote server..."
-    sshpass -p "$remote_password" ssh "$remote_user@$remote_host" "autohotkey \"$remote_ahk_script\"" || {
-        echo -e "${RED}Failed to execute the AutoHotkey script on the remote server.${NC}"
-        return 1
-    }
-
-    echo -e "${GREEN}Remote script execution completed successfully.${NC}"
+    echo -e "${GREEN}Remote DisplaySwitch execution completed successfully.${NC}"
 }
-
-
-
-
 
 
 
