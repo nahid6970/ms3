@@ -302,33 +302,18 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
-# Function to display the menu
-display_menu() {
-    clear
+# Display the menu and handle user input
+while true; do
+    echo ""
     echo -e "${YELLOW}Select an option:${NC}"
+
+    # Display menu options dynamically with assigned colors
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
+
     echo ""
-}
-
-# Function to run selected functions with real-time output
-execute_functions() {
-    local functions="$1"
-    IFS=" " read -r -a function_array <<< "$functions"
-    for function in "${function_array[@]}"; do
-        echo -e "${CYAN}Executing: $function${NC}"
-        eval "$function" 2>&1 | tee >(sed "s/^/${CYAN}/") # Real-time output with color
-        echo ""
-    done
-}
-
-# Main script loop
-while true; do
-    display_menu
-
-    # Prompt user for choice
     read -p "Enter choice: " choice
 
     # Check if the choice is valid before executing the functions
@@ -337,10 +322,10 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
-            clear
-            echo -e "${YELLOW}You selected: $description${NC}"
-            execute_functions "$functions"
-            echo -e "${GREEN}Completed: $description${NC}"
+            IFS=" " read -r -a function_array <<< "$functions"
+            for function in "${function_array[@]}"; do
+                $function
+            done
             break
         fi
     done
@@ -350,7 +335,6 @@ while true; do
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
 
-    # Wait for the user to press a key before redisplaying the menu
-    echo -e "${YELLOW}Press any key to return to the menu...${NC}"
-    read -n 1 -s
+    # Reload the os.sh script to refresh functions and variables
+    source $HOME/ms3/os.sh
 done
