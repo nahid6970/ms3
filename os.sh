@@ -302,18 +302,41 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
-# Display the menu and handle user input
-while true; do
-    echo ""
+# Function to display the menu
+display_menu() {
+    clear
     echo -e "${YELLOW}Select an option:${NC}"
-
-    # Display menu options dynamically with assigned colors
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
-
     echo ""
+}
+
+# Function to run selected functions and display their outputs
+execute_functions() {
+    local functions="$1"
+    local function_output
+    IFS=" " read -r -a function_array <<< "$functions"
+    for function in "${function_array[@]}"; do
+        function_output=$($function 2>&1) # Capture both stdout and stderr
+        display_output "$function_output"
+    done
+}
+
+# Function to display the output in the dedicated screen area
+display_output() {
+    # Move to the dedicated output section
+    tput cup 15 0 # Move cursor to row 15, column 0
+    tput clear    # Clear the area
+    echo -e "${CYAN}$1${NC}"
+}
+
+# Main script loop
+while true; do
+    display_menu
+
+    # Prompt user for choice
     read -p "Enter choice: " choice
 
     # Check if the choice is valid before executing the functions
@@ -322,19 +345,17 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
-            IFS=" " read -r -a function_array <<< "$functions"
-            for function in "${function_array[@]}"; do
-                $function
-            done
+            echo -e "${GREEN}Running $description...${NC}"
+            execute_functions "$functions"
             break
         fi
     done
 
     # If the choice is invalid, show an error message
     if [ "$valid_choice" = false ]; then
-        echo -e "${RED}Invalid option. Please try again.${NC}"
+        display_output "Invalid option. Please try again."
     fi
 
-    # Reload the os.sh script to refresh functions and variables
-    source $HOME/ms3/os.sh
+    # Wait for the user to press a key before redisplaying the menu
+    read -n 1 -s -r -p "Press any key to continue..."
 done
