@@ -299,7 +299,7 @@ menu_items=(
     "9 :Neovim Setup:                   nvim_setup                              :$BLUE"
     "10:Git Push:                       git_push_repo                           :$BLUE"
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
-    "12:Exit:                           exit_script                             :$RED"
+    "12:Exiasdt:                           exit_script                             :$RED"
 )
 
 
