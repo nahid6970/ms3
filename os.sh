@@ -302,8 +302,12 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
-# Display the menu and handle user input
-while true; do
+# Function to display the menu
+display_menu() {
+    # Clear the menu area
+    tput rc
+    tput ed
+
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
@@ -312,8 +316,16 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
-
     echo ""
+}
+
+# Set a marker to clear the menu area
+tput sc
+
+# Display the menu and handle user input
+while true; do
+    display_menu
+
     read -p "Enter choice: " choice
 
     # Check if the choice is valid before executing the functions
