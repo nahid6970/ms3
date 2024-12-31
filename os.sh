@@ -313,16 +313,36 @@ display_menu() {
     echo ""
 }
 
-# Function to run selected functions and display their outputs
+# File to store outputs
+output_file="/tmp/menu_output.log"
+
+# Function to display the menu
+display_menu() {
+    clear
+    echo -e "${YELLOW}Select an option:${NC}"
+    for item in "${menu_items[@]}"; do
+        IFS=":" read -r number description functions color <<< "$item"
+        echo -e "${color}$number. $description${NC}"
+    done
+    echo ""
+    echo -e "${YELLOW}Command Outputs:${NC}"
+    echo -e "-----------------\n"
+    if [[ -f $output_file ]]; then
+        tail -n 10 "$output_file" # Show the last 10 lines of output
+    fi
+    echo ""
+}
+
+# Function to run commands and capture their outputs
 execute_functions() {
     local functions="$1"
-    local function_output
     IFS=" " read -r -a function_array <<< "$functions"
     for function in "${function_array[@]}"; do
-        function_output=$($function 2>&1) # Capture both stdout and stderr
-        echo -e "${CYAN}Output from $function:${NC}"
-        echo "$function_output"
-        echo ""
+        {
+            echo -e "${CYAN}Running $function...${NC}"
+            $function 2>&1
+            echo -e "${GREEN}$function completed.${NC}"
+        } >>"$output_file" &
     done
 }
 
@@ -339,7 +359,7 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
-            echo -e "${GREEN}Running $description...${NC}"
+            echo -e "${GREEN}Executing $description...${NC}"
             execute_functions "$functions"
             break
         fi
@@ -350,6 +370,6 @@ while true; do
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
 
-    # Wait for the user to press a key before redisplaying the menu
+    # Wait for a keypress before redisplaying the menu
     read -n 1 -s -r -p "Press any key to continue..."
 done
