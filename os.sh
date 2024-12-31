@@ -40,6 +40,7 @@ packages=(
     "wget"
     "yazi"
     "zsh"
+    "fastfetch"
     # "x11-repo"
     # "xdotool"
 )
@@ -300,6 +301,11 @@ remote_access_goto_d1() {
     echo -e "${GREEN}Remote operations completed successfully.${NC}"
 }
 
+about_device() {
+    clear
+    fastfetch
+}
+
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
@@ -315,6 +321,7 @@ menu_items=(
     "10:Git Push:                       git_push_repo                           :$BLUE"
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
     "12:Exit:                           exit_script                             :$RED"
+    "13:About:                          about_device                            :$BLUE"
 )
 
 # Display the menu and handle user input
