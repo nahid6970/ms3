@@ -302,26 +302,35 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
-# Track the line where the menu starts
-menu_start_line=$(($(tput lines) - ${#menu_items[@]} - 3))
-
-# Display the menu and handle user input
-while true; do
-    # Clear only the menu portion
-    tput cup $menu_start_line 0
-    for ((i=menu_start_line; i<$(tput lines); i++)); do
-        printf "\033[K" # Clear the current line
-    done
-
+# Function to display the menu
+display_menu() {
+    clear
     echo -e "${YELLOW}Select an option:${NC}"
-
-    # Display menu options dynamically with assigned colors
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
-
     echo ""
+}
+
+# Function to run selected functions and display their outputs
+execute_functions() {
+    local functions="$1"
+    local function_output
+    IFS=" " read -r -a function_array <<< "$functions"
+    for function in "${function_array[@]}"; do
+        function_output=$($function 2>&1) # Capture both stdout and stderr
+        echo -e "${CYAN}Output from $function:${NC}"
+        echo "$function_output"
+        echo ""
+    done
+}
+
+# Main script loop
+while true; do
+    display_menu
+
+    # Prompt user for choice
     read -p "Enter choice: " choice
 
     # Check if the choice is valid before executing the functions
@@ -330,10 +339,8 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
-            IFS=" " read -r -a function_array <<< "$functions"
-            for function in "${function_array[@]}"; do
-                $function
-            done
+            echo -e "${GREEN}Running $description...${NC}"
+            execute_functions "$functions"
             break
         fi
     done
@@ -343,6 +350,6 @@ while true; do
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
 
-    # Reload the os.sh script to refresh functions and variables
-    source $HOME/ms3/os.sh
+    # Wait for the user to press a key before redisplaying the menu
+    read -n 1 -s -r -p "Press any key to continue..."
 done
