@@ -299,9 +299,8 @@ menu_items=(
     "9 :Neovim Setup:                   nvim_setup                              :$BLUE"
     "10:Git Push:                       git_push_repo                           :$BLUE"
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
-    "12:Exbbbbbbbbit:                           exit_script                             :$RED"
+    "12:Exit:                           exit_script                             :$RED"
 )
-
 
 
 # Function to display the menu
@@ -322,7 +321,10 @@ execute_functions() {
     for function in "${function_array[@]}"; do
         echo -e "${CYAN}Executing: $function${NC}"
         eval "$function" 2>&1 | while IFS= read -r line; do
-            echo -e "${CYAN}$line${NC}" # Apply color dynamically to each line
+            # Only apply color if the line isn't empty or doesn't need default styling
+            if [[ -n "$line" ]]; then
+                echo -e "${NC}$line" # Display normal lines in the default terminal color
+            fi
         done
         echo ""
     done
