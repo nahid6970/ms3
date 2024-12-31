@@ -302,9 +302,17 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
+# Track the line where the menu starts
+menu_start_line=$(($(tput lines) - ${#menu_items[@]} - 3))
+
 # Display the menu and handle user input
 while true; do
-    echo ""
+    # Clear only the menu portion
+    tput cup $menu_start_line 0
+    for ((i=menu_start_line; i<$(tput lines); i++)); do
+        printf "\033[K" # Clear the current line
+    done
+
     echo -e "${YELLOW}Select an option:${NC}"
 
     # Display menu options dynamically with assigned colors
