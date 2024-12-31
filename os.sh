@@ -302,6 +302,9 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
+
+
+
 # Function to display the menu
 display_menu() {
     clear
@@ -313,7 +316,7 @@ display_menu() {
     echo ""
 }
 
-# Function to run selected functions and display their outputs
+# Function to run selected functions and display their outputs dynamically
 execute_functions() {
     local functions="$1"
     local function_output
@@ -326,10 +329,31 @@ execute_functions() {
 
 # Function to display the output in the dedicated screen area
 display_output() {
-    # Move to the dedicated output section
-    tput cup 15 0 # Move cursor to row 15, column 0
-    tput clear    # Clear the area
-    echo -e "${CYAN}$1${NC}"
+    local output="$1"
+    
+    # Move to the dedicated output section (row 15)
+    tput cup 15 0
+    tput clear    # Clear the output area before printing new output
+
+    # Print the new output in the output area
+    echo -e "${CYAN}$output${NC}"
+
+    # Keep output updated and scroll it if the output gets large
+    # Move the cursor to the bottom so new output appears at the bottom
+    tput cup $(tput lines) 0
+}
+
+# Function to display a dynamic output
+dynamic_output() {
+    local output="$1"
+    local lines=$(echo "$output" | wc -l)
+    local max_lines=10 # You can change this number based on the size of your screen
+
+    if [ "$lines" -gt "$max_lines" ]; then
+        echo "$output" | tail -n "$max_lines" # Show only the last `max_lines` lines
+    else
+        echo "$output"
+    fi
 }
 
 # Main script loop
