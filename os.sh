@@ -302,13 +302,9 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
-
 # Display the menu and handle user input
 while true; do
-    # Clear the previous menu while keeping command outputs
-    tput cup 0 0
-    tput ed
-
+    echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
     # Display menu options dynamically with assigned colors
