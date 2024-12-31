@@ -46,6 +46,7 @@ packages=(
 
 # Function to install necessary packages
 install_packages() {
+    clear
     echo -e "${GREEN}Updating package list...${NC}"
     pkg update -y
     echo -e "${GREEN}Upgrading installed packages...${NC}"
@@ -79,6 +80,7 @@ setup_storage_passwd() {
 
 # Font Download and Setup
 install_font_with_oh_my_posh() {
+    clear
     echo -e "\e[34mInstalling JetBrainsMono NFP font using oh-my-posh...\e[0m"
     oh-my-posh font install
     FONT_PATH="$HOME/.local/share/fonts/jetbrainsmono-nfp/JetBrainsMonoNerdFontPropo-Regular.ttf"
@@ -100,6 +102,7 @@ install_font_with_oh_my_posh() {
 
 # Copy .bashrc and termux.properties
 copy_files() {
+    clear
     echo -e "${CYAN}Copying .bashrc and termux.properties...${NC}"
     cp "$BASHRC_SOURCE" "$BASHRC_DEST"
     mkdir -p "$(dirname $TERMUX_PROPERTIES_DEST)"
@@ -110,6 +113,7 @@ copy_files() {
 
 # Function to remove the repository
 remove_repo() {
+    clear
     echo -e "${RED}Removing the repository folder ($REPO_DIR)...${NC}"
     rm -rf "$REPO_DIR"
     echo -e "${RED}Repository folder removed successfully.${NC}"
@@ -117,6 +121,7 @@ remove_repo() {
 
 # Neovim setup function
 nvim_setup() {
+    clear
     echo -e "${BLUE}Setting up Neovim configuration...${NC}"
     # Create the Neovim config directory if it doesn't exist
     mkdir -p "$NVIM_CONFIG_DEST"
@@ -131,6 +136,7 @@ nvim_setup() {
 
 # Git push repository function
 git_push_repo() {
+    clear
     echo -e "${BLUE}Pushing the repository to the remote...${NC}"
     cd "$REPO_DIR"
     git add .
@@ -170,6 +176,7 @@ update_ms3_repo() {
 
 # Function to create an rclone folder and copy rclone.conf file
 rclone_setup() {
+    clear
     RCLONE_CONFIG_DIR="$HOME/.config/rclone"
     SOURCE_CONF_FILE="$HOME/storage/shared/rclone.conf"
     # Create the rclone folder if it doesn't exist
@@ -196,6 +203,7 @@ rclone_setup() {
 
 # Function to restore songs from the web using rclone
 Restore_Songs() {
+    clear
     DEST_DIR="$HOME/storage/shared/song"
     REMOTE="gu:/song"
     # Sync the songs from the remote to the destination directory
@@ -210,12 +218,14 @@ Restore_Songs() {
 
 # Function to handle exit
 exit_script() {
+    clear
     echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
     exit 0
 }
 
 
 quick_file_search() {
+    clear
     local file_name=$1
     local search_dir=${2:-$PWD}
     if [ -z "$file_name" ]; then
@@ -227,6 +237,7 @@ quick_file_search() {
 }
 
 network_speed_test() {
+    clear
     echo "Testing network speed..."
     if command -v speedtest &> /dev/null; then
         speedtest
@@ -238,6 +249,7 @@ network_speed_test() {
 }
 
 list_large_files() {
+    clear
     local target_dir=${1:-$PWD}
     echo "Finding large files in $target_dir..."
     find "$target_dir" -type f -exec du -h {} + | sort -rh | head -n 10
@@ -246,6 +258,7 @@ list_large_files() {
 
 
 remote_access_goto_d2() {
+    clear
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
@@ -263,6 +276,7 @@ remote_access_goto_d2() {
 
 
 remote_access_goto_d1() {
+    clear
     local remote_password="1823"
     local remote_user="nahid"
     local remote_host="192.168.0.101"
