@@ -313,36 +313,14 @@ display_menu() {
     echo ""
 }
 
-# File to store outputs
-output_file="/tmp/menu_output.log"
-
-# Function to display the menu
-display_menu() {
-    clear
-    echo -e "${YELLOW}Select an option:${NC}"
-    for item in "${menu_items[@]}"; do
-        IFS=":" read -r number description functions color <<< "$item"
-        echo -e "${color}$number. $description${NC}"
-    done
-    echo ""
-    echo -e "${YELLOW}Command Outputs:${NC}"
-    echo -e "-----------------\n"
-    if [[ -f $output_file ]]; then
-        tail -n 10 "$output_file" # Show the last 10 lines of output
-    fi
-    echo ""
-}
-
-# Function to run commands and capture their outputs
+# Function to run selected functions with real-time output
 execute_functions() {
     local functions="$1"
     IFS=" " read -r -a function_array <<< "$functions"
     for function in "${function_array[@]}"; do
-        {
-            echo -e "${CYAN}Running $function...${NC}"
-            $function 2>&1
-            echo -e "${GREEN}$function completed.${NC}"
-        } >>"$output_file" &
+        echo -e "${CYAN}Executing: $function${NC}"
+        eval "$function" 2>&1 | tee >(sed "s/^/${CYAN}/") # Real-time output with color
+        echo ""
     done
 }
 
@@ -359,8 +337,10 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
-            echo -e "${GREEN}Executing $description...${NC}"
+            clear
+            echo -e "${YELLOW}You selected: $description${NC}"
             execute_functions "$functions"
+            echo -e "${GREEN}Completed: $description${NC}"
             break
         fi
     done
@@ -370,6 +350,7 @@ while true; do
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
 
-    # Wait for a keypress before redisplaying the menu
-    read -n 1 -s -r -p "Press any key to continue..."
+    # Wait for the user to press a key before redisplaying the menu
+    echo -e "${YELLOW}Press any key to return to the menu...${NC}"
+    read -n 1 -s
 done
