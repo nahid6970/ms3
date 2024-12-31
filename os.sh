@@ -302,7 +302,6 @@ menu_items=(
     "12:Exiasdt:                           exit_script                             :$RED"
 )
 
-
 # Function to display the menu
 display_menu() {
     clear
@@ -320,12 +319,18 @@ execute_functions() {
     IFS=" " read -r -a function_array <<< "$functions"
     for function in "${function_array[@]}"; do
         echo -e "${CYAN}Executing: $function${NC}"
-        eval "$function" 2>&1 | while IFS= read -r line; do
-            # Only apply color if the line isn't empty or doesn't need default styling
-            if [[ -n "$line" ]]; then
-                echo -e "${NC}$line" # Display normal lines in the default terminal color
-            fi
-        done
+        
+        # Direct execution for commands requiring interactive input
+        if [[ "$function" == *"yes"* || "$function" == *"interactive"* ]]; then
+            eval "$function"
+        else
+            # Real-time output for non-interactive commands
+            eval "$function" 2>&1 | while IFS= read -r line; do
+                if [[ -n "$line" ]]; then
+                    echo -e "${NC}$line" # Display normal lines in the default terminal color
+                fi
+            done
+        fi
         echo ""
     done
 }
