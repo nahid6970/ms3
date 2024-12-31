@@ -302,6 +302,8 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
+
+
 # Function to display the menu
 display_menu() {
     clear
@@ -319,7 +321,9 @@ execute_functions() {
     IFS=" " read -r -a function_array <<< "$functions"
     for function in "${function_array[@]}"; do
         echo -e "${CYAN}Executing: $function${NC}"
-        eval "$function" 2>&1 | tee >(sed "s/^/${CYAN}/") # Real-time output with color
+        eval "$function" 2>&1 | while IFS= read -r line; do
+            echo -e "${CYAN}$line${NC}" # Apply color dynamically to each line
+        done
         echo ""
     done
 }
