@@ -146,6 +146,7 @@ git_push_repo() {
 }
 
 update_ms3_repo() {
+    clear
     local ms3_folder="$HOME/ms3"
     if [ -d "$ms3_folder" ]; then
         echo "Changing directory to $ms3_folder..."
