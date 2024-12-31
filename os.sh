@@ -304,9 +304,6 @@ menu_items=(
 
 # Display the menu and handle user input
 while true; do
-    # Clear the terminal screen before displaying the menu
-    clear
-
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
