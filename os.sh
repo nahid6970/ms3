@@ -302,53 +302,18 @@ menu_items=(
     "12:Exit:                           exit_script                             :$RED"
 )
 
-
-
-# Function to display the menu
-display_menu() {
-    clear
+# Display the menu and handle user input
+while true; do
+    echo ""
     echo -e "${YELLOW}Select an option:${NC}"
+
+    # Display menu options dynamically with assigned colors
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
         echo -e "${color}$number. $description${NC}"
     done
+
     echo ""
-}
-
-# Function to run selected functions and display their outputs in real-time
-execute_functions() {
-    local functions="$1"
-    IFS=" " read -r -a function_array <<< "$functions"
-    for function in "${function_array[@]}"; do
-        if declare -f "$function" > /dev/null; then
-            run_in_real_time "$function"
-        else
-            echo -e "${RED}Function $function does not exist!${NC}"
-        fi
-    done
-}
-
-# Function to display the output in the dedicated screen area in real-time
-run_in_real_time() {
-    local command="$1"
-    local output
-    # Clear previous output by moving the cursor up and clearing the lines
-    tput cup 15 0  # Move the cursor to row 15, column 0
-    for i in {0..20}; do
-        echo -e " "  # Clear lines below the menu
-    done
-    # Run the command and show its output real-time
-    while IFS= read -r line; do
-        tput cup 15 0  # Move to the output section
-        echo -e "${CYAN}$line${NC}"  # Print output in the output section
-    done < <( $command 2>&1 )  # Capture both stdout and stderr
-}
-
-# Main script loop
-while true; do
-    display_menu
-
-    # Prompt user for choice
     read -p "Enter choice: " choice
 
     # Check if the choice is valid before executing the functions
@@ -357,23 +322,19 @@ while true; do
         IFS=":" read -r number description functions color <<< "$item"
         if [ "$choice" -eq "$number" ]; then
             valid_choice=true
-            echo -e "${GREEN}Running $description...${NC}"
-            # Clear previous output
-            tput cup 15 0  # Move to the output section
-            for i in {0..20}; do
-                echo -e " "  # Clear lines in the output section
+            IFS=" " read -r -a function_array <<< "$functions"
+            for function in "${function_array[@]}"; do
+                $function
             done
-            execute_functions "$functions"
             break
         fi
     done
 
     # If the choice is invalid, show an error message
     if [ "$valid_choice" = false ]; then
-        tput cup 15 0  # Move to the output section
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
 
-    # Wait for the user to press a key before redisplaying the menu
-    read -n 1 -s -r -p "Press any key to continue..."
+    # Reload the os.sh script to refresh functions and variables
+    source $HOME/ms3/os.sh
 done
