@@ -301,7 +301,6 @@ menu_items=(
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
     "12:Exit:                           exit_script                             :$RED"
 )
-
 # Display the menu and handle user input
 while true; do
     # Clear the screen before showing the updated menu
