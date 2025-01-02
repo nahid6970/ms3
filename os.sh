@@ -322,7 +322,8 @@ ntfy_notify() {
 }
 
 ntfy_remove() {
-    rclone remove g00:ntfy
+    # remove te ntfy file
+    rclone delete g00:ntfy
 }
 
 # Declare a combined array of menu options and function bindings
