@@ -1,11 +1,15 @@
 #!/bin/bash
 
+# Infinite loop to check continuously
 while true; do
-    if rclone ls g00: | grep -iq "ntfy"; then
+    # Check if "ntfy" exists in the output
+    if rclone ls g00: | grep -i ntfy; then
+        # Play the music file using mpv if "ntfy" is found
         mpv /storage/emulated/0/song/wwe/ww.mp3
-        # Break the loop after finding "ntfy"
-        break
+    else
+        echo "No 'ntfy' found in the output."
     fi
-    # Wait for 15 seconds before checking again
-    sleep 30
+    
+    # Wait for 20 seconds before checking again
+    sleep 5
 done
