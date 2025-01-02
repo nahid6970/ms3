@@ -41,6 +41,7 @@ packages=(
     "yazi"
     "zsh"
     "fastfetch"
+    "termux-api"
     # "x11-repo"
     # "xdotool"
 )
