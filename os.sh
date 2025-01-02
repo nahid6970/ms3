@@ -337,7 +337,7 @@ menu_items=(
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
     "12:Exit:                           exit_script                             :$RED"
     "13:About:                          about_device                            :$BLUE"
-    "13:Notify:                          ntfy_notify                            :$BLUE"
+    "14:Notify:                          ntfy_notify                            :$BLUE"
 )
 
 # Display the menu and handle user input
