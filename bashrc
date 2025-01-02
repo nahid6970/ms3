@@ -3,8 +3,6 @@
 # Custom PS1 prompt
 # PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 
-termux-wake-lock
-
 # Aliases for convenience
 alias cls='clear'
 alias la='ls -a'
@@ -15,7 +13,6 @@ alias rb='termux-reload-settings'
 alias rm='rm -f -r'
 alias update='pkg update && pkg upgrade -y'
 alias os='bash ~/ms3/os.sh'
-
 
 
 # Enable bash completion if available

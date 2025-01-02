@@ -329,8 +329,12 @@ about_device() {
 
 ntfy_notify() {
     clear
+    # Prevent the device from going into sleep mode
+    termux-wake-lock
+    
     # Initialize counter
     not_found_count=0
+
     # Infinite loop to check continuously
     while true; do
         # Check if "ntfy" exists in the output
@@ -352,9 +356,12 @@ ntfy_notify() {
             echo "No 'ntfy' found in the output. Count: $not_found_count"
         fi
         # Wait for 30 seconds before checking again
-        sleep 5
+        sleep 30
     done
+    # Release the wake lock once the script finishes
+    termux-wake-unlock
 }
+
 
 
 ntfy_remove() {
