@@ -313,9 +313,14 @@ ntfy_notify() {
     # Infinite loop to check continuously
     while true; do
         # Check if "ntfy" exists in the output
-        if rclone ls g00: | grep -i ntfy; then
+        if rclone ls g00: | grep -iq "ntfy"; then
             # Play the music file using mpv if "ntfy" is found
             mpv /storage/emulated/0/song/wwe/ww.mp3
+            # Exit if mpv is closed with 'q'
+            if [ $? -ne 0 ]; then
+                echo "Exiting function as mpv was closed."
+                break
+            fi
         else
             # Increment the counter and display the message
             not_found_count=$((not_found_count + 1))
@@ -325,6 +330,7 @@ ntfy_notify() {
         sleep 30
     done
 }
+
 
 
 ntfy_remove() {
