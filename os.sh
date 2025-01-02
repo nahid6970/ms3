@@ -318,7 +318,7 @@ ntfy_notify() {
             echo "No 'ntfy' found in the output."
         fi
         # Wait for 20 seconds before checking again
-        sleep 5
+        sleep 30
     done
 }
 
