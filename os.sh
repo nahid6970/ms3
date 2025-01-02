@@ -316,10 +316,13 @@ ntfy_notify() {
         else
             echo "No 'ntfy' found in the output."
         fi
-        
         # Wait for 20 seconds before checking again
         sleep 5
     done
+}
+
+ntfy_remove() {
+    rclone remove g00:ntfy
 }
 
 # Declare a combined array of menu options and function bindings
@@ -337,7 +340,8 @@ menu_items=(
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
     "12:Exit:                           exit_script                             :$RED"
     "13:About:                          about_device                            :$BLUE"
-    "14:Notify:                          ntfy_notify                            :$BLUE"
+    "14:Notify:                         ntfy_notify                             :$BLUE"
+    "15:Notify Remove:                  ntfy_remove                             :$RED"
 )
 
 # Display the menu and handle user input
