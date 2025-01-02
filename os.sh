@@ -307,6 +307,7 @@ about_device() {
 }
 
 ntfy_notify() {
+    clear
     # Infinite loop to check continuously
     while true; do
         # Check if "ntfy" exists in the output
@@ -323,6 +324,7 @@ ntfy_notify() {
 
 ntfy_remove() {
     # remove te ntfy file
+    clear
     rclone delete g00:ntfy
 }
 
