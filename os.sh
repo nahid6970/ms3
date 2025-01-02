@@ -306,6 +306,21 @@ about_device() {
     fastfetch
 }
 
+ntfy_notify() {
+    # Infinite loop to check continuously
+    while true; do
+        # Check if "ntfy" exists in the output
+        if rclone ls g00: | grep -i ntfy; then
+            # Play the music file using mpv if "ntfy" is found
+            mpv /storage/emulated/0/song/wwe/ww.mp3
+        else
+            echo "No 'ntfy' found in the output."
+        fi
+        
+        # Wait for 20 seconds before checking again
+        sleep 5
+    done
+}
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
@@ -322,6 +337,7 @@ menu_items=(
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
     "12:Exit:                           exit_script                             :$RED"
     "13:About:                          about_device                            :$BLUE"
+    "13:Notify:                          ntfy_notify                            :$BLUE"
 )
 
 # Display the menu and handle user input
