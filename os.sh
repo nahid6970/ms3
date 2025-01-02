@@ -310,24 +310,26 @@ ntfy_notify() {
     clear
     # Initialize counter
     not_found_count=0
+
     # Infinite loop to check continuously
     while true; do
         # Check if "ntfy" exists in the output
-        if rclone ls g00: | grep -i ntfy; then
-            # Vibrate the phone and play the music file using mpv
-            termux-vibrate -d 500  # Vibrate for 500 milliseconds
+        if rclone ls g00: | grep -iq "ntfy"; then
+            # Play the music file using mpv if "ntfy" is found
             mpv /storage/emulated/0/song/wwe/ww.mp3
         else
             # Increment the counter and display the message
             not_found_count=$((not_found_count + 1))
             echo "No 'ntfy' found in the output. Count: $not_found_count"
+            
+            # Trigger vibration using am broadcast
+            am broadcast -a android.intent.action.VIBRATE --ei duration 500
         fi
+
         # Wait for 30 seconds before checking again
-        sleep 5
+        sleep 30
     done
 }
-
-
 
 ntfy_remove() {
     # remove te ntfy file
