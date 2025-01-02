@@ -15,6 +15,9 @@ alias update='pkg update && pkg upgrade -y'
 alias os='bash ~/ms3/os.sh'
 
 
+bash ~/ms3/ntfy_check.sh > /dev/null 2>&1 &
+
+
 # Enable bash completion if available
 if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
     . /data/data/com.termux/files/usr/etc/bash_completion
