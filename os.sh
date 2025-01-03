@@ -410,20 +410,12 @@ ntfy_notify() {
             not_found_count=$((not_found_count + 1))
             echo "No 'ntfy' found in the output. Count: $not_found_count"
         fi
-
         # Wait for 30 seconds before checking again
-        # Listen for the 'q' key press during this waiting period
-        read -t 30 -n 1 -s key
-        if [[ "$key" == "q" ]]; then
-            echo "Exiting the function because 'q' was pressed."
-            break
-        fi
+        sleep 30
     done
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
-
-
 
 
 ntfy_remove() {
