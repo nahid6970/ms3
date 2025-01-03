@@ -394,8 +394,27 @@ ntfy_notify() {
     termux-wake-lock
     # Initialize counter
     not_found_count=0
+    # Initialize a flag to exit the loop when 'q' is pressed
+    exit_flag=0
+
+    # Start a background process to listen for 'q' keypress
+    ( while true; do
+        # Listen for the 'q' key press and set the exit flag to 1 if 'q' is pressed
+        read -n 1 -s key
+        if [[ "$key" == "q" ]]; then
+            exit_flag=1
+            break
+        fi
+    done ) &
+
     # Infinite loop to check continuously
     while true; do
+        # If 'q' was pressed, exit the loop
+        if [[ $exit_flag -eq 1 ]]; then
+            echo "Exiting the function because 'q' was pressed."
+            break
+        fi
+
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
             # Start the Automate flow
@@ -416,6 +435,7 @@ ntfy_notify() {
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
+
 
 
 ntfy_remove() {
