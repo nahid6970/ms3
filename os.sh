@@ -338,7 +338,7 @@ ntfy_notify() {
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
             # Run the specified command if "ntfy" is found
-            am start rk.android.app.shortcutmaker.CommonMethods.SplashScreenActivity
+            am start rk.android.app.shortcutmaker/rk.android.app.shortcutmaker.CommonMethods.SplashScreenActivity
             # Exit the function after executing the command
             echo "Command executed. Exiting function."
             break
