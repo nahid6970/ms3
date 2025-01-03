@@ -397,10 +397,20 @@ ntfy_notify() {
     # Initialize a flag to exit the loop when 'q' is pressed
     exit_flag=0
 
+    # Start a background process to listen for 'q' keypress
+    ( while true; do
+        # Listen for the 'q' key press and set the exit flag to 1 if 'q' is pressed
+        read -n 1 -s key
+        if [[ "$key" == "q" ]]; then
+            exit_flag=1
+            break
+        fi
+    done ) &
+
     # Infinite loop to check continuously
     while true; do
-        # Check if 'q' is pressed
-        if read -t 0.1 -n 1 key && [[ "$key" == "q" ]]; then
+        # If 'q' was pressed, exit the loop
+        if [[ $exit_flag -eq 1 ]]; then
             echo "Exiting the function because 'q' was pressed."
             break
         fi
@@ -425,6 +435,7 @@ ntfy_notify() {
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
+
 
 
 
