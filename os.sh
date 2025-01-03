@@ -327,40 +327,95 @@ about_device() {
 #     done
 # }
 
+# ntfy_notify() {
+#     clear
+#     # Prevent the device from going into sleep mode
+#     termux-wake-lock
+#     # Initialize counter
+#     not_found_count=0
+#     # Infinite loop to check continuously
+#     while true; do
+#         # Check if "ntfy" exists in the output
+#         if rclone ls g00: | grep -iq "ntfy"; then
+#             # Play the music file using mpv if "ntfy" is found
+#             mpv /storage/emulated/0/song/wwe/ww.mp3 &
+#             # Get the PID of mpv
+#             mpv_pid=$!
+#             # Wait for mpv to finish or be killed
+#             wait $mpv_pid
+#             # Check if the exit status indicates that mpv was closed properly
+#             if [ $? -eq 0 ]; then
+#                 echo "mpv was closed. Exiting function."
+#                 break
+#             fi
+#         else
+#             # Increment the counter and display the message
+#             not_found_count=$((not_found_count + 1))
+#             echo "No 'ntfy' found in the output. Count: $not_found_count"
+#         fi
+#         # Wait for 30 seconds before checking again
+#         sleep 30
+#     done
+#     # Release the wake lock once the script finishes
+#     termux-wake-unlock
+# }
+
+# ntfy_notify() {
+#     clear
+#     # Prevent the device from going into sleep mode
+#     termux-wake-lock
+#     # Initialize counter
+#     not_found_count=0
+#     # Infinite loop to check continuously
+#     while true; do
+#         # Check if "ntfy" exists in the output
+#         if rclone ls g00: | grep -i ntfy; then
+#             # Run the specified command if "ntfy" is found
+#             am start rk.android.app.shortcutmaker/rk.android.app.shortcutmaker.CommonMethods.SplashScreenActivity
+#             # Exit the function after executing the command
+#             echo "Command executed. Exiting function."
+#             break
+#         else
+#             # Increment the counter and display the message
+#             not_found_count=$((not_found_count + 1))
+#             echo "No 'ntfy' found in the output. Count: $not_found_count"
+#         fi
+#         # Wait for 30 seconds before checking again
+#         sleep 30
+#     done
+#     # Release the wake lock once the script finishes
+#     termux-wake-unlock
+# }
+
+
 ntfy_notify() {
     clear
     # Prevent the device from going into sleep mode
     termux-wake-lock
-    
     # Initialize counter
     not_found_count=0
-
     # Infinite loop to check continuously
     while true; do
         # Check if "ntfy" exists in the output
-        if rclone ls g00: | grep -iq "ntfy"; then
-            # Trigger an alarm using Termux's notification system
-            termux-notification --sound --title "Alarm Triggered!" --content "The 'ntfy' keyword was found in rclone output."
-
-            # Break out of the loop if the alarm is triggered
-            echo "Alarm triggered. Exiting function."
+        if rclone ls g00: | grep -i ntfy; then
+            # Start the Automate flow
+            am start -a com.llamalab.automate.intent.action.START_FLOW \
+                -d "content://com.llamalab.automate.provider/flows/10/statements/6" \
+                -n com.llamalab.automate/.StartServiceActivity
+            # Exit the function after executing the command
+            echo "Automate flow started. Exiting function."
             break
         else
             # Increment the counter and display the message
             not_found_count=$((not_found_count + 1))
             echo "No 'ntfy' found in the output. Count: $not_found_count"
         fi
-
         # Wait for 30 seconds before checking again
         sleep 30
     done
-
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
-
-
-
 
 
 ntfy_remove() {
