@@ -421,6 +421,7 @@ ntfy_notify() {
 ntfy_remove() {
     # remove te ntfy file
     clear
+    echo "Deleting g00:ntfy file ...."
     rclone delete g00:ntfy
 }
 
