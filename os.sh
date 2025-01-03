@@ -336,18 +336,12 @@ ntfy_notify() {
     # Infinite loop to check continuously
     while true; do
         # Check if "ntfy" exists in the output
-        if rclone ls g00: | grep -iq "ntfy"; then
-            # Play the music file using mpv if "ntfy" is found
-            mpv /storage/emulated/0/song/wwe/ww.mp3 &
-            # Get the PID of mpv
-            mpv_pid=$!
-            # Wait for mpv to finish or be killed
-            wait $mpv_pid
-            # Check if the exit status indicates that mpv was closed properly
-            if [ $? -eq 0 ]; then
-                echo "mpv was closed. Exiting function."
-                break
-            fi
+        if rclone ls g00: | grep -i ntfy; then
+            # Run the specified command if "ntfy" is found
+            am start rk.android.app.shortcutmaker.CommonMethods.SplashScreenActivity
+            # Exit the function after executing the command
+            echo "Command executed. Exiting function."
+            break
         else
             # Increment the counter and display the message
             not_found_count=$((not_found_count + 1))
@@ -359,6 +353,7 @@ ntfy_notify() {
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
+
 
 
 
