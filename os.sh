@@ -331,10 +331,8 @@ ntfy_notify() {
     clear
     # Prevent the device from going into sleep mode
     termux-wake-lock
-    
     # Initialize counter
     not_found_count=0
-
     # Infinite loop to check continuously
     while true; do
         # Check if "ntfy" exists in the output
