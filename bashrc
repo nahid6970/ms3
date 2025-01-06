@@ -14,7 +14,7 @@ alias rm='rm -f -r'
 alias update='pkg update && pkg upgrade -y'
 alias os='bash ~/ms3/os.sh'
 alias rc="bash ~/ms3/Remote_Control_rclone/rclone_rmote_control.sh"
-alias ro="rclone cat g00:/Remote_Control/Command.txt"
+alias ro="rclone cat g00:/Remote_Control/output.txt"
 
 
 
