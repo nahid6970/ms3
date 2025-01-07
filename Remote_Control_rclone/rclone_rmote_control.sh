@@ -24,7 +24,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Command sent with ID: $unique_id. Waiting for output..."
+echo "Command sent with ID: $unique_id."
 
 # Maximum number of attempts to get the output
 MAX_ATTEMPTS=5
@@ -49,11 +49,11 @@ while [ $attempt -lt $MAX_ATTEMPTS ]; do
         echo "$output"
         exit 0
     else
-        echo -e "\nOutput mismatch. Command ID not found in output. Retrying... ($((attempt+1))/$MAX_ATTEMPTS)"
+        echo -e "\nOutput ID mismatch. Retrying... ($((attempt+1))/$MAX_ATTEMPTS)"
     fi
 
     # Increment attempt count
     attempt=$((attempt+1))
 done
 
-echo "Max attempts reached. Command ID not found in output."
+echo "Max attempts reached."
