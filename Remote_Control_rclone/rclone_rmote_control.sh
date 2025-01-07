@@ -4,6 +4,11 @@
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
+# Define color codes
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No color
+
 # Check if a command was passed as an argument
 if [ -z "$1" ]; then
     echo "Usage: rc <command>"
@@ -17,14 +22,17 @@ user_command="$*"
 echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
 
 if [ $? -ne 0 ]; then
-    echo "Failed to send command. Check your rclone setup."
+    echo "${RED}Failed to send command. Check your rclone setup.${NC}"
     exit 1
 fi
 
-echo "Command sent. Waiting for output..."
+# Output message in red before waiting
+echo "${RED}Command sent. Waiting for output...${NC}"
 
 # Wait for 5 seconds before retrieving the output
 sleep 5
 
-# Get the exact output from the remote file
+# Fetch and display the output with markers and in green color
+echo -e "${GREEN}--Start-Output--${NC}"
 rclone cat "$REMOTE_OUTPUT_FILE"
+echo -e "${GREEN}--End-Output--${NC}"
