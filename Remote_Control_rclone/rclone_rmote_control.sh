@@ -10,8 +10,11 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# Combine all arguments into a single command
-user_command="$*"
+# Generate a random number
+random_number=$RANDOM
+
+# Combine the command and the random number
+user_command="$* #$random_number"
 
 # Write the command to the remote file using rclone rcat
 echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
@@ -24,7 +27,22 @@ fi
 echo "Command sent. Waiting for output..."
 
 # Wait for 5 seconds before retrieving the output
-sleep 10
+sleep 5
 
-# Get the exact output from the remote file
-rclone cat "$REMOTE_OUTPUT_FILE"
+# Get the output from the remote file
+output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+
+# Check if the output contains the expected random number
+if [[ "$output" == *"$random_number"* ]]; then
+    echo "Output received: $output"
+else
+    echo "Output does not match the expected random number. Waiting for 5 more seconds..."
+    sleep 5
+    # Try getting the output again
+    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+    if [[ "$output" == *"$random_number"* ]]; then
+        echo "Output received: $output"
+    else
+        echo "Still no matching output. Exiting."
+    fi
+fi
