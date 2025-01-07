@@ -10,17 +10,14 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# Combine all arguments into a single command string
-user_command="$*"
-
 # Generate a unique ID for this request (e.g., timestamp or random number)
 unique_id=$(date +%s)  # You can use a random number here if needed
 
-# Combine the unique ID with the command
-user_command_with_id="$unique_id: $user_command"
+# Combine the unique ID with the command, ensuring the command is always wrapped in double quotes
+user_command="$unique_id: \"$*\""
 
 # Write the command to the remote file using rclone rcat
-echo "$user_command_with_id" | rclone rcat "$REMOTE_COMMAND_FILE"
+echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
 
 if [ $? -ne 0 ]; then
     echo "Failed to send command. Check your rclone setup."
