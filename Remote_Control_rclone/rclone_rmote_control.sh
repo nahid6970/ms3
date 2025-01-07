@@ -25,15 +25,10 @@ echo "Command sent. Waiting for output..."
 
 # Poll the remote output file until it has content
 while :; do
-    output=$(rclone cat "$REMOTE_OUTPUT_FILE" 2>/dev/null)
-    
+    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
     if [ -n "$output" ]; then
-        # Ensure proper newline handling
-        output=$(echo "$output" | sed 's/\\n/\n/g')
-        
-        echo -e "\n--- Command Output ---\n$output\n--- End of Output ---"
+        echo -e "Output:\n$output"
         break
     fi
-    
     sleep 1
 done
