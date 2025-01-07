@@ -13,7 +13,7 @@ fi
 # Generate a unique ID for this request (e.g., timestamp or random number)
 unique_id=$(date +%s)  # You can use a random number here if needed
 
-# Combine the unique ID with the command, ensuring the command is always wrapped in double quotes
+# Combine the unique ID with the command, and ensure it is wrapped in double quotes
 user_command="$unique_id: \"$*\""
 
 # Write the command to the remote file using rclone rcat
