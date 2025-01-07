@@ -28,7 +28,7 @@ while :; do
     output=$(rclone cat "$REMOTE_OUTPUT_FILE" 2>/dev/null)
     
     if [ -n "$output" ]; then
-        # Ensure proper newline handling by replacing '\n' with an actual newline
+        # Ensure proper newline handling
         output=$(echo "$output" | sed 's/\\n/\n/g')
         
         echo -e "\n--- Command Output ---\n$output\n--- End of Output ---"
