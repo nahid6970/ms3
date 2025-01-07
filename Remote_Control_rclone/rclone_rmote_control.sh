@@ -23,11 +23,13 @@ fi
 
 echo "Command sent. Waiting for output..."
 
-# Poll the remote output file until it has content
+# Poll the remote output file for new content
 while :; do
     output=$(rclone cat "$REMOTE_OUTPUT_FILE")
     if [ -n "$output" ]; then
         echo -e "Output:\n$output"
+        # Clear the remote output file to avoid stale data
+        echo "" | rclone rcat "$REMOTE_OUTPUT_FILE"
         break
     fi
     sleep 1
