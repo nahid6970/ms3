@@ -450,7 +450,7 @@ menu_items=(
     "13:Notify Remove:                  ntfy_remove                             :$RED"
     "14:About:                          about_device                            :$BLUE"
     "15:Close:                          Close_script                            :$RED"
-    "16:Exit:                           exit_script                             :$RED"
+    "e:Exit:                            exit_script                             :$RED"
 )
 
 # Display the menu and handle user input

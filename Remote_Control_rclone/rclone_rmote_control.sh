@@ -26,10 +26,14 @@ echo "Command sent. Waiting for output..."
 # Poll the remote output file until it has content
 while :; do
     output=$(rclone cat "$REMOTE_OUTPUT_FILE" 2>/dev/null)
+    
     if [ -n "$output" ]; then
-        # Interpret escaped characters like \n properly
+        # Ensure proper newline handling by replacing '\n' with an actual newline
+        output=$(echo "$output" | sed 's/\\n/\n/g')
+        
         echo -e "\n--- Command Output ---\n$output\n--- End of Output ---"
         break
     fi
+    
     sleep 1
 done
