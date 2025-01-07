@@ -30,6 +30,7 @@ sleep 5
 while :; do
     output=$(rclone cat "$REMOTE_OUTPUT_FILE")
     if [ -n "$output" ]; then
+        # Using echo -e to interpret escape sequences such as \n
         echo -e "Output:\n$output"
         break
     fi
