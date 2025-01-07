@@ -226,9 +226,8 @@ Close_script() {
 }
 
 exit_script() {
-    am broadcast --user 0 -a com.termux.app.api.stop
+    am broadcast --user 0 -a com.termux.app.ACTION_KILL
 }
-
 
 
 quick_file_search() {
