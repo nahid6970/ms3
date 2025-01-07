@@ -32,24 +32,19 @@ attempt=0
 
 # Wait for the output to be valid
 while [ $attempt -lt $MAX_ATTEMPTS ]; do
-    # Countdown before retrieving the output
-    countdown=5  # Countdown timer in seconds
-    while [ $countdown -gt 0 ]; do
-        echo -n -e "Waiting for output... $countdown\033[0K\r"
-        sleep 1
-        countdown=$((countdown-1))
-    done
+    # Wait for 5 seconds before retrieving the output
+    sleep 5
 
     # Retrieve the output from the remote file
     output=$(rclone cat "$REMOTE_OUTPUT_FILE")
 
     # Check if the output contains the unique ID to validate the command
     if [[ "$output" == *"$unique_id"* ]]; then
-        echo -e "\nOutput for command ID $unique_id received:"
+        echo "Output for command ID $unique_id received:"
         echo "$output"
         exit 0
     else
-        echo -e "\nOutput mismatch. Command ID not found in output. Retrying... ($((attempt+1))/$MAX_ATTEMPTS)"
+        echo "Output mismatch. Command ID not found in output. Retrying... ($((attempt+1))/$MAX_ATTEMPTS)"
     fi
 
     # Increment attempt count
