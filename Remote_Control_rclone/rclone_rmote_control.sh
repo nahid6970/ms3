@@ -26,17 +26,29 @@ fi
 
 echo "Command sent with ID: $unique_id. Waiting for output..."
 
-# Wait for 5 seconds before retrieving the output
-sleep 5
+# Maximum number of attempts to get the output
+MAX_ATTEMPTS=5
+attempt=0
 
-# Retrieve and check the output from the remote file
-output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+# Wait for the output to be valid
+while [ $attempt -lt $MAX_ATTEMPTS ]; do
+    # Wait for 5 seconds before retrieving the output
+    sleep 5
 
-# Check if the output contains the unique ID to validate the command
-if [[ "$output" == *"$unique_id"* ]]; then
-    echo "Output for command ID $unique_id received:"
-    echo "$output"
-else
-    echo "Output mismatch. Command ID not found in output. Retrying..."
-    # Optionally, you could loop and keep checking until the output matches
-fi
+    # Retrieve the output from the remote file
+    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+
+    # Check if the output contains the unique ID to validate the command
+    if [[ "$output" == *"$unique_id"* ]]; then
+        echo "Output for command ID $unique_id received:"
+        echo "$output"
+        exit 0
+    else
+        echo "Output mismatch. Command ID not found in output. Retrying... ($((attempt+1))/$MAX_ATTEMPTS)"
+    fi
+
+    # Increment attempt count
+    attempt=$((attempt+1))
+done
+
+echo "Max attempts reached. Command ID not found in output."
