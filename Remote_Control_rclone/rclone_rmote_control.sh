@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Define the remote file paths
+# Define the remote file path
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
@@ -23,16 +23,8 @@ fi
 
 echo "Command sent. Waiting for output..."
 
-# Wait for 5 seconds before fetching the output
+# Wait for 5 seconds before retrieving the output
 sleep 5
 
-# Poll the remote output file until it has content
-while :; do
-    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
-    if [ -n "$output" ]; then
-        # Using echo -e to interpret escape sequences such as \n
-        echo -e "Output:\n$output"
-        break
-    fi
-    sleep 1
-done
+# Get the exact output from the remote file
+rclone cat "$REMOTE_OUTPUT_FILE"
