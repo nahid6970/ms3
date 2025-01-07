@@ -3,15 +3,14 @@
 # Define the remote file path
 REMOTE_FILE="g00:/Remote_Control/Command.txt"
 
-# Prompt for user input
-echo -n "Enter command to send remotely: "
-read user_command
-
-# Check if the input is not empty
-if [ -z "$user_command" ]; then
-    echo "No command entered. Exiting."
+# Check if a command was passed as an argument
+if [ -z "$1" ]; then
+    echo "Usage: remote_cc <command>"
     exit 1
 fi
+
+# Combine all arguments into a single command
+user_command="$*"
 
 # Write the command to the remote file using rclone rcat
 echo "$user_command" | rclone rcat "$REMOTE_FILE"
