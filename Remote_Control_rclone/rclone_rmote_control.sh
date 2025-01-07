@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Define color codes
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m' # No color
+
 # Define the remote file path
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
