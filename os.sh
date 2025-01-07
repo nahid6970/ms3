@@ -449,8 +449,8 @@ menu_items=(
     "12:Notify:                         ntfy_notify                             :$BLUE"
     "13:Notify Remove:                  ntfy_remove                             :$RED"
     "14:About:                          about_device                            :$BLUE"
-    "15:Close:                          Close_script                            :$RED"
-    "16:Exit:                           exit_script                             :$RED"
+    "c:Close:                          Close_script                            :$RED"
+    "e:Exit:                           exit_script                             :$RED"
 )
 
 # Display the menu and handle user input
@@ -467,7 +467,16 @@ while true; do
     echo ""
     read -p "Enter choice: " choice
 
-    # Check if the choice is valid before executing the functions
+    # Handle 'c' and 'e' choices for Close and Exit
+    if [ "$choice" == "c" ]; then
+        Close_script
+        continue
+    elif [ "$choice" == "e" ]; then
+        exit_script
+        break
+    fi
+
+    # Check if the choice is numeric and valid
     valid_choice=false
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
