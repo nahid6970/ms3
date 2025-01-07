@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# Define the remote file path
-REMOTE_FILE="g00:/Remote_Control/Command.txt"
+# Define the remote file paths
+REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
+REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
 # Check if a command was passed as an argument
 if [ -z "$1" ]; then
-    echo "Usage: remote_cc <command>"
+    echo "Usage: rc <command>"
     exit 1
 fi
 
@@ -13,11 +14,21 @@ fi
 user_command="$*"
 
 # Write the command to the remote file using rclone rcat
-echo "$user_command" | rclone rcat "$REMOTE_FILE"
+echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
 
-# Provide feedback to the user
-if [ $? -eq 0 ]; then
-    echo "Command successfully sent to $REMOTE_FILE."
-else
+if [ $? -ne 0 ]; then
     echo "Failed to send command. Check your rclone setup."
+    exit 1
 fi
+
+echo "Command sent. Waiting for output..."
+
+# Poll the remote output file until it has content
+while :; do
+    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+    if [ -n "$output" ]; then
+        echo -e "Output:\n$output"
+        break
+    fi
+    sleep 1
+done
