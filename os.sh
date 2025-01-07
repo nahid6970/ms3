@@ -446,11 +446,11 @@ menu_items=(
     "9 :Neovim Setup:                   nvim_setup                              :$BLUE"
     "10:Git Push:                       git_push_repo                           :$BLUE"
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
-    "12:Close:                          Close_script                            :$RED"
-    "13:Exit:                           exit_script                             :$RED"
+    "12:Notify:                         ntfy_notify                             :$BLUE"
+    "13:Notify Remove:                  ntfy_remove                             :$RED"
     "14:About:                          about_device                            :$BLUE"
-    "15:Notify:                         ntfy_notify                             :$BLUE"
-    "16:Notify Remove:                  ntfy_remove                             :$RED"
+    "15:Close:                          Close_script                            :$RED"
+    "16:Exit:                           exit_script                             :$RED"
 )
 
 # Display the menu and handle user input
