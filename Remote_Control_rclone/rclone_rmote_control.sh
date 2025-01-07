@@ -1,54 +1,54 @@
 #!/bin/bash
 
-# Define the remote file paths
-REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
-REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
+# Define the remote file path
+REMOTE_FILE="g00:/Remote_Control/Command.txt"
+OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
 # Check if a command was passed as an argument
 if [ -z "$1" ]; then
-    echo "Usage: rc <command>"
+    echo "Usage: remote_cc <command>"
     exit 1
 fi
 
-# Generate a unique ID for this request (e.g., timestamp or random number)
-unique_id=$(date +%s)  # You can use a random number here if needed
+# Combine all arguments into a single command
+user_command="$*"
+command_id=$(date +%s)  # Unique ID based on the current timestamp
 
-# Combine the unique ID with the command
-user_command="$unique_id: $*"
+# Send the command to the remote file along with the unique command ID
+echo "$command_id:$user_command" | rclone rcat "$REMOTE_FILE"
 
-# Write the command to the remote file using rclone rcat
-echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
-
-if [ $? -ne 0 ]; then
+# Provide feedback to the user
+if [ $? -eq 0 ]; then
+    echo "Command successfully sent to $REMOTE_FILE. Command ID: $command_id"
+else
     echo "Failed to send command. Check your rclone setup."
     exit 1
 fi
 
-echo "Command sent with ID: $unique_id. Waiting for output..."
+# Wait for the output and display countdown for retries
+timeout=60  # Set a maximum wait time for retries (e.g., 1 minute)
+attempts=0
+while true; do
+    # Get the output and command ID
+    output=$(rclone cat "$OUTPUT_FILE")
+    output_id=$(echo "$output" | awk -F: '{print $1}')
 
-# Maximum number of attempts to get the output
-MAX_ATTEMPTS=5
-attempt=0
-
-# Wait for the output to be valid
-while [ $attempt -lt $MAX_ATTEMPTS ]; do
-    # Wait for 5 seconds before retrieving the output
-    sleep 5
-
-    # Retrieve the output from the remote file
-    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
-
-    # Check if the output contains the unique ID to validate the command
-    if [[ "$output" == *"$unique_id"* ]]; then
-        echo "Output for command ID $unique_id received:"
-        echo "$output"
-        exit 0
+    # Check if the command ID in the output matches the sent one
+    if [ "$output_id" == "$command_id" ]; then
+        # Output found, print and exit
+        echo "Output received: $output"
+        break
     else
-        echo "Output mismatch. Command ID not found in output. Retrying... ($((attempt+1))/$MAX_ATTEMPTS)"
+        # Command ID doesn't match, retry with countdown
+        attempts=$((attempts + 1))
+        remaining=$((timeout - attempts * 5))
+        
+        if [ "$remaining" -le 0 ]; then
+            echo "Timed out waiting for the correct output. Exiting."
+            break
+        fi
+
+        echo "Output not ready. Retrying in 5 seconds... ($remaining seconds left)"
+        sleep 5  # Retry after 5 seconds
     fi
-
-    # Increment attempt count
-    attempt=$((attempt+1))
 done
-
-echo "Max attempts reached. Command ID not found in output."
