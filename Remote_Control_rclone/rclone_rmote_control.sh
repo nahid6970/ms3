@@ -24,7 +24,7 @@ fi
 echo "Command sent. Waiting for output..."
 
 # Wait for 5 seconds before retrieving the output
-sleep 5
+sleep 10
 
 # Get the exact output from the remote file
 rclone cat "$REMOTE_OUTPUT_FILE"
