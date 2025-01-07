@@ -226,8 +226,12 @@ Close_script() {
 }
 
 exit_script() {
-    am broadcast --user 0 -a com.termux.app.ACTION_KILL
+    # Stop the Termux service
+    am startservice -a com.termux.service_stop com.termux/.app.TermuxService
+    # Exit the current shell session
+    exit
 }
+
 
 
 quick_file_search() {
