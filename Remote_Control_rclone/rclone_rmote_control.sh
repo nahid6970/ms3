@@ -13,8 +13,8 @@ fi
 # Generate a unique ID for this request (e.g., timestamp or random number)
 unique_id=$(date +%s)  # You can use a random number here if needed
 
-# Concatenate all arguments into a single command and enclose it in double quotes
-user_command="$unique_id: \"$(echo "$@" | sed 's/\"/\\\"/g')\""
+# Combine the unique ID with the command
+user_command="$unique_id: $*"
 
 # Write the command to the remote file using rclone rcat
 echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
