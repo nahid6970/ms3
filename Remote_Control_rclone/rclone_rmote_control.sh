@@ -14,7 +14,7 @@ fi
 unique_id=$(date +%s)  # You can use a random number here if needed
 
 # Combine the unique ID with the command
-user_command="$unique_id: $*"
+user_command="$unique_id: \"$*\""  # Wrap the command with double quotes
 
 # Write the command to the remote file using rclone rcat
 echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
