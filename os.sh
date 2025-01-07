@@ -225,12 +225,10 @@ Close_script() {
     exit 0
 }
 
-# Function to handle exit
 exit_script() {
-    clear
-    echo -e "${GREEN}Exiting the script. Goodbye!${NC}"
-    exit
+    am broadcast --user 0 -a com.termux.app.api.stop
 }
+
 
 
 quick_file_search() {
@@ -445,7 +443,7 @@ menu_items=(
     "9 :Neovim Setup:                   nvim_setup                              :$BLUE"
     "10:Git Push:                       git_push_repo                           :$BLUE"
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
-    "12:Close:                           Close_script                           :$RED"
+    "12:Close:                          Close_script                            :$RED"
     "13:Exit:                           exit_script                             :$RED"
     "14:About:                          about_device                            :$BLUE"
     "15:Notify:                         ntfy_notify                             :$BLUE"
