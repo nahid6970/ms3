@@ -26,5 +26,7 @@ echo "Command sent. Waiting for output..."
 # Wait for 5 seconds before retrieving the output
 sleep 5
 
-# Get the exact output from the remote file
+# Fetch and display the output with markers and in green color
+echo -e "${GREEN}--Start-Output--${NC}"
 rclone cat "$REMOTE_OUTPUT_FILE"
+echo -e "${GREEN}--End-Output--${NC}"
