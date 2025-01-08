@@ -33,7 +33,7 @@ attempt=0
 # Wait for the output to be valid
 while [ $attempt -lt $MAX_ATTEMPTS ]; do
     # Countdown before retrieving the output
-    countdown=5  # Countdown timer in seconds
+    countdown=3  # Countdown timer in seconds
     while [ $countdown -gt 0 ]; do
         echo -n -e "Waiting for output... $countdown\033[0K\r"
         sleep 1
