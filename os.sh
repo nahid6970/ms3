@@ -435,22 +435,22 @@ ntfy_remove() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    "1 :Goto D_1:                       remote_access_goto_d1                   :$CYAN"
-    "2 :Goto D_2:                       remote_access_goto_d2                   :$CYAN"
-    "3 :Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
-    "4 :Copy Files:                     copy_files                              :$BLUE"
-    "5 :Install Necessary Packages:     install_packages    setup_storage_passwd:$BLUE"
-    "6 :Font Setup:                     install_font_with_oh_my_posh            :$BLUE"
-    "7 :Rclone Setup:                   rclone_setup                            :$BLUE"
-    "8 :Song [rs]:                      Restore_Songs                           :$BLUE"
-    "9 :Neovim Setup:                   nvim_setup                              :$BLUE"
+    " 1:Goto D_1:                       remote_access_goto_d1                   :$CYAN"
+    " 2:Goto D_2:                       remote_access_goto_d2                   :$CYAN"
+    " 3:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
+    " 4:Copy Files:                     copy_files                              :$BLUE"
+    " 5:Install Necessary Packages:     install_packages    setup_storage_passwd:$BLUE"
+    " 6:Font Setup:                     install_font_with_oh_my_posh            :$BLUE"
+    " 7:Rclone Setup:                   rclone_setup                            :$BLUE"
+    " 8:Song [rs]:                      Restore_Songs                           :$BLUE"
+    " 9:Neovim Setup:                   nvim_setup                              :$BLUE"
     "10:Git Push:                       git_push_repo                           :$BLUE"
     "11:Remove Folder [ms3]:            remove_repo                             :$RED"
     "12:Notify:                         ntfy_notify                             :$BLUE"
     "13:Notify Remove:                  ntfy_remove                             :$RED"
     "14:About:                          about_device                            :$BLUE"
-    "c:Close:                          Close_script                            :$RED"
-    "e:Exit:                           exit_script                             :$RED"
+    " c:Close:                          Close_script                            :$RED"
+    " e:Exit:                           exit_script                             :$RED"
 )
 
 # Display the menu and handle user input
