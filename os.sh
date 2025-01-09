@@ -38,6 +38,7 @@ packages=(
     "sshpass"
     "vim"
     "wget"
+    "eza"
     "yazi"
     "zsh"
     "fastfetch"
