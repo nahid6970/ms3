@@ -404,6 +404,9 @@ ntfy_notify() {
     not_found_count=0
     # Infinite loop to check continuously
     while true; do
+        # Get current time
+        current_time=$(date "+%H:%M:%S")
+        
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
             # Start the Automate flow
@@ -414,9 +417,9 @@ ntfy_notify() {
             echo "Automate flow started. Exiting function."
             break
         else
-            # Increment the counter and display the message
+            # Increment the counter and display the message with time
             not_found_count=$((not_found_count + 1))
-            echo "No 'ntfy' found in the output. Count: $not_found_count"
+            echo "No '$current_time' 'ntfy' found in the output. Count: $not_found_count"
         fi
         # Wait for 30 seconds before checking again
         sleep 30
@@ -424,6 +427,7 @@ ntfy_notify() {
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
+
 
 
 ntfy_remove() {
