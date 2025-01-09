@@ -407,6 +407,11 @@ ntfy_notify() {
         # Get current time in 12-hour format with AM/PM
         current_time=$(date "+%I:%M:%S %p")
         
+        # Set green color for the time (ANSI escape code)
+        green='\033[0;32m'
+        # Reset color
+        reset='\033[0m'
+        
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
             # Start the Automate flow
@@ -417,9 +422,9 @@ ntfy_notify() {
             echo "Automate flow started. Exiting function."
             break
         else
-            # Increment the counter and display the message with time
+            # Increment the counter and display the message with colored time
             not_found_count=$((not_found_count + 1))
-            echo "'$current_time' No 'ntfy' found in the output. Count: $not_found_count"
+            echo -e "${green}$current_time${reset} No 'ntfy' found. Count: $not_found_count"
         fi
         # Wait for 30 seconds before checking again
         sleep 30
@@ -427,6 +432,7 @@ ntfy_notify() {
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
+
 
 
 
