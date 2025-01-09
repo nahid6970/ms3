@@ -407,8 +407,8 @@ ntfy_notify() {
         # Get current time
         current_time=$(date "+%H:%M:%S")
         
-        # Get the battery percentage
-        battery_percent=$(termux-battery-status | jq '.percentage')
+        # Get battery percentage
+        battery_percentage=$(termux-battery-status | jq '.percentage')
         
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
@@ -417,12 +417,12 @@ ntfy_notify() {
                 -d "content://com.llamalab.automate.provider/flows/10/statements/6" \
                 -n com.llamalab.automate/.StartServiceActivity
             # Exit the function after executing the command
-            echo "$current_time Battery: $battery_percent% 'ntfy' found in the output. Exiting function."
+            echo "Automate flow started. Exiting function."
             break
         else
             # Increment the counter and display the message
             not_found_count=$((not_found_count + 1))
-            echo "$current_time Battery: $battery_percent% No 'ntfy' found in the output. Count: $not_found_count"
+            echo "No '$current_time' battery $battery_percentage% 'ntfy' found in the output. Count: $not_found_count"
         fi
         # Wait for 30 seconds before checking again
         sleep 30
@@ -430,6 +430,7 @@ ntfy_notify() {
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
+
 
 
 ntfy_remove() {
