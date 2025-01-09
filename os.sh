@@ -425,7 +425,7 @@ ntfy_notify() {
             echo "No '$current_time' battery $battery_percentage% 'ntfy' found in the output. Count: $not_found_count"
         fi
         # Wait for 30 seconds before checking again
-        sleep 30
+        sleep 1
     done
     # Release the wake lock once the script finishes
     termux-wake-unlock
