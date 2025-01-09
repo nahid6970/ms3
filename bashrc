@@ -5,7 +5,7 @@
 
 # Aliases for convenience
 alias cls='clear'
-alias ls='eza -al --color=always -—group-directories-first'
+alias ls='eza -al --color=always --group-directories-first'
 alias la='ls -a'
 alias ll='ls -la'
 alias os='bash ms3/os.sh'
