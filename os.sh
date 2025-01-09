@@ -437,7 +437,6 @@ ntfy_remove() {
 menu_items=(
     " 1:Goto D_1:                       remote_access_goto_d1                   :$CYAN"
     " 2:Goto D_2:                       remote_access_goto_d2                   :$CYAN"
-    " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
     " 4:Copy Files:                     copy_files                              :$BLUE"
     " 5:Install Necessary Packages:     install_packages    setup_storage_passwd:$BLUE"
     " 6:Font Setup:                     install_font_with_oh_my_posh            :$BLUE"
@@ -451,6 +450,7 @@ menu_items=(
     "14:About:                          about_device                            :$BLUE"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
+    " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
 )
 
 # Display the menu and handle user input
