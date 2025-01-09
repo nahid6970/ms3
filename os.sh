@@ -404,8 +404,8 @@ ntfy_notify() {
     not_found_count=0
     # Infinite loop to check continuously
     while true; do
-        # Get current time
-        current_time=$(date "+%H:%M:%S")
+        # Get current time in 12-hour format with AM/PM
+        current_time=$(date "+%I:%M:%S %p")
         
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
