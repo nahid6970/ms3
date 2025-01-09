@@ -404,6 +404,12 @@ ntfy_notify() {
     not_found_count=0
     # Infinite loop to check continuously
     while true; do
+        # Get current time
+        current_time=$(date "+%H:%M:%S")
+        
+        # Get the battery percentage
+        battery_percent=$(termux-battery-status | jq '.percentage')
+        
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
             # Start the Automate flow
@@ -411,12 +417,12 @@ ntfy_notify() {
                 -d "content://com.llamalab.automate.provider/flows/10/statements/6" \
                 -n com.llamalab.automate/.StartServiceActivity
             # Exit the function after executing the command
-            echo "Automate flow started. Exiting function."
+            echo "$current_time Battery: $battery_percent% 'ntfy' found in the output. Exiting function."
             break
         else
             # Increment the counter and display the message
             not_found_count=$((not_found_count + 1))
-            echo "No 'ntfy' found in the output. Count: $not_found_count"
+            echo "$current_time Battery: $battery_percent% No 'ntfy' found in the output. Count: $not_found_count"
         fi
         # Wait for 30 seconds before checking again
         sleep 30
