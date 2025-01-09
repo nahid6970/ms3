@@ -419,7 +419,7 @@ ntfy_notify() {
         else
             # Increment the counter and display the message with time
             not_found_count=$((not_found_count + 1))
-            echo "No '$current_time' 'ntfy' found in the output. Count: $not_found_count"
+            echo "'$current_time' No 'ntfy' found in the output. Count: $not_found_count"
         fi
         # Wait for 30 seconds before checking again
         sleep 30
