@@ -414,10 +414,15 @@ ntfy_notify() {
         
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
-            # Start the Automate flow
-            am start -a com.llamalab.automate.intent.action.START_FLOW \
-                -d "content://com.llamalab.automate.provider/flows/10/statements/6" \
-                -n com.llamalab.automate/.StartServiceActivity
+            # Start playing the music in the background
+            mpv /storage/shared/wwe.mp3 &
+            
+            # Continuous vibration (vibrate every 1 second while music is playing)
+            while true; do
+                termux-vibrate -f 500  # Vibrate for 500ms
+                sleep 1  # Pause for 1 second before vibrating again
+            done &  # Run vibration loop in the background
+            
             # Exit the function after executing the command
             echo "Automate flow started. Exiting function."
             break
@@ -432,6 +437,7 @@ ntfy_notify() {
     # Release the wake lock once the script finishes
     termux-wake-unlock
 }
+
 
 
 
