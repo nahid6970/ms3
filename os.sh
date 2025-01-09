@@ -404,12 +404,12 @@ ntfy_notify() {
     not_found_count=0
     # Infinite loop to check continuously
     while true; do
-        # Get current time
+        # Get current time in HH:MM:SS format
         current_time=$(date "+%H:%M:%S")
         
-        # Get battery percentage
+        # Get battery percentage using termux-battery-status
         battery_percentage=$(termux-battery-status | jq '.percentage')
-        
+
         # Check if "ntfy" exists in the output
         if rclone ls g00: | grep -i ntfy; then
             # Start the Automate flow
@@ -420,7 +420,7 @@ ntfy_notify() {
             echo "Automate flow started. Exiting function."
             break
         else
-            # Increment the counter and display the message
+            # Increment the counter and display the message with time, battery percentage, and count
             not_found_count=$((not_found_count + 1))
             echo "No '$current_time' battery $battery_percentage% 'ntfy' found in the output. Count: $not_found_count"
         fi
