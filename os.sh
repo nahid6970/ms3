@@ -478,13 +478,13 @@ while true; do
     echo ""
     read -p "Enter choice: " choice
 
-    # Search for the user choice in the menu items
+    # Loop through menu items to check for the valid choice and run the corresponding function
     valid_choice=false
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
-        
-        # Check if the user input matches the key (numeric or character)
-        if [ "$choice" == "$number" ]; then
+
+        # Check if the input matches the number or letter and run the associated functions
+        if [[ "$choice" == "$number" || "$choice" == "${number:0:1}" ]]; then
             valid_choice=true
             IFS=" " read -r -a function_array <<< "$functions"
             for function in "${function_array[@]}"; do
