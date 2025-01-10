@@ -446,22 +446,22 @@ ntfy_remove() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    "1:Goto D_1:                       remote_access_goto_d1                   :$CYAN"
-    "2:Goto D_2:                       remote_access_goto_d2                   :$CYAN"
-    "3:Copy Files:                     copy_files                              :$BLUE"
-    "4:Install Necessary Packages:     install_packages    setup_storage_passwd:$BLUE"
-    "5:Font Setup:                     install_font_with_oh_my_posh            :$BLUE"
-    "6:Rclone Setup:                   rclone_setup                            :$BLUE"
-    "7:Song [rs]:                      Restore_Songs                           :$BLUE"
-    "8:Neovim Setup:                   nvim_setup                              :$BLUE"
-    "9:Git Push:                       git_push_repo                           :$BLUE"
-    "10:Remove Folder [ms3]:            remove_repo                             :$RED"
-    "11:Notify:                         ntfy_notify                             :$BLUE"
-    "12:Notify Remove:                  ntfy_remove                             :$RED"
-    "13:About:                          about_device                            :$BLUE"
+    " 1:Goto D_1:                       remote_access_goto_d1                   :$CYAN"
+    " 2:Goto D_2:                       remote_access_goto_d2                   :$CYAN"
+    " 4:Copy Files:                     copy_files                              :$BLUE"
+    " 5:Install Necessary Packages:     install_packages    setup_storage_passwd:$BLUE"
+    " 6:Font Setup:                     install_font_with_oh_my_posh            :$BLUE"
+    " 7:Rclone Setup:                   rclone_setup                            :$BLUE"
+    " 8:Song [rs]:                      Restore_Songs                           :$BLUE"
+    " 9:Neovim Setup:                   nvim_setup                              :$BLUE"
+    "10:Git Push:                       git_push_repo                           :$BLUE"
+    "11:Remove Folder [ms3]:            remove_repo                             :$RED"
+    "12:Notify:                         ntfy_notify                             :$BLUE"
+    "13:Notify Remove:                  ntfy_remove                             :$RED"
+    "14:About:                          about_device                            :$BLUE"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
-    " u:GitPull:                 update_ms3_repo                         :$BLUE"
+    " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
 )
 
 # Display the menu and handle user input
@@ -478,20 +478,13 @@ while true; do
     echo ""
     read -p "Enter choice: " choice
 
-    # Handle 'c' and 'e' choices for Close and Exit
-    if [ "$choice" == "c" ]; then
-        Close_script
-        continue
-    elif [ "$choice" == "e" ]; then
-        exit_script
-        break
-    fi
-
-    # Check if the choice is numeric and valid
+    # Search for the user choice in the menu items
     valid_choice=false
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
-        if [ "$choice" -eq "$number" ]; then
+        
+        # Check if the user input matches the key (numeric or character)
+        if [ "$choice" == "$number" ]; then
             valid_choice=true
             IFS=" " read -r -a function_array <<< "$functions"
             for function in "${function_array[@]}"; do
