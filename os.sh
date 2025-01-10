@@ -461,7 +461,7 @@ menu_items=(
     "13:About:                          about_device                            :$BLUE"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
-    " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
+    " u:GitPull:                 update_ms3_repo                         :$BLUE"
 )
 
 # Display the menu and handle user input
