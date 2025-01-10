@@ -478,13 +478,23 @@ while true; do
     echo ""
     read -p "Enter choice: " choice
 
-    # Loop through menu items to check for the valid choice and run the corresponding function
+    # Handle 'c' and 'e' choices for Close and Exit
+    if [ "$choice" == "c" ]; then
+        Close_script
+        continue
+    elif [ "$choice" == "e" ]; then
+        exit_script
+        continue
+    elif [ "$choice" == "u" ]; then
+        update_ms3_repo
+        break
+    fi
+
+    # Check if the choice is numeric and valid
     valid_choice=false
     for item in "${menu_items[@]}"; do
         IFS=":" read -r number description functions color <<< "$item"
-
-        # Check if the input matches the number or letter and run the associated functions
-        if [[ "$choice" == "$number" || "$choice" == "${number:0:1}" ]]; then
+        if [ "$choice" -eq "$number" ]; then
             valid_choice=true
             IFS=" " read -r -a function_array <<< "$functions"
             for function in "${function_array[@]}"; do
