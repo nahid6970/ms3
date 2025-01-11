@@ -92,3 +92,4 @@ sshd
 
 # Add this to the end of your ~/.bashrc file
 eval "$(oh-my-posh init bash)"
+eval "$(zoxide init bash)"
