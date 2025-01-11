@@ -457,14 +457,14 @@ welcome_remove() {
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
-    " 1:Goto D_1:                       remote_access_goto_d1                   :$CYAN"
-    " 2:Goto D_2:                       remote_access_goto_d2                   :$CYAN"
-    " 6:Rclone Setup:                   rclone_setup                            :$BLUE"
-    " 7:Song [rs]:                      Restore_Songs                           :$BLUE"
-    "11:Notify:                         ntfy_notify                             :$BLUE"
-    "12:Notify Remove:                  ntfy_remove                             :$RED"
-    " c:Close:                          Close_script                            :$RED"
-    " e:Exit:                           exit_script                             :$RED"
+    "1:Goto D_1:                       remote_access_goto_d1                   :$CYAN"
+    "2:Goto D_2:                       remote_access_goto_d2                   :$CYAN"
+    "3:Rclone Setup:                   rclone_setup                            :$BLUE"
+    "4:Song [rs]:                      Restore_Songs                           :$BLUE"
+    "5:Notify:                         ntfy_notify                             :$BLUE"
+    "6:Notify Remove:                  ntfy_remove                             :$RED"
+    "c:Close:                          Close_script                            :$RED"
+    "e:Exit:                           exit_script                             :$RED"
 )
 
 # Display the menu and handle user input
