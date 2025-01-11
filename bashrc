@@ -90,6 +90,15 @@ fi
 
 sshd
 
+echo "Welcome to Termux!"
+echo "System Info:"
+uname -a
+echo "Uptime:"
+uptime
+echo "Free Memory:"
+free -h
+
+
 # Add this to the end of your ~/.bashrc file
 eval "$(oh-my-posh init bash)"
 eval "$(zoxide init bash)"

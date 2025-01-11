@@ -445,6 +445,16 @@ ntfy_remove() {
     rclone delete g00:ntfy
 }
 
+welcome_remove() {
+    # remove te ntfy file
+    clear
+    echo "Removing Welcome Page ...."
+    touch .hushlogin
+}
+
+
+
+
 # Declare a combined array of menu options and function bindings
 menu_items=(
     " 1:Goto D_1:                       remote_access_goto_d1                   :$CYAN"
