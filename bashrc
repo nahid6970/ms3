@@ -24,6 +24,12 @@ if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
     . /data/data/com.termux/files/usr/etc/bash_completion
 fi
 
+# Trigger 'yazi' with Ctrl+F using xdotool
+if [ "$TERM" == "xterm" ] || [ "$TERM" == "gnome-terminal" ]; then
+    xdotool search --name "$(xdotool getwindowfocus getwindowname)" key --delay 0 ctrl+f && yazi
+fi
+
+
 # ~/.bashrc
 
 # Source custom scripts from the ms3/scripts directory
