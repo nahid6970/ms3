@@ -17,12 +17,14 @@ alias os='bash ~/ms3/os.sh'
 alias rc="bash ~/ms3/Remote_Control_rclone/rclone_rmote_control.sh"
 alias ro="rclone cat g00:/Remote_Control/output.txt"
 
-# Function to run yazi
-run_yazi() {
+# Define the yazi function
+yazi_command() {
     yazi
 }
-# Bind Ctrl+F to run the function
-bind -x '"\C-f":run_yazi'
+
+# Bind Ctrl+F to the yazi_command
+bind '"\C-f":"\C-u yazi\n"'
+
 
 
 # Enable bash completion if available
