@@ -17,18 +17,18 @@ alias os='bash ~/ms3/os.sh'
 alias rc="bash ~/ms3/Remote_Control_rclone/rclone_rmote_control.sh"
 alias ro="rclone cat g00:/Remote_Control/output.txt"
 
+# Function to run yazi
+run_yazi() {
+    yazi
+}
+# Bind Ctrl+F to run the function
+bind -x '"\C-f":run_yazi'
 
 
 # Enable bash completion if available
 if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
     . /data/data/com.termux/files/usr/etc/bash_completion
 fi
-
-# Trigger 'yazi' with Ctrl+F using xdotool
-if [ "$TERM" == "xterm" ] || [ "$TERM" == "gnome-terminal" ]; then
-    xdotool search --name "$(xdotool getwindowfocus getwindowname)" key --delay 0 ctrl+f && yazi
-fi
-
 
 # ~/.bashrc
 
