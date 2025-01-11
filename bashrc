@@ -17,12 +17,6 @@ alias os='bash ~/ms3/os.sh'
 alias rc="bash ~/ms3/Remote_Control_rclone/rclone_rmote_control.sh"
 alias ro="rclone cat g00:/Remote_Control/output.txt"
 
-#!/bin/bash
-# Check if Ctrl+F (or another key) was pressed and run yazi
-read -n1 -s key
-if [[ "$key" == $'\x06' ]]; then  # \x06 is Ctrl+F
-    yazi
-fi
 
 
 # Enable bash completion if available
