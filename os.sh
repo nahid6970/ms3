@@ -40,7 +40,7 @@ packages=(
     # "termux-api"
     # "vim"
     # "wget"
-    "x11-repo", "tigervnc"
+    "x11-repo" "tigervnc"
     # "xdotool"
     # "yazi"
     # "zoxide"
