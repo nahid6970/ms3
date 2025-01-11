@@ -470,6 +470,7 @@ menu_items=(
     "11:Notify:                         ntfy_notify                             :$BLUE"
     "12:Notify Remove:                  ntfy_remove                             :$RED"
     "13:About:                          about_device                            :$BLUE"
+    "13:Welcome Page:                   welcome_remove                          :$RED"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
     " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"

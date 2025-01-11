@@ -90,13 +90,13 @@ fi
 
 sshd
 
-echo "Welcome to Termux!"
-echo "System Info:"
-uname -a
-echo "Uptime:"
-uptime
-echo "Free Memory:"
-free -h
+# echo "Welcome to Termux!"
+# echo "System Info:"
+# uname -a
+# echo "Uptime:"
+# uptime
+# echo "Free Memory:"
+# free -h
 
 
 # Add this to the end of your ~/.bashrc file
