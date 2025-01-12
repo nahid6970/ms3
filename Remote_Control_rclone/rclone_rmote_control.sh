@@ -32,12 +32,13 @@ attempt=0
 
 # Wait for the output to be valid
 while [ $attempt -lt $MAX_ATTEMPTS ]; do
-    # Countdown before retrieving the output
-    countdown=3  # Countdown timer in seconds
-    while [ $countdown -gt 0 ]; do
-        echo -n -e "Waiting for output... $countdown\033[0K\r"
+    attempt=$((attempt + 1))
+    echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) countdown timer"
+
+    # Countdown timer for this attempt
+    for countdown in {3..1}; do
+        echo -ne " $countdown\r"
         sleep 1
-        countdown=$((countdown-1))
     done
 
     # Retrieve the output from the remote file
@@ -49,11 +50,8 @@ while [ $attempt -lt $MAX_ATTEMPTS ]; do
         echo "$output"
         exit 0
     else
-        echo -e "\nOutput ID mismatch. Retrying... ($((attempt+1))/$MAX_ATTEMPTS)"
+        echo -e "\nOutput ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
     fi
-
-    # Increment attempt count
-    attempt=$((attempt+1))
 done
 
 echo "Max attempts reached."
