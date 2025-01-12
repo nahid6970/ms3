@@ -32,25 +32,29 @@ attempt=0
 
 # Wait for the output to be valid
 while [ $attempt -lt $MAX_ATTEMPTS ]; do
+    # Increment attempt count
     attempt=$((attempt + 1))
-    echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) countdown timer"
 
-    # Countdown timer for this attempt
-    for countdown in {3..1}; do
-        echo -ne " $countdown\r"
+    # Countdown before retrieving the output
+    countdown=3  # Countdown timer in seconds
+    echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
+    while [ $countdown -gt 0 ]; do
+        echo -n "$countdown "
         sleep 1
+        countdown=$((countdown - 1))
     done
+    echo -ne "\r\033[0K"  # Clear the line
 
     # Retrieve the output from the remote file
     output=$(rclone cat "$REMOTE_OUTPUT_FILE")
 
     # Check if the output contains the unique ID to validate the command
     if [[ "$output" == *"$unique_id"* ]]; then
-        echo -e "\nOutput for command ID $unique_id received:"
+        echo -e "Output for command ID $unique_id received:"
         echo "$output"
         exit 0
     else
-        echo -e "\nOutput ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
+        echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
     fi
 done
 
