@@ -485,9 +485,9 @@ menu_items=(
     " 9:About:                          about_device                            :$BLUE"
     "10:Welcome Page:                   welcome_remove                          :$RED"
     "11:Rclone-Dycrypt:                 rclone_decrypt                          :$RED"
+    "12:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
-    " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
 )
 
 # Display the menu and handle user input
@@ -513,9 +513,6 @@ while true; do
         continue
     elif [ "$choice" == "e" ]; then
         exit_script
-        continue
-    elif [ "$choice" == "u" ]; then
-        update_ms3_repo
         continue
     fi
 
