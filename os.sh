@@ -461,20 +461,12 @@ rclone_decrypt() {
     pip install pycryptodomex
     python ~/ms3/locker/locker.py --decrypt ~/ms1/asset/rclone/rclone.conf.enc
 
-    SOURCE_CONF_FILE="~/ms1/asset/rclone/rclone.conf"
+    SOURCE_CONF_FILE="$HOME/ms1/asset/rclone/rclone.conf"
     RCLONE_CONFIG_DIR="$HOME/.config/rclone"
 
-        echo -e "Copying rclone.conf from $SOURCE_CONF_FILE to $RCLONE_CONFIG_DIR..."
-    if [ -f "$SOURCE_CONF_FILE" ]; then
-        cp "$SOURCE_CONF_FILE" "$RCLONE_CONFIG_DIR/" || {
-            echo -e "Failed to copy rclone.conf. Please check permissions or the file path."
-            return 1
-        }
-        echo -e "rclone.conf copied successfully to $RCLONE_CONFIG_DIR"
-    else
-        echo -e "Source file $SOURCE_CONF_FILE does not exist. Please ensure the file exists."
-        return 1
-    fi
+    echo -e "Copying rclone.conf"
+    cp "$SOURCE_CONF_FILE" "$RCLONE_CONFIG_DIR/"
+
 }
 
 
