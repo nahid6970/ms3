@@ -456,7 +456,7 @@ rclone_decrypt() {
     # remove te ntfy file
     clear
     echo "Clone ms1 ...."
-    git clone https://github.com/nahid6970/ms1.git
+    git_clone https://github.com/nahid6970/ms1.git
     echo "Decreypt rclone conf ...."
     pip install pycryptodomex
     python ~/ms3/locker/locker.py --decrypt ~/ms1/asset/rclone/rclone.conf.enc
@@ -492,6 +492,7 @@ menu_items=(
     " 8:Remove Folder [ms3]:            remove_repo                             :$RED"
     " 9:About:                          about_device                            :$BLUE"
     "10:Welcome Page:                   welcome_remove                          :$RED"
+    "11:RcloneDycrypt:                   rclone_decrypt                          :$RED"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
     " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
