@@ -3,6 +3,8 @@
 # Custom PS1 prompt
 # PS1='\[\e[32m\]\u@\h \[\e[34m\]\w\[\e[0m\] $ '
 
+termux-wake-lock
+
 # Aliases for convenience
 alias cls='clear'
 alias ls='eza -al --color=always --group-directories-first'
