@@ -464,7 +464,7 @@ menu_items=(
     "5:Notify:                         ntfy_notify                             :$BLUE"
     "6:Notify Remove:                  ntfy_remove                             :$RED"
     "c:Close:                          Close_script                            :$RED"
-    "e:Exitt:                           exit_script                             :$RED"
+    "e:Exit:                           exit_script                             :$RED"
 )
 
 # Display the menu and handle user input
