@@ -35,17 +35,19 @@ packages=(
     "neovim"
     "oh-my-posh"
     "openssh"
+    "python"
     "rclone"
     "sshpass"
     "termux-api"
-    "vim"
+    "termux-tools"
     "wget"
-    "x11-repo" "tigervnc"
-    "xdotool"
     "yazi"
     "zoxide"
     "zsh"
     # "mpv"
+    # "vim"
+    # "x11-repo" "tigervnc"
+    # "xdotool"
 )
 
 # Function to install necessary packages
