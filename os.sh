@@ -484,7 +484,7 @@ menu_items=(
     " 8:Remove Folder [ms3]:            remove_repo                             :$RED"
     " 9:About:                          about_device                            :$BLUE"
     "10:Welcome Page:                   welcome_remove                          :$RED"
-    "11:RcloneDycryp22t:                rclone_decrypt                          :$RED"
+    "11:Rclone Dycrypt:                 rclone_decrypt                          :$RED"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
     " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
