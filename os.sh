@@ -495,7 +495,6 @@ menu_items=(
 # Display the menu and handle user input
 while true; do
     # Clear the screen to refresh the menu
-    clear
     
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
