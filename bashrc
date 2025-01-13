@@ -84,10 +84,10 @@ git_clone() {
     fi
 }
 
-# Play music on SSH login in Termux
-if [[ $SSH_CONNECTION ]]; then
-    mpv /storage/emulated/0/song/wwe/ww.mp3 &
-fi
+# # Play music on SSH login in Termux
+# if [[ $SSH_CONNECTION ]]; then
+#     mpv /storage/emulated/0/song/wwe/ww.mp3 &
+# fi
 
 sshd
 
