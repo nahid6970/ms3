@@ -452,6 +452,15 @@ welcome_remove() {
     touch .hushlogin
 }
 
+rclone_decrypt() {
+    # remove te ntfy file
+    clear
+    echo "Clone ms1 ...."
+    git clone https://github.com/nahid6970/ms1.git
+    echo "Decreypt rclone conf ...."
+    python ~/ms3/locker/locker.py --decrypt ~/ms1/asset/rclone/rclone.conf.enc --password
+}
+
 
 
 
