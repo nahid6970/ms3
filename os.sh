@@ -490,8 +490,10 @@ menu_items=(
     " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
 )
 
-# Display the menu and handle user input
 while true; do
+    # Reload the os.sh script to refresh functions, variables, and menu items
+    source $HOME/ms3/os.sh
+
     echo ""
     echo -e "${YELLOW}Select an option:${NC}"
 
@@ -504,7 +506,7 @@ while true; do
     echo ""
     read -p "Enter choice: " choice
 
-    # Handle 'c' and 'e' choices for Close and Exit
+    # Handle 'c', 'e', and 'u' choices for Close, Exit, and Update
     if [ "$choice" == "c" ]; then
         Close_script
         continue
@@ -534,7 +536,4 @@ while true; do
     if [ "$valid_choice" = false ]; then
         echo -e "${RED}Invalid option. Please try again.${NC}"
     fi
-
-    # Reload the os.sh script to refresh functions and variables
-    source $HOME/ms3/os.sh
 done
