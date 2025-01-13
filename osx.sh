@@ -488,9 +488,6 @@ while true; do
     elif [ "$choice" == "e" ]; then
         exit_script
         continue
-    elif [ "$choice" == "u" ]; then
-        update_ms3_repo
-        continue
     fi
 
     # Check if the choice is numeric and valid
