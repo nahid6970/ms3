@@ -487,7 +487,7 @@ menu_items=(
     "11:Rclone-Dycrypt:                 rclone_decrypt                          :$RED"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
-    " u:Git Pull [ms3]:                 update_ms3_repo                         :$BLUE"
+    " u:Gitasdasd Pull [ms3]:                 update_ms3_repo                         :$BLUE"
 )
 
 while true; do
