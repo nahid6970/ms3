@@ -10,23 +10,11 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# Debug: Log the original input command
-echo "Original input command: $*" >> debug.log
+# Generate a unique ID for this request (e.g., timestamp or random number)
+unique_id=$(date +%s)  # You can use a random number here if needed
 
-# Replace "cc" with "&&" as a whole word
-parsed_command=$(echo "$*" | sed -E 's/\bcc\b/&&/g')
-
-# Debug: Log the parsed command after replacement
-echo "Parsed command after cc substitution: $parsed_command" >> debug.log
-
-# Generate a unique ID for this request
-unique_id=$(date +%s)
-
-# Combine the unique ID with the parsed command
-user_command="$unique_id: $parsed_command"
-
-# Debug: Log the final command to be sent
-echo "Final command to send: $user_command" >> debug.log
+# Combine the unique ID with the command
+user_command="$unique_id: $*"
 
 # Write the command to the remote file using rclone rcat
 echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
@@ -44,22 +32,21 @@ attempt=0
 
 # Wait for the output to be valid
 while [ $attempt -lt $MAX_ATTEMPTS ]; do
+    # Increment attempt count
     attempt=$((attempt + 1))
 
-    countdown=3
+    # Countdown before retrieving the output
+    countdown=3  # Countdown timer in seconds
     echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
     while [ $countdown -gt 0 ]; do
         echo -n "$countdown "
         sleep 1
         countdown=$((countdown - 1))
     done
-    echo -ne "\r\033[0K"
+    echo -ne "\r\033[0K"  # Clear the line
 
     # Retrieve the output from the remote file
     output=$(rclone cat "$REMOTE_OUTPUT_FILE")
-
-    # Debug: Log the output received
-    echo "Output received: $output" >> debug.log
 
     # Check if the output contains the unique ID to validate the command
     if [[ "$output" == *"$unique_id"* ]]; then
