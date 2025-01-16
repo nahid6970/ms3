@@ -11,7 +11,7 @@ if [ -z "$1" ]; then
 fi
 
 # Generate a unique ID for this request (e.g., timestamp or random number)
-unique_id=$(date +%s)  # You can use a random number here if needed
+unique_id=$(date +%s)
 
 # Combine the unique ID with the command
 user_command="$unique_id: $*"
@@ -32,11 +32,10 @@ attempt=0
 
 # Wait for the output to be valid
 while [ $attempt -lt $MAX_ATTEMPTS ]; do
-    # Increment attempt count
     attempt=$((attempt + 1))
 
     # Countdown before retrieving the output
-    countdown=3  # Countdown timer in seconds
+    countdown=3
     echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
     while [ $countdown -gt 0 ]; do
         echo -n "$countdown "
@@ -54,8 +53,8 @@ while [ $attempt -lt $MAX_ATTEMPTS ]; do
         echo "$output"
         exit 0
     else
-        echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
+        echo "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
     fi
 done
 
-echo "Max attempts reached."
+echo "Max attempts reached. Could not retrieve output."
