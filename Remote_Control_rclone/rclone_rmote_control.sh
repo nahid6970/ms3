@@ -10,12 +10,14 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# Replace all instances of 'cc' with '&&' globally in the entire command string
+# Replace all occurrences of 'cc' with '&&' across the entire command
 user_command_input="$*"
-user_command_input=$(echo "$user_command_input" | sed 's/\bcc\b/&&/g')
+user_command_input="${user_command_input// cc / && }"
+user_command_input="${user_command_input/#cc /&& }"
+user_command_input="${user_command_input/ cc$/ &&}"
 
 # Generate a unique ID for this request (e.g., timestamp or random number)
-unique_id=$(date +%s)  # You can use a random number here if needed
+unique_id=$(date +%s)
 
 # Combine the unique ID with the command
 user_command="$unique_id: $user_command_input"
@@ -40,14 +42,14 @@ while [ $attempt -lt $MAX_ATTEMPTS ]; do
     attempt=$((attempt + 1))
 
     # Countdown before retrieving the output
-    countdown=3  # Countdown timer in seconds
+    countdown=3
     echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
     while [ $countdown -gt 0 ]; do
         echo -n "$countdown "
         sleep 1
         countdown=$((countdown - 1))
     done
-    echo -ne "\r\033[0K"  # Clear the line
+    echo -ne "\r\033[0K"
 
     # Retrieve the output from the remote file
     output=$(rclone cat "$REMOTE_OUTPUT_FILE")
