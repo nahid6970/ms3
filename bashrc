@@ -22,11 +22,7 @@ alias ro="rclone cat g00:/Remote_Control/output.txt"
 
 
 
-# Enable bash completion if available
-if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
-    . /data/data/com.termux/files/usr/etc/bash_completion
-fi
-
+wtfffffffffff
 # ~/.bashrc
 
 # Source custom scripts from the ms3/scripts directory
