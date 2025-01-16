@@ -10,11 +10,15 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+# Replace all instances of 'cc' with '&&' globally in the entire command string
+user_command_input="$*"
+user_command_input=$(echo "$user_command_input" | sed 's/\bcc\b/&&/g')
+
 # Generate a unique ID for this request (e.g., timestamp or random number)
 unique_id=$(date +%s)  # You can use a random number here if needed
 
 # Combine the unique ID with the command
-user_command="$unique_id: $*"
+user_command="$unique_id: $user_command_input"
 
 # Write the command to the remote file using rclone rcat
 echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
