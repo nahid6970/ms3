@@ -10,17 +10,11 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-# Replace all occurrences of 'cc' with '&&' across the entire command
-user_command_input="$*"
-user_command_input="${user_command_input// cc / && }"
-user_command_input="${user_command_input/#cc /&& }"
-user_command_input="${user_command_input/ cc$/ &&}"
-
 # Generate a unique ID for this request (e.g., timestamp or random number)
-unique_id=$(date +%s)
+unique_id=$(date +%s)  # You can use a random number here if needed
 
 # Combine the unique ID with the command
-user_command="$unique_id: $user_command_input"
+user_command="$unique_id: $*"
 
 # Write the command to the remote file using rclone rcat
 echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
@@ -42,14 +36,14 @@ while [ $attempt -lt $MAX_ATTEMPTS ]; do
     attempt=$((attempt + 1))
 
     # Countdown before retrieving the output
-    countdown=3
+    countdown=3  # Countdown timer in seconds
     echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
     while [ $countdown -gt 0 ]; do
         echo -n "$countdown "
         sleep 1
         countdown=$((countdown - 1))
     done
-    echo -ne "\r\033[0K"
+    echo -ne "\r\033[0K"  # Clear the line
 
     # Retrieve the output from the remote file
     output=$(rclone cat "$REMOTE_OUTPUT_FILE")
