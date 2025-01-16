@@ -7,7 +7,7 @@ termux-wake-lock
 
 # Aliases for convenience
 alias cls='clear'
-alias ls='easdasdarectories-first'
+alias ls='eza -al --color=always --group-directories-first'
 alias la='ls -a'
 alias ll='ls -la'
 alias os='bash ms3/os.sh'
@@ -22,6 +22,10 @@ alias ro="rclone cat g00:/Remote_Control/output.txt"
 
 
 
+# Enable bash completion if available
+if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
+    . /data/data/com.termux/files/usr/etc/bash_completion
+fi
 
 # ~/.bashrc
 
