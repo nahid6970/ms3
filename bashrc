@@ -20,6 +20,12 @@ alias osx='bash ~/ms3/osx.sh'
 alias rc="bash ~/ms3/Remote_Control_rclone/rclone_rmote_control.sh"
 alias ro="rclone cat g00:/Remote_Control/output.txt"
 
+nvim() {
+    ~/ms3/switch_termux_properties.sh nvim
+    command nvim "$@"  # Use the original nvim command with all passed arguments
+    ~/ms3/switch_termux_properties.sh default
+}
+
 
 # Search history with fzf and execute the selected command
 hf() {
