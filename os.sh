@@ -44,6 +44,7 @@ packages=(
     "yazi"
     "zoxide"
     "zsh"
+    "which" # to fix neovim bug lua language server not supported on this platform
     # "mpv"
     # "vim"
     # "x11-repo" "tigervnc"
@@ -138,6 +139,9 @@ nvim_setup() {
     else
         echo -e "${RED}Failed to set up Neovim configuration.${NC}"
     fi
+    curl -o /data/data/com.termux/files/usr/bin/install-in-mason  https://raw.githubusercontent.com/Amirulmuuminin/setup-mason-for-termux/main/install-in-mason
+    chmod +x /data/data/com.termux/files/usr/bin/install-in-mason
+    install-in-mason lua-language-server
 }
 
 # Git push repository function
