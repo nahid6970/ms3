@@ -20,10 +20,22 @@ alias osx='bash ~/ms3/osx.sh'
 alias rc="bash ~/ms3/Remote_Control_rclone/rclone_rmote_control.sh"
 alias ro="rclone cat g00:/Remote_Control/output.txt"
 
+
+# Function to ensure the termux properties script is executable
+setup_termux_script() {
+    if [ ! -x ~/switch_termux_properties.sh ]; then
+        echo "Making switch_termux_properties.sh executable..."
+        chmod +x ~/ms3/switch_termux_properties.sh
+    fi
+}
+# Call the function to ensure the script is set up
+setup_termux_script
+
+# Wrapper function for nvim with dynamic termux.properties switching
 nvim() {
-    ~/ms3/switch_termux_properties.sh nvim
+    ~/switch_termux_properties.sh nvim
     command nvim "$@"  # Use the original nvim command with all passed arguments
-    ~/ms3/switch_termux_properties.sh default
+    ~/switch_termux_properties.sh default
 }
 
 
