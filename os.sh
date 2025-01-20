@@ -41,10 +41,10 @@ packages=(
     "termux-api"
     "termux-tools"
     "wget"
+    "which" # to fix neovim bug lua language server not supported on this platform
     "yazi"
     "zoxide"
     "zsh"
-    "which" # to fix neovim bug lua language server not supported on this platform
     # "mpv"
     # "vim"
     # "x11-repo" "tigervnc"
