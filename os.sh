@@ -31,6 +31,7 @@ packages=(
     "fzf"
     "git"
     "lsd"
+    "lua-language-server"
     "nano"
     "neovim"
     "oh-my-posh"
