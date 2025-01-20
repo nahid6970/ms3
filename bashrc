@@ -33,6 +33,18 @@ hf() {
     fi
 }
 
+# Add this to your .bashrc
+hh() {
+    if [ -z "$1" ]; then
+        echo "Usage: search_history <pattern>"
+        return 1
+    fi
+    # Search the command history for the given pattern
+    history | grep --color=auto -i "$1"
+}
+
+
+
 # Enable bash completion if available
 if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
     . /data/data/com.termux/files/usr/etc/bash_completion
