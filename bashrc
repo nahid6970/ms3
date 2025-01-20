@@ -22,7 +22,7 @@ alias ro="rclone cat g00:/Remote_Control/output.txt"
 
 
 nvim() {
-    chmod +x ~//switch_termux_properties.sh
+    chmod +x ~/ms3/switch_termux_properties.sh
     ~/ms3/switch_termux_properties.sh nvim
     command nvim "$@"  # Use the original nvim command with all passed arguments
     ~/ms3/switch_termux_properties.sh default
