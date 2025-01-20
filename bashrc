@@ -17,11 +17,21 @@ alias rm='rm -f -r'
 alias update='pkg update && pkg upgrade -y'
 alias os='bash ~/ms3/os.sh'
 alias osx='bash ~/ms3/osx.sh'
-alias hf='bash ~/ms3/fzf/hf.sh'
 alias rc="bash ~/ms3/Remote_Control_rclone/rclone_rmote_control.sh"
 alias ro="rclone cat g00:/Remote_Control/output.txt"
 
 
+# Search history with fzf and execute the selected command
+hf() {
+    local cmd
+    # Use `fzf` to interactively search through command history
+    cmd=$(history | awk '{$1=""; print substr($0,2)}' | fzf --height=40% --reverse --prompt="Search History: " --ansi)
+    # If a command is selected, execute it
+    if [ -n "$cmd" ]; then
+        echo "Executing: $cmd"
+        eval "$cmd"
+    fi
+}
 
 # Enable bash completion if available
 if [ -f /data/data/com.termux/files/usr/etc/bash_completion ]; then
