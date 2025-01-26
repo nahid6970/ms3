@@ -1,61 +1,84 @@
 #!/bin/bash
 
+# Enable command history using readline
+HISTFILE="$HOME/.bash_history"
+HISTSIZE=1000
+HISTCONTROL=ignoredups  # Avoid duplicates in history
+
 # Define the remote file paths
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
+# Function to send a command and wait for its output
+function send_command() {
+    local user_command=$1
+    local unique_id=$(date +%s)  # Generate a unique ID (timestamp)
+
+    # Combine the unique ID with the command
+    remote_command="$unique_id: $user_command"
+
+    # Write the command to the remote file using rclone rcat
+    echo "$remote_command" | rclone rcat "$REMOTE_COMMAND_FILE"
+
+    if [ $? -ne 0 ]; then
+        echo "Failed to send command. Check your rclone setup."
+        return 1
+    fi
+
+    echo "Command sent with ID: $unique_id."
+
+    # Maximum number of attempts to get the output
+    MAX_ATTEMPTS=5
+    attempt=0
+
+    # Wait for the output
+    while [ $attempt -lt $MAX_ATTEMPTS ]; do
+        attempt=$((attempt + 1))
+        sleep 3  # Wait 3 seconds before checking output
+
+        # Retrieve the output from the remote file
+        output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+
+        # Check if the output contains the unique ID to validate the command
+        if [[ "$output" == *"$unique_id"* ]]; then
+            echo -e "Output for command ID $unique_id received:"
+            echo "$output"
+            return 0
+        else
+            echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
+        fi
+    done
+
+    echo "Max attempts reached. Command output not received."
+    return 1
+}
+
+# Interactive mode
+function interactive_mode() {
+    echo "Entering interactive mode. Type your remote commands."
+    echo "Type 'exit' to quit interactive mode."
+
+    # Enable readline history
+    while true; do
+        # The following will allow up/down arrows to navigate history
+        echo -n "rc> "  # Prompt for command
+        read -e user_command  # Enable line editing (supports history)
+        if [ "$user_command" == "exit" ]; then
+            echo "Exiting interactive mode."
+            break
+        elif [ -n "$user_command" ]; then
+            send_command "$user_command"
+        else
+            echo "No command entered. Please try again."
+        fi
+    done
+}
+
 # Check if a command was passed as an argument
 if [ -z "$1" ]; then
-    echo "Usage: rc <command>"
-    exit 1
+    # Start interactive mode if no command is provided
+    interactive_mode
+else
+    # Otherwise, send the provided command
+    send_command "$*"
 fi
-
-# Generate a unique ID for this request (e.g., timestamp or random number)
-unique_id=$(date +%s)  # You can use a random number here if needed
-
-# Combine the unique ID with the command
-user_command="$unique_id: $*"
-
-# Write the command to the remote file using rclone rcat
-echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
-
-if [ $? -ne 0 ]; then
-    echo "Failed to send command. Check your rclone setup."
-    exit 1
-fi
-
-echo "Command sent with ID: $unique_id."
-
-# Maximum number of attempts to get the output
-MAX_ATTEMPTS=5
-attempt=0
-
-# Wait for the output to be valid
-while [ $attempt -lt $MAX_ATTEMPTS ]; do
-    # Increment attempt count
-    attempt=$((attempt + 1))
-
-    # Countdown before retrieving the output
-    countdown=3  # Countdown timer in seconds
-    echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
-    while [ $countdown -gt 0 ]; do
-        echo -n "$countdown "
-        sleep 1
-        countdown=$((countdown - 1))
-    done
-    echo -ne "\r\033[0K"  # Clear the line
-
-    # Retrieve the output from the remote file
-    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
-
-    # Check if the output contains the unique ID to validate the command
-    if [[ "$output" == *"$unique_id"* ]]; then
-        echo -e "Output for command ID $unique_id received:"
-        echo "$output"
-        exit 0
-    else
-        echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
-    fi
-done
-
-echo "Max attempts reached."
