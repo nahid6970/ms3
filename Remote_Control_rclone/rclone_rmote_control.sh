@@ -56,15 +56,17 @@ function send_command() {
 
 # Interactive mode
 function interactive_mode() {
-    echo "Entering interactive mode. Type your remote commands."
-    echo "Type 'exit' to quit interactive mode."
-
+    # Set the prompt to always show "rc>" in green
+    PS1='\[\033[92m\]rc> \[\033[0m\]'  # Green rc> prompt
+    
     # Enable readline history
     history -n  # Load the history from .bash_history file
 
+    echo "Entering interactive mode. Type your remote commands."
+    echo "Type 'exit' to quit interactive mode."
+
     while true; do
-        # Print the green prompt and then wait for input
-        echo -n -e "\033[32mrc> \033[0m"  # rc> prompt in green
+        # The following will allow up/down arrows to navigate history
         read -e user_command  # Enable line editing (supports history)
 
         # Save the entered command to the history file after each command
