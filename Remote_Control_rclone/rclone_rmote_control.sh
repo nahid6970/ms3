@@ -73,8 +73,8 @@ function is_command_duplicate() {
 
 # Interactive mode for entering commands
 function interactive_mode() {
-    echo "Entering interactive mode. Type your remote commands."
-    echo "Type 'exit' to quit interactive mode."
+    # Clear the unwanted lines
+    clear
 
     # Load history file explicitly to use previous commands with up/down arrows
     history -r "$HISTORY_FILE"
@@ -91,7 +91,6 @@ function interactive_mode() {
 
         # Exit the interactive mode if 'exit' is typed
         if [ "$user_command" == "exit" ]; then
-            echo "Exiting interactive mode."
             break
         fi
 
