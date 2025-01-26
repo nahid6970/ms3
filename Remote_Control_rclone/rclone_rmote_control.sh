@@ -59,31 +59,36 @@ function interactive_mode() {
     echo "Entering interactive mode. Type your remote commands."
     echo "Type 'exit' to quit interactive mode."
 
+    # Enable readline history
+    history -n  # Load the history from .bash_history file
+
     full_command=""
 
     while true; do
         # Read user input into full_command variable, supporting multiline input
         read -e -p "" user_command  # No prompt, just input
 
+        # If the user presses Enter but no command is entered, skip it
+        if [ -z "$user_command" ]; then
+            continue
+        fi
+
         # Exit the interactive mode if 'exit' is typed
         if [ "$user_command" == "exit" ]; then
             echo "Exiting interactive mode."
             break
-        elif [ -n "$user_command" ]; then
+        else
             # Append the user input to the full command
             full_command="$full_command $user_command"
 
-            # Add the command to history
+            # Add the current user command to the history
             history -s "$user_command"
-            history -w  # Write the history to the history file
 
-            # Send the full command
+            # Send the full command and clear it after sending
             send_command "$full_command"
 
             # Reset full_command for the next command
             full_command=""
-        else
-            echo "No command entered. Please try again."
         fi
     done
 }
