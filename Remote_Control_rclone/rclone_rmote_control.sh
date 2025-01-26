@@ -57,6 +57,9 @@ function interactive_mode() {
     echo "Entering interactive mode. Type your remote commands."
     echo "Type 'exit' to quit interactive mode."
 
+    # Load history file explicitly to use previous commands with up/down arrows
+    history -r "$HISTORY_FILE"
+
     # Use a loop to handle interactive command input
     while true; do
         # Use `readline` with `read -e` for history navigation (up/down arrows)
@@ -78,6 +81,9 @@ function interactive_mode() {
 
         # Send the command and wait for output
         send_command "$user_command"
+
+        # Reload history after executing the command
+        history -r "$HISTORY_FILE"
     done
 }
 
