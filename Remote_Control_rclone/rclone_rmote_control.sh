@@ -1,27 +1,18 @@
 #!/bin/bash
 
-# Check if the shell is interactive
-if [[ ! $- =~ i ]]; then
-    echo "Starting an interactive shell for line editing and history navigation..."
-    exec bash -i "$0" "$@"  # Re-execute the script in interactive mode
-    exit 1  # This ensures we do not proceed further in the non-interactive shell
-fi
-
 # Define the history file
 HISTORY_FILE="$HOME/.baaaaaashHist"
 
-# Enable history
+# Enable the use of readline for interactive history (using up/down arrows)
 export HISTFILE=$HISTORY_FILE
 export HISTSIZE=1000
 export HISTCONTROL=ignoredups
 shopt -s histappend  # Append to history file instead of overwriting it
 
-# Enable line editing (for arrow keys and history search)
-bind 'set enable-bracketed-paste off'  # Disable bracketed paste mode if needed
-bind 'set show-all-if-ambiguous on'   # Show all possible completions
-bind 'TAB:menu-complete'               # Tab completion for the history
-bind '"\e[A": history-search-backward' # Enable reverse search with Up arrow
-bind '"\e[B": history-search-forward'  # Enable forward search with Down arrow
+# Enable reverse search with Up/Down keys for partially typed commands
+# This will use arrow keys to search through history based on the typed prefix
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
 
 # Function to send a command and wait for output
 function send_command() {
