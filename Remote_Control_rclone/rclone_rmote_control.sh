@@ -1,20 +1,14 @@
 #!/bin/bash
 
-# Define the remote file paths
-REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
-REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
-
-# Define separate history file for rc commands
-RC_HISTORY_FILE="$HOME/.rc_history"
-
-# Ensure the history file exists
-touch "$RC_HISTORY_FILE"
-
-# Enable command history using readline for rc commands only
-HISTFILE="$RC_HISTORY_FILE"
+# Enable command history using readline
+HISTFILE="$HOME/.bash_history"
 HISTSIZE=1000
 HISTCONTROL=ignoredups  # Avoid duplicates in history
 shopt -s histappend  # Append to the history file rather than overwrite it
+
+# Define the remote file paths
+REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
+REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
 # Function to send a command and wait for its output
 function send_command() {
@@ -62,20 +56,20 @@ function send_command() {
 
 # Interactive mode
 function interactive_mode() {
+    # Set the prompt to always show "rc>" in green
+    PS1='\[\033[92m\]rc> \[\033[0m\]'  # Green rc> prompt
+    
+    # Enable readline history
+    history -n  # Load the history from .bash_history file
+
     echo "Entering interactive mode. Type your remote commands."
     echo "Type 'exit' to quit interactive mode."
 
-    # Enable readline history for rc commands (using the dedicated history file)
-    history -n  # Load the history from the rc history file
-
     while true; do
-        # Print the prompt before reading input to ensure it stays visible
-        echo -n "rc> "  # Prompt for command
-
-        # Read user input with history enabled for rc commands
+        # The following will allow up/down arrows to navigate history
         read -e user_command  # Enable line editing (supports history)
 
-        # Save the entered command to the rc history file after each command
+        # Save the entered command to the history file after each command
         history -s "$user_command"
 
         if [ "$user_command" == "exit" ]; then
