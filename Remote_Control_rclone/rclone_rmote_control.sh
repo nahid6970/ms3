@@ -4,58 +4,72 @@
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
-# Check if a command was passed as an argument
-if [ -z "$1" ]; then
-    echo "Usage: rc <command>"
-    exit 1
-fi
+# Function to send a command and wait for output
+send_command() {
+    local command="$1"
+    local unique_id=$(date +%s)  # Use a timestamp as the unique ID
+    local user_command="$unique_id: $command"
 
-# Generate a unique ID for this request (e.g., timestamp or random number)
-unique_id=$(date +%s)  # You can use a random number here if needed
+    # Write the command to the remote file using rclone rcat
+    echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
 
-# Combine the unique ID with the command
-user_command="$unique_id: $*"
+    if [ $? -ne 0 ]; then
+        echo "Failed to send command. Check your rclone setup."
+        return 1
+    fi
 
-# Write the command to the remote file using rclone rcat
-echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
+    echo "Command sent with ID: $unique_id."
 
-if [ $? -ne 0 ]; then
-    echo "Failed to send command. Check your rclone setup."
-    exit 1
-fi
+    # Wait for the output
+    local MAX_ATTEMPTS=5
+    local attempt=0
+    while [ $attempt -lt $MAX_ATTEMPTS ]; do
+        # Increment attempt count
+        attempt=$((attempt + 1))
 
-echo "Command sent with ID: $unique_id."
+        # Countdown before retrieving the output
+        countdown=3
+        echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
+        while [ $countdown -gt 0 ]; do
+            echo -n "$countdown "
+            sleep 1
+            countdown=$((countdown - 1))
+        done
+        echo -ne "\r\033[0K"  # Clear the line
 
-# Maximum number of attempts to get the output
-MAX_ATTEMPTS=5
-attempt=0
+        # Retrieve the output from the remote file
+        output=$(rclone cat "$REMOTE_OUTPUT_FILE")
 
-# Wait for the output to be valid
-while [ $attempt -lt $MAX_ATTEMPTS ]; do
-    # Increment attempt count
-    attempt=$((attempt + 1))
-
-    # Countdown before retrieving the output
-    countdown=3  # Countdown timer in seconds
-    echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
-    while [ $countdown -gt 0 ]; do
-        echo -n "$countdown "
-        sleep 1
-        countdown=$((countdown - 1))
+        # Check if the output contains the unique ID to validate the command
+        if [[ "$output" == *"$unique_id"* ]]; then
+            echo -e "Output for command ID $unique_id received:"
+            echo "$output"
+            return 0
+        else
+            echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
+        fi
     done
-    echo -ne "\r\033[0K"  # Clear the line
 
-    # Retrieve the output from the remote file
-    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+    echo "Max attempts reached. No valid output received."
+    return 1
+}
 
-    # Check if the output contains the unique ID to validate the command
-    if [[ "$output" == *"$unique_id"* ]]; then
-        echo -e "Output for command ID $unique_id received:"
-        echo "$output"
-        exit 0
+# Start an interactive session
+echo "Remote Command Shell (type 'exit' to quit)"
+while true; do
+    echo -n "> "
+    read -r user_input
+
+    # Exit the loop if the user types 'exit'
+    if [ "$user_input" == "exit" ]; then
+        echo "Exiting Remote Command Shell."
+        break
+    fi
+
+    # Send the command and wait for output
+    if [ -n "$user_input" ]; then
+        send_command "$user_input"
     else
-        echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
+        echo "No command entered. Please try again."
     fi
 done
-
-echo "Max attempts reached."
