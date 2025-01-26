@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Check if the shell is interactive
+if [[ ! $- =~ i ]]; then
+    echo "Starting an interactive shell for line editing and history navigation..."
+    exec bash -i "$0" "$@"  # Re-execute the script in interactive mode
+    exit 1  # This ensures we do not proceed further in the non-interactive shell
+fi
+
 # Define the history file
 HISTORY_FILE="$HOME/.baaaaaashHist"
 
