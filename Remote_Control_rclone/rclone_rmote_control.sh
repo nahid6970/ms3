@@ -15,9 +15,6 @@ shopt -s histappend  # Append to history file instead of overwriting it
     bind '"\e[B": history-search-forward'
 } >/dev/null 2>&1
 
-# Clear the screen to suppress the unwanted lines
-clear
-
 # Function to send a command and wait for output
 function send_command() {
     local user_command=$1
@@ -73,16 +70,19 @@ function is_command_duplicate() {
 
 # Interactive mode for entering commands
 function interactive_mode() {
-    echo "Entering interactive mode. Type your remote commands."
-    echo "Type 'exit' to quit interactive mode."
+    # Clear the unwanted lines
+    clear
 
     # Load history file explicitly to use previous commands with up/down arrows
     history -r "$HISTORY_FILE"
 
     # Use a loop to handle interactive command input
     while true; do
-        # Use `readline` with `read -e` for history navigation (up/down arrows)
-        read -e -p "rc> " user_command
+        # Set the basic prompt to be plain (no color)
+        PS1="rc> "
+
+        # Read input with history and prompt with color dynamically (for new input only)
+        read -e -p "$(tput setaf 2)rc>$(tput sgr0) " user_command
 
         # If the user presses Enter without typing anything, skip
         if [ -z "$user_command" ]; then
@@ -91,7 +91,6 @@ function interactive_mode() {
 
         # Exit the interactive mode if 'exit' is typed
         if [ "$user_command" == "exit" ]; then
-            echo "Exiting interactive mode."
             break
         fi
 
