@@ -4,115 +4,58 @@
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
-# History file for storing previous commands
-RC_HISTORY_FILE="$HOME/.rc_history"
-
-# Path where the script will be installed
-INSTALL_PATH="/usr/local/bin/rc"
-
-# Function to display the RC prompt
-rc_prompt() {
-    echo -ne "\033[1;34mrc>\033[0m "  # Display "rc>" in blue
-}
-
-# Ensure history file exists
-touch "$RC_HISTORY_FILE"
-
-# Enable history for rc commands
-bind 'set editing-mode vi'
-bind 'set history-preserve-point on'
-bind "set history-file \"$RC_HISTORY_FILE\""
-bind "set history-size 1000"
-bind "set history-save on"
-bind "set history-expand-line on"
-
-# Function to install the script
-install_rc_script() {
-    echo "Installing script to $INSTALL_PATH..."
-
-    # Copy the script to the desired location
-    sudo cp "$0" "$INSTALL_PATH"
-
-    # Make the script executable
-    sudo chmod +x "$INSTALL_PATH"
-
-    echo "Script installed and made executable at $INSTALL_PATH."
-}
-
-# Check if the script is being installed
-if [ "$1" == "install" ]; then
-    install_rc_script
-    exit 0
-fi
-
 # Check if a command was passed as an argument
 if [ -z "$1" ]; then
-    while true; do
-        # Display the rc prompt
-        rc_prompt
-        # Read command input
-        read -r user_command
-        if [ -z "$user_command" ]; then
-            continue  # Skip empty commands
-        fi
-
-        # Save the command to the history file
-        echo "$user_command" >> "$RC_HISTORY_FILE"
-
-        # Generate a unique ID for this request (e.g., timestamp or random number)
-        unique_id=$(date +%s)  # You can use a random number here if needed
-
-        # Combine the unique ID with the command
-        remote_command="$unique_id: $user_command"
-
-        # Write the command to the remote file using rclone rcat
-        echo "$remote_command" | rclone rcat "$REMOTE_COMMAND_FILE"
-        if [ $? -ne 0 ]; then
-            echo "Failed to send command. Check your rclone setup."
-            exit 1
-        fi
-
-        echo "Command sent with ID: $unique_id."
-
-        # Maximum number of attempts to get the output
-        MAX_ATTEMPTS=5
-        attempt=0
-
-        # Wait for the output to be valid
-        while [ $attempt -lt $MAX_ATTEMPTS ]; do
-            # Increment attempt count
-            attempt=$((attempt + 1))
-
-            # Countdown before retrieving the output
-            countdown=3  # Countdown timer in seconds
-            echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
-            while [ $countdown -gt 0 ]; do
-                echo -n "$countdown "
-                sleep 1
-                countdown=$((countdown - 1))
-            done
-            echo -ne "\r\033[0K"  # Clear the line
-
-            # Retrieve the output from the remote file
-            output=$(rclone cat "$REMOTE_OUTPUT_FILE")
-
-            # Check if the output contains the unique ID to validate the command
-            if [[ "$output" == *"$unique_id"* ]]; then
-                echo -e "Output for command ID $unique_id received:"
-                echo "$output"
-                break
-            else
-                echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
-            fi
-        done
-
-        if [ $attempt -ge $MAX_ATTEMPTS ]; then
-            echo "Max attempts reached."
-        fi
-
-        echo "Ready for the next command."
-    done
-else
-    echo "This script should be run interactively without arguments."
+    echo "Usage: rc <command>"
     exit 1
 fi
+
+# Generate a unique ID for this request (e.g., timestamp or random number)
+unique_id=$(date +%s)  # You can use a random number here if needed
+
+# Combine the unique ID with the command
+user_command="$unique_id: $*"
+
+# Write the command to the remote file using rclone rcat
+echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
+
+if [ $? -ne 0 ]; then
+    echo "Failed to send command. Check your rclone setup."
+    exit 1
+fi
+
+echo "Command sent with ID: $unique_id."
+
+# Maximum number of attempts to get the output
+MAX_ATTEMPTS=5
+attempt=0
+
+# Wait for the output to be valid
+while [ $attempt -lt $MAX_ATTEMPTS ]; do
+    # Increment attempt count
+    attempt=$((attempt + 1))
+
+    # Countdown before retrieving the output
+    countdown=3  # Countdown timer in seconds
+    echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
+    while [ $countdown -gt 0 ]; do
+        echo -n "$countdown "
+        sleep 1
+        countdown=$((countdown - 1))
+    done
+    echo -ne "\r\033[0K"  # Clear the line
+
+    # Retrieve the output from the remote file
+    output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+
+    # Check if the output contains the unique ID to validate the command
+    if [[ "$output" == *"$unique_id"* ]]; then
+        echo -e "Output for command ID $unique_id received:"
+        echo "$output"
+        exit 0
+    else
+        echo -e "Output ID mismatch. Retrying... ($attempt/$MAX_ATTEMPTS)"
+    fi
+done
+
+echo "Max attempts reached."
