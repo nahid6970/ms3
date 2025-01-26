@@ -9,6 +9,7 @@ shopt -s histappend  # Append to the history file rather than overwrite it
 # Define the remote file paths
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
+REMOTE_COMMAND_HISTORY_FILE="$HOME/remote_command_history.txt"  # Custom history file
 
 # Function to send a command and wait for its output
 function send_command() {
@@ -59,9 +60,6 @@ function interactive_mode() {
     echo "Entering interactive mode. Type your remote commands."
     echo "Type 'exit' to quit interactive mode."
 
-    # Enable readline history
-    history -n  # Load the history from .bash_history file
-
     full_command=""
 
     while true; do
@@ -81,8 +79,8 @@ function interactive_mode() {
             # Append the user input to the full command
             full_command="$full_command $user_command"
 
-            # Add the current user command to the history
-            history -s "$user_command"
+            # Save the full command to the custom history file
+            echo "$full_command" >> "$REMOTE_COMMAND_HISTORY_FILE"
 
             # Send the full command and clear it after sending
             send_command "$full_command"
