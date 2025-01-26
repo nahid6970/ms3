@@ -65,21 +65,20 @@ function interactive_mode() {
         # Read user input into full_command variable, supporting multiline input
         read -e -p "" user_command  # No prompt, just input
 
-        # Append the user_command to the full_command
-        full_command="$full_command $user_command"
-
         # Exit the interactive mode if 'exit' is typed
         if [ "$user_command" == "exit" ]; then
             echo "Exiting interactive mode."
             break
         elif [ -n "$user_command" ]; then
-            # Send the full command to the remote system
-            send_command "$full_command"
+            # Append the user input to the full command
+            full_command="$full_command $user_command"
 
-            # Append the command to the history
-            history -s "$full_command"
-            # Write the updated history to the history file
-            history -a
+            # Add the command to history
+            history -s "$user_command"
+            history -w  # Write the history to the history file
+
+            # Send the full command
+            send_command "$full_command"
 
             # Reset full_command for the next command
             full_command=""
