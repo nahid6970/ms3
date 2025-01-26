@@ -69,7 +69,7 @@ function interactive_mode() {
     history -n  # Load the history from the rc history file
 
     while true; do
-        # Clear the line before printing the prompt to prevent it from disappearing
+        # Print the prompt before reading input to ensure it stays visible
         echo -n "rc> "  # Prompt for command
 
         # Read user input with history enabled for rc commands
