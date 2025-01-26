@@ -64,6 +64,7 @@ function interactive_mode() {
 
     while true; do
         # The following will allow up/down arrows to navigate history
+        # Reprint the prompt at every read
         echo -n "rc> "  # Prompt for command
         read -e user_command  # Enable line editing (supports history)
 
