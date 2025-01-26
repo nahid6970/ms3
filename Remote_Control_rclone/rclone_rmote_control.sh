@@ -10,12 +10,10 @@ export HISTCONTROL=ignoredups
 shopt -s histappend  # Append to history file instead of overwriting it
 
 # Suppress the bind warning and enable reverse search with Up/Down keys for partially typed commands
-if [[ -n $(type -t bind) && $(bind --version 2>/dev/null) ]]; then
+{
     bind '"\e[A": history-search-backward'
     bind '"\e[B": history-search-forward'
-else
-    echo "Line editing not enabled. Skipping bind commands."
-fi
+} >/dev/null 2>&1
 
 # Clear the screen to suppress the unwanted lines
 clear
