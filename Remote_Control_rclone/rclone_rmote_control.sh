@@ -73,16 +73,17 @@ function is_command_duplicate() {
 
 # Interactive mode for entering commands
 function interactive_mode() {
-    echo "Entering interactive mode. Type your remote commands."
-    echo "Type 'exit' to quit interactive mode."
+    # Clear the unwanted lines
+    clear
 
     # Load history file explicitly to use previous commands with up/down arrows
     history -r "$HISTORY_FILE"
 
     # Use a loop to handle interactive command input
     while true; do
-        # Use `readline` with `read -e` for history navigation (up/down arrows)
-        read -e -p "rc> " user_command
+        # Read input with the green-colored prompt
+        PS1="$(tput setaf 2)rc>$(tput sgr0) "  # Set prompt color for input
+        read -e user_command  # Read user input with history
 
         # If the user presses Enter without typing anything, skip
         if [ -z "$user_command" ]; then
@@ -91,7 +92,6 @@ function interactive_mode() {
 
         # Exit the interactive mode if 'exit' is typed
         if [ "$user_command" == "exit" ]; then
-            echo "Exiting interactive mode."
             break
         fi
 
