@@ -3,20 +3,20 @@
 # Define the remote file paths
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
-REMOTE_COMMAND_HISTORY_FILE="$HOME/remote_command_history.txt"  # Custom history file
+REMOTE_COMMAND_HISTORY_FILE="$HOME/.remote_command_history"  # Store history here
 
-# Enable command history using readline
-HISTFILE="$REMOTE_COMMAND_HISTORY_FILE"
-HISTSIZE=1000
-HISTCONTROL=ignoredups  # Avoid duplicates in history
-shopt -s histappend  # Append to the history file rather than overwrite it
+# Enable readline to handle history in an interactive shell
+export HISTFILE="$REMOTE_COMMAND_HISTORY_FILE"
+export HISTSIZE=1000
+export HISTCONTROL=ignoredups
+shopt -s histappend  # Append to history file instead of overwriting it
 
-# Function to send a command and wait for its output
+# Function to send a command and wait for output
 function send_command() {
     local user_command=$1
-    local unique_id=$(date +%s)  # Generate a unique ID (timestamp)
+    local unique_id=$(date +%s)  # Generate a unique ID for each command
 
-    # Combine the unique ID with the command
+    # Combine the unique ID with the command for tracking
     remote_command="$unique_id: $user_command"
 
     # Write the command to the remote file using rclone rcat
@@ -29,19 +29,18 @@ function send_command() {
 
     echo "Command sent with ID: $unique_id."
 
-    # Maximum number of attempts to get the output
+    # Wait for the output with retries
     MAX_ATTEMPTS=5
     attempt=0
 
-    # Wait for the output
     while [ $attempt -lt $MAX_ATTEMPTS ]; do
         attempt=$((attempt + 1))
-        sleep 3  # Wait 3 seconds before checking output
+        sleep 3  # Wait 3 seconds before checking for output
 
         # Retrieve the output from the remote file
         output=$(rclone cat "$REMOTE_OUTPUT_FILE")
 
-        # Check if the output contains the unique ID to validate the command
+        # Check if the output matches the unique ID to validate the response
         if [[ "$output" == *"$unique_id"* ]]; then
             echo -e "Output for command ID $unique_id received:"
             echo "$output"
@@ -55,19 +54,17 @@ function send_command() {
     return 1
 }
 
-# Interactive mode for remote command entry
+# Interactive mode for entering commands
 function interactive_mode() {
     echo "Entering interactive mode. Type your remote commands."
     echo "Type 'exit' to quit interactive mode."
 
-    full_command=""
-
+    # Use a loop to handle interactive command input
     while true; do
-        # Use read -e to enable history and auto-completion
-        # The "-p" flag displays a prompt, and we use the input history
+        # Use `readline` with `read -e` for history navigation (up/down arrows)
         read -e -p "rc> " user_command
 
-        # If the user presses Enter but no command is entered, skip it
+        # If the user presses Enter without typing anything, skip
         if [ -z "$user_command" ]; then
             continue
         fi
@@ -76,27 +73,21 @@ function interactive_mode() {
         if [ "$user_command" == "exit" ]; then
             echo "Exiting interactive mode."
             break
-        else
-            # Append the user input to the full command
-            full_command="$full_command $user_command"
-
-            # Save the full command to the custom history file
-            echo "$full_command" >> "$REMOTE_COMMAND_HISTORY_FILE"
-
-            # Send the full command and clear it after sending
-            send_command "$full_command"
-
-            # Reset full_command for the next command
-            full_command=""
         fi
+
+        # Save the command to the history file (automatically handled by readline)
+        echo "$user_command" >> "$REMOTE_COMMAND_HISTORY_FILE"
+
+        # Send the command and wait for output
+        send_command "$user_command"
     done
 }
 
-# Check if a command was passed as an argument
+# Check if a command was provided
 if [ -z "$1" ]; then
-    # Start interactive mode if no command is provided
+    # Start interactive mode if no command is passed
     interactive_mode
 else
-    # Otherwise, send the provided command
+    # Otherwise, send the provided command immediately
     send_command "$*"
 fi
