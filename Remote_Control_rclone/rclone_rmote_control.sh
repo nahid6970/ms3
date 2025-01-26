@@ -54,29 +54,33 @@ function send_command() {
     return 1
 }
 
-# Interactive mode
+# Interactive mode for remote command entry
 function interactive_mode() {
-    # Set the prompt to always show "rc>" in green
-    PS1='\[\033[92m\]rc> \[\033[0m\]'  # Green rc> prompt
-    
-    # Enable readline history
-    history -n  # Load the history from .bash_history file
-
     echo "Entering interactive mode. Type your remote commands."
     echo "Type 'exit' to quit interactive mode."
 
+    # Enable readline history
+    history -n  # Load the history from .bash_history file
+
+    full_command=""
+
     while true; do
-        # The following will allow up/down arrows to navigate history
-        read -e user_command  # Enable line editing (supports history)
+        # Read user input into full_command variable, supporting multiline input
+        read -e -p "" user_command  # No prompt, just input
 
-        # Save the entered command to the history file after each command
-        history -s "$user_command"
-
+        # Exit the interactive mode if 'exit' is typed
         if [ "$user_command" == "exit" ]; then
             echo "Exiting interactive mode."
             break
         elif [ -n "$user_command" ]; then
-            send_command "$user_command"
+            # Append the user input to the full command
+            full_command="$full_command $user_command"
+
+            # Send the full command
+            send_command "$full_command"
+
+            # Reset full_command for the next command
+            full_command=""
         else
             echo "No command entered. Please try again."
         fi
