@@ -4,16 +4,20 @@
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 
-# Function to send a command and wait for its output
-function send_command() {
-    local user_command=$1
-    local unique_id=$(date +%s)  # Generate a unique ID (timestamp)
+# Disable history for this session
+HISTFILE=/dev/null
+set +o history
+
+# Function to send a command
+send_command() {
+    # Generate a unique ID for this request (e.g., timestamp)
+    unique_id=$(date +%s)
 
     # Combine the unique ID with the command
-    remote_command="$unique_id: $user_command"
+    user_command="$unique_id: $*"
 
     # Write the command to the remote file using rclone rcat
-    echo "$remote_command" | rclone rcat "$REMOTE_COMMAND_FILE"
+    echo "$user_command" | rclone rcat "$REMOTE_COMMAND_FILE"
 
     if [ $? -ne 0 ]; then
         echo "Failed to send command. Check your rclone setup."
@@ -26,10 +30,20 @@ function send_command() {
     MAX_ATTEMPTS=5
     attempt=0
 
-    # Wait for the output
+    # Wait for the output to be valid
     while [ $attempt -lt $MAX_ATTEMPTS ]; do
+        # Increment attempt count
         attempt=$((attempt + 1))
-        sleep 3  # Wait 3 seconds before checking output
+
+        # Countdown before retrieving the output
+        countdown=3  # Countdown timer in seconds
+        echo -n "Waiting for output... ($attempt/$MAX_ATTEMPTS) "
+        while [ $countdown -gt 0 ]; do
+            echo -n "$countdown "
+            sleep 1
+            countdown=$((countdown - 1))
+        done
+        echo -ne "\r\033[0K"  # Clear the line
 
         # Retrieve the output from the remote file
         output=$(rclone cat "$REMOTE_OUTPUT_FILE")
@@ -44,42 +58,25 @@ function send_command() {
         fi
     done
 
-    echo "Max attempts reached. Command output not received."
+    echo "Max attempts reached."
     return 1
 }
 
-# Interactive mode
-function interactive_mode() {
-    echo "Entering interactive mode. Type your remote commands."
-    echo "Type 'exit' to quit interactive mode."
-
-    # Enable command history for the current shell session
-    HISTFILE=~/.bash_history  # Use the default bash history file
-    HISTSIZE=1000             # Set a reasonable history size
-    HISTCONTROL=ignoredups    # Avoid duplicate commands in history
-
+# Interactive rc shell
+rc_shell() {
+    echo -e "Entering rc shell. Type commands below:"
     while true; do
-        echo -n "rc> "  # Prompt for command
-        # Use the 'read' command to read input with proper history support
-        read -e -r user_command
-
-        # If the user types 'exit', break the loop and quit
-        if [ "$user_command" == "exit" ]; then
-            echo "Exiting interactive mode."
+        # Display the rc> prompt
+        echo -n "rc> "
+        # Read user input (disable history with `read -r -e -n`)
+        read -r command
+        if [[ -z "$command" ]]; then
+            echo "Exiting rc shell."
             break
-        elif [ -n "$user_command" ]; then
-            send_command "$user_command"
-        else
-            echo "No command entered. Please try again."
         fi
+        send_command "$command"
     done
 }
 
-# Check if a command was passed as an argument
-if [ -z "$1" ]; then
-    # Start interactive mode if no command is provided
-    interactive_mode
-else
-    # Otherwise, send the provided command
-    send_command "$*"
-fi
+# Start the rc shell
+rc_shell
