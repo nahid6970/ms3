@@ -9,13 +9,10 @@ export HISTSIZE=1000
 export HISTCONTROL=ignoredups
 shopt -s histappend  # Append to history file instead of overwriting it
 
-# Check if the shell is interactive before using bind commands
-if [[ $- == *i* ]]; then
-    # Enable reverse search with Up/Down keys for partially typed commands
-    # This will use arrow keys to search through history based on the typed prefix
-    bind '"\e[A": history-search-backward'
-    bind '"\e[B": history-search-forward'
-fi
+# Enable reverse search with Up/Down keys for partially typed commands
+# This will use arrow keys to search through history based on the typed prefix
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
 
 # Function to send a command and wait for output
 function send_command() {
