@@ -7,6 +7,9 @@ REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 # History file for storing previous commands
 RC_HISTORY_FILE="$HOME/.rc_history"
 
+# Path where the script will be installed
+INSTALL_PATH="/usr/local/bin/rc"
+
 # Function to display the RC prompt
 rc_prompt() {
     echo -ne "\033[1;34mrc>\033[0m "  # Display "rc>" in blue
@@ -22,6 +25,25 @@ bind "set history-file \"$RC_HISTORY_FILE\""
 bind "set history-size 1000"
 bind "set history-save on"
 bind "set history-expand-line on"
+
+# Function to install the script
+install_rc_script() {
+    echo "Installing script to $INSTALL_PATH..."
+
+    # Copy the script to the desired location
+    sudo cp "$0" "$INSTALL_PATH"
+
+    # Make the script executable
+    sudo chmod +x "$INSTALL_PATH"
+
+    echo "Script installed and made executable at $INSTALL_PATH."
+}
+
+# Check if the script is being installed
+if [ "$1" == "install" ]; then
+    install_rc_script
+    exit 0
+fi
 
 # Check if a command was passed as an argument
 if [ -z "$1" ]; then
