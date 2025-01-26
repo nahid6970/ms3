@@ -1,12 +1,10 @@
 #!/bin/bash
 
-# Define the remote file paths
-REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
-REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
-REMOTE_COMMAND_HISTORY_FILE="$HOME/.remote_command_history"  # Store history here
+# Define the history file
+HISTORY_FILE="$HOME/.baaaaaashHist"
 
-# Enable readline to handle history in an interactive shell
-export HISTFILE="$REMOTE_COMMAND_HISTORY_FILE"
+# Enable the use of readline for interactive history (using up/down arrows)
+export HISTFILE=$HISTORY_FILE
 export HISTSIZE=1000
 export HISTCONTROL=ignoredups
 shopt -s histappend  # Append to history file instead of overwriting it
@@ -20,7 +18,7 @@ function send_command() {
     remote_command="$unique_id: $user_command"
 
     # Write the command to the remote file using rclone rcat
-    echo "$remote_command" | rclone rcat "$REMOTE_COMMAND_FILE"
+    echo "$remote_command" | rclone rcat "g00:/Remote_Control/Command.txt"
 
     if [ $? -ne 0 ]; then
         echo "Failed to send command. Check your rclone setup."
@@ -38,7 +36,7 @@ function send_command() {
         sleep 3  # Wait 3 seconds before checking for output
 
         # Retrieve the output from the remote file
-        output=$(rclone cat "$REMOTE_OUTPUT_FILE")
+        output=$(rclone cat "g00:/Remote_Control/output.txt")
 
         # Check if the output matches the unique ID to validate the response
         if [[ "$output" == *"$unique_id"* ]]; then
@@ -76,7 +74,7 @@ function interactive_mode() {
         fi
 
         # Save the command to the history file (automatically handled by readline)
-        echo "$user_command" >> "$REMOTE_COMMAND_HISTORY_FILE"
+        echo "$user_command" >> "$HISTORY_FILE"
 
         # Send the command and wait for output
         send_command "$user_command"
