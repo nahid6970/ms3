@@ -62,6 +62,29 @@ function is_command_duplicate() {
     fi
 }
 
+# Function to load history into an array and filter based on input
+function filter_history() {
+    local input=$1
+    local filtered=()
+
+    # Read the history file and filter commands
+    while IFS= read -r line; do
+        if [[ "$line" == *"$input"* ]]; then
+            filtered+=("$line")
+        fi
+    done < "$HISTORY_FILE"
+
+    # Display matching history commands
+    if [ ${#filtered[@]} -gt 0 ]; then
+        echo "Matching Commands:"
+        for cmd in "${filtered[@]}"; do
+            echo "$cmd"
+        done
+    else
+        echo "No matching commands found."
+    fi
+}
+
 # Interactive mode for entering commands
 function interactive_mode() {
     echo "Entering interactive mode. Type your remote commands."
@@ -84,6 +107,11 @@ function interactive_mode() {
         if [ "$user_command" == "exit" ]; then
             echo "Exiting interactive mode."
             break
+        fi
+
+        # If the user types partial characters, filter the command history
+        if [[ "$user_command" != *" "* ]]; then
+            filter_history "$user_command"
         fi
 
         # Check if the command is a duplicate before saving it
