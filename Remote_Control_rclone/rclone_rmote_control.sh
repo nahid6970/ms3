@@ -4,6 +4,7 @@
 HISTFILE="$HOME/.bash_history"
 HISTSIZE=1000
 HISTCONTROL=ignoredups  # Avoid duplicates in history
+shopt -s histappend  # Append to the history file rather than overwrite it
 
 # Define the remote file paths
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
@@ -59,10 +60,16 @@ function interactive_mode() {
     echo "Type 'exit' to quit interactive mode."
 
     # Enable readline history
+    history -n  # Load the history from .bash_history file
+
     while true; do
         # The following will allow up/down arrows to navigate history
         echo -n "rc> "  # Prompt for command
         read -e user_command  # Enable line editing (supports history)
+
+        # Save the entered command to the history file after each command
+        history -s "$user_command"
+
         if [ "$user_command" == "exit" ]; then
             echo "Exiting interactive mode."
             break
