@@ -1,18 +1,21 @@
 #!/bin/bash
 
-# Define the history file
-HISTORY_FILE="$HOME/.baaaaaashHist"
+# Enable line editing (for keybindings like Up and Down arrows)
+if [ -f /etc/bash.bashrc ]; then
+    . /etc/bash.bashrc
+fi
 
-# Enable the use of readline for interactive history (using up/down arrows)
-export HISTFILE=$HISTORY_FILE
+# Enable history search with Up/Down arrow keys
+export HISTFILE=$HOME/.baaaaaashHist
 export HISTSIZE=1000
 export HISTCONTROL=ignoredups
 shopt -s histappend  # Append to history file instead of overwriting it
 
-# Enable reverse search with Up/Down keys for partially typed commands
-# This will use arrow keys to search through history based on the typed prefix
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
+# Enable readline support
+bind 'set enable-keypad on'
+bind '"\e[A": history-search-backward'  # Up arrow for previous command
+bind '"\e[B": history-search-forward'   # Down arrow for next command
+
 
 # Function to send a command and wait for output
 function send_command() {
