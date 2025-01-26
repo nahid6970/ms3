@@ -73,7 +73,7 @@ function interactive_mode() {
     # Use a loop to handle interactive command input
     while true; do
         # Use `readline` with `read -e` for history navigation (up/down arrows)
-        read -e -p "rc> " user_command
+        read -e -i "" -p "rc> " user_command
 
         # If the user presses Enter without typing anything, skip
         if [ -z "$user_command" ]; then
