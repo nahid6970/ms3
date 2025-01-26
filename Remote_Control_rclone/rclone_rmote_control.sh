@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Enable command history using readline
-HISTFILE="$HOME/.bash_history"
-HISTSIZE=1000
-HISTCONTROL=ignoredups  # Avoid duplicates in history
-shopt -s histappend  # Append to the history file rather than overwrite it
-
 # Define the remote file paths
 REMOTE_COMMAND_FILE="g00:/Remote_Control/Command.txt"
 REMOTE_OUTPUT_FILE="g00:/Remote_Control/output.txt"
 REMOTE_COMMAND_HISTORY_FILE="$HOME/remote_command_history.txt"  # Custom history file
+
+# Enable command history using readline
+HISTFILE="$REMOTE_COMMAND_HISTORY_FILE"
+HISTSIZE=1000
+HISTCONTROL=ignoredups  # Avoid duplicates in history
+shopt -s histappend  # Append to the history file rather than overwrite it
 
 # Function to send a command and wait for its output
 function send_command() {
@@ -63,8 +63,9 @@ function interactive_mode() {
     full_command=""
 
     while true; do
-        # Read user input into full_command variable, supporting multiline input
-        read -e -p "" user_command  # No prompt, just input
+        # Use read -e to enable history and auto-completion
+        # The "-p" flag displays a prompt, and we use the input history
+        read -e -p "rc> " user_command
 
         # If the user presses Enter but no command is entered, skip it
         if [ -z "$user_command" ]; then
