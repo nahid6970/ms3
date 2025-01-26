@@ -48,30 +48,26 @@ function send_command() {
     return 1
 }
 
-# Interactive mode with history support
+# Interactive mode
 function interactive_mode() {
     echo "Entering interactive mode. Type your remote commands."
     echo "Type 'exit' to quit interactive mode."
 
-    # Enable history for the session (Arrow keys functionality)
-    bind '"\e[A": history-search-backward'
-    bind '"\e[B": history-search-forward'
-    bind '"\e[C": forward-char'
-    bind '"\e[D": backward-char'
+    # Enable command history for the current shell session
+    HISTFILE=~/.bash_history  # Use the default bash history file
+    HISTSIZE=1000             # Set a reasonable history size
+    HISTCONTROL=ignoredups    # Avoid duplicate commands in history
 
     while true; do
-        # Display prompt
-        echo -n "rc> "
+        echo -n "rc> "  # Prompt for command
+        # Use the 'read' command to read input with proper history support
+        read -e -r user_command
 
-        # Enable history navigation with arrow keys
-        read -e -r user_command  # '-e' enables readline (history)
-
+        # If the user types 'exit', break the loop and quit
         if [ "$user_command" == "exit" ]; then
             echo "Exiting interactive mode."
             break
         elif [ -n "$user_command" ]; then
-            # Save to history
-            history -s "$user_command"
             send_command "$user_command"
         else
             echo "No command entered. Please try again."
