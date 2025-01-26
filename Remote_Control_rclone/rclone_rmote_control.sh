@@ -9,6 +9,10 @@ export HISTSIZE=1000
 export HISTCONTROL=ignoredups
 shopt -s histappend  # Append to history file instead of overwriting it
 
+# Enable reverse search with Up/Down keys for partially typed commands
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
 # Function to send a command and wait for output
 function send_command() {
     local user_command=$1
