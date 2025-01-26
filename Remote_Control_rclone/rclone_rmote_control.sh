@@ -52,6 +52,16 @@ function send_command() {
     return 1
 }
 
+# Function to check if the command is already in the history
+function is_command_duplicate() {
+    local command=$1
+    if grep -Fxq "$command" "$HISTORY_FILE"; then
+        return 0  # Command exists (duplicate)
+    else
+        return 1  # Command does not exist (not a duplicate)
+    fi
+}
+
 # Interactive mode for entering commands
 function interactive_mode() {
     echo "Entering interactive mode. Type your remote commands."
@@ -76,8 +86,13 @@ function interactive_mode() {
             break
         fi
 
-        # Save the command to the history file (automatically handled by readline)
-        echo "$user_command" >> "$HISTORY_FILE"
+        # Check if the command is a duplicate before saving it
+        if ! is_command_duplicate "$user_command"; then
+            # Save the command to the history file (automatically handled by readline)
+            echo "$user_command" >> "$HISTORY_FILE"
+        else
+            echo "Duplicate command detected. Not adding to history."
+        fi
 
         # Send the command and wait for output
         send_command "$user_command"
