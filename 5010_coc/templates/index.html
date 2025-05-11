@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Event Schedule</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="shortcut icon" href="https://wallpapers.com/images/hd/clash-of-clans-character-logo-jntfmwifvnxhgrwg-2.png"
+    type="image/x-icon">
+  <style>
+    @import url("https://www.nerdfonts.com/assets/css/webfont.css");
+
+    html,
+    body {
+      background-color: #c0c0c0;
+      font-family: jetbrainsmono nfp, monospace;
+      font-size: 2rem;
+    }
+
+    .countdown {
+      font-size: 1rem !important;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: #ff6f61;
+      color: rgb(113, 255, 137);
+      display: inline-block;
+      margin-left: 10px;
+      margin-bottom: 20px;
+      text-transform: lowercase;
+    }
+
+    .countdown.expired {
+      background-color: #ffffff;
+      color: #ffffff;
+    }
+
+    .countdown.live {
+      color: rgb(0, 0, 0);
+      background-color: #bad6c1;
+    }
+
+    .event-card {
+      min-width: 250px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+      background: white;
+      margin: 5px;
+    }
+  </style>
+  <script>
+    function updateCountdowns() {
+      document.querySelectorAll('.countdown').forEach(el => {
+        const time = new Date(el.dataset.time);
+        const now = new Date();
+        const diff = time - now;
+        if (diff <= 0) {
+          el.innerText = "✔️";
+          el.classList.add('expired');
+          el.classList.remove('live');
+          return;
+        }
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / (1000 * 60)) % 60);
+        el.innerText = `${d}d ${h}h ${m}m`;
+        el.classList.add('live');
+        el.classList.remove('expired');
+      });
+    }
+    setInterval(updateCountdowns, 60000);
+    window.onload = updateCountdowns;
+  </script>
+</head>
+
+<body class="container-fluid mt-4">
+  <div class="d-flex justify-content-center gap-2 mb-4">
+    <a href="/add-event" class="btn btn-success">Add Event</a>
+    <a href="/teams" class="btn btn-secondary">Manage Teams</a>
+  </div>
+  <div class="row justify-content-center">
+    {% for event in upcoming_events %}
+    <div class="col-12 mb-4">
+      <div class="card w-100">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div class="d-flex flex-row align-items-center">
+            <div class="mt-2"><strong>{{ event.team1.name }}</strong></div>
+          </div>
+          <div class="d-flex flex-row gap-2 align-items-center">
+            <small>
+              <span class="countdown" data-time="{{ event.event_time.isoformat() }}"></span>
+            </small>
+            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+              data-bs-target="#editEventModal{{ event.id }}">
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Event Modal -->
+    <div class="modal fade" id="editEventModal{{ event.id }}" tabindex="-1"
+      aria-labelledby="editEventModalLabel{{ event.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editEventModalLabel{{ event.id }}">CoC {{ event.team1.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{{ url_for('edit_event', event_id=event.id) }}" method="POST">
+              <div class="mb-3">
+                <input type="text" class="form-control" id="durationInput{{ event.id }}" name="duration"
+                  value="{{ event.duration_str_for_modal }}" placeholder="0d 0h 0m" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
