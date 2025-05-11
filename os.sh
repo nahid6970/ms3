@@ -480,7 +480,7 @@ rclone_decrypt() {
 python_flask(){
     pkg install python
     pip install flask flask_sqlalchemy
-    cp "$HOME/ms3/5010_coc" "$HOME"
+    cp -r "$HOME/ms3/5010_coc" "$HOME"
     python "$HOME/5010_coc/Clash_of_Clans.py" &
     # Wait for a moment to ensure the server starts
     sleep 2
