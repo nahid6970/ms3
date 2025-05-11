@@ -63,7 +63,7 @@ def add_event():
 
         event_time = datetime.now() + timedelta(days=days, hours=hours, minutes=minutes)
         # event = Event(team1_id=team1_id, event_link=event_link, event_time=event_time)
-        # db.session.add(event)
+        db.session.add(event_time)
         db.session.commit()
         return redirect(url_for('index'))
 
