@@ -477,7 +477,10 @@ rclone_decrypt() {
 }
 
 
-
+python_flask(){
+    pkg install python
+    pip install flask flask_sqlalchemy
+}
 
 # Declare a combined array of menu options and function bindings
 menu_items=(
@@ -493,6 +496,7 @@ menu_items=(
     "10:Remove Folder [ms3]:            remove_repo                             :$RED"
     "11:About:                          about_device                            :$BLUE"
     "12:Welcome Page:                   welcome_remove                          :$RED"
+    "13:Flask:                   python_flask                          :$RED"
     " c:Close:                          Close_script                            :$RED"
     " e:Exit:                           exit_script                             :$RED"
 )
