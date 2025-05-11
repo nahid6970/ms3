@@ -49,7 +49,7 @@ def index():
 def add_event():
     if request.method == 'POST':
         team1_id = request.form['team1']
-        event_link = request.form['event_link']
+        # event_link = request.form['event_link']
         duration = request.form['duration']
         days, hours, minutes = 0, 0, 0
 
@@ -62,8 +62,8 @@ def add_event():
         if m_match: minutes = int(m_match.group(1))
 
         event_time = datetime.now() + timedelta(days=days, hours=hours, minutes=minutes)
-        event = Event(team1_id=team1_id, event_link=event_link, event_time=event_time)
-        db.session.add(event)
+        # event = Event(team1_id=team1_id, event_link=event_link, event_time=event_time)
+        # db.session.add(event)
         db.session.commit()
         return redirect(url_for('index'))
 
