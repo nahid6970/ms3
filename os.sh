@@ -480,6 +480,11 @@ rclone_decrypt() {
 python_flask(){
     pkg install python
     pip install flask flask_sqlalchemy
+    python "$HOME/ms1/scripts/flask/5010_coc/Clash_of_Clans.py" &
+    # Wait for a moment to ensure the server starts
+    sleep 2
+    # Open Chrome with the server URL
+    am start -a android.intent.action.VIEW -d "http://127.0.0.1:5010" com.android.chrome
 }
 
 # Declare a combined array of menu options and function bindings
