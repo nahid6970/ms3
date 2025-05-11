@@ -5,7 +5,7 @@ import re
 
 app = Flask(__name__)
 # Ensure this path is correct for your environment or use a more robust configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////data/data/com.termux/files/home/storage/shared/Clash_of_Clans.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///home/Clash_of_Clans.db'
 db = SQLAlchemy(app)
 
 # Models
