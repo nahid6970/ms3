@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 import re
 
 app = Flask(__name__)
-# Ensure this path is correct for your environment or use a more robust configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Clash_of_Clans.db'
 db = SQLAlchemy(app)
 
@@ -12,12 +11,10 @@ db = SQLAlchemy(app)
 class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    # logo_url = db.Column(db.String(300), nullable=False) # Removed logo_url
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     team1_id = db.Column(db.Integer, db.ForeignKey('team.id'), nullable=False)
-    event_link = db.Column(db.String(300), nullable=False)
     event_time = db.Column(db.DateTime, nullable=False)
     team1 = db.relationship('Team', foreign_keys=[team1_id])
 
@@ -34,10 +31,7 @@ def index():
             hours = remaining.seconds // 3600
             minutes = (remaining.seconds % 3600) // 60
 
-            if days == 0 and hours == 0 and minutes == 0:
-                event_obj.duration_str_for_modal = ""
-            else:
-                event_obj.duration_str_for_modal = f"{days}d {hours}h {minutes}m"
+            event_obj.duration_str_for_modal = f"{days}d {hours}h {minutes}m" if (days or hours or minutes) else ""
         else:
             event_obj.duration_str_for_modal = ""
 
@@ -49,7 +43,6 @@ def index():
 def add_event():
     if request.method == 'POST':
         team1_id = request.form['team1']
-        # event_link = request.form['event_link']
         duration = request.form['duration']
         days, hours, minutes = 0, 0, 0
 
@@ -68,17 +61,13 @@ def add_event():
         return redirect(url_for('index'))
 
     teams = Team.query.order_by(Team.name).all()
-    # Assuming you have an 'event_form.html' template. If not, this route might need adjustment
-    # or you might be adding events directly from another interface.
-    # For now, I'll keep it as is, but it will need 'event_form.html' to function for GET requests.
     return render_template('event_form.html', teams=teams, action='Add')
 
 @app.route('/teams', methods=['GET', 'POST'])
 def manage_teams():
     if request.method == 'POST':
         name = request.form['name']
-        # logo_url = request.form['logo_url'] # Removed logo_url input
-        team = Team(name=name) # Removed logo_url from Team creation
+        team = Team(name=name)
         db.session.add(team)
         db.session.commit()
         return redirect(url_for('manage_teams'))
@@ -95,13 +84,6 @@ def delete_event(id):
 @app.route('/delete-team/<int:id>', methods=['POST'])
 def delete_team(id):
     team = Team.query.get_or_404(id)
-    # Add logic here if there are events associated with this team that need to be handled
-    # For example, delete them or set their team_id to null if allowed.
-    # For simplicity, this example will delete the team, potentially orphaning events
-    # or causing errors if events require a valid team1_id.
-    # Consider adding:
-    # Event.query.filter_by(team1_id=id).delete()
-    # before deleting the team if you want to cascade delete events.
     db.session.delete(team)
     db.session.commit()
     return redirect(url_for('manage_teams'))
@@ -123,15 +105,12 @@ def edit_event(event_id):
         if m_match: minutes = int(m_match.group(1))
 
         event.event_time = datetime.now() + timedelta(days=days, hours=hours, minutes=minutes)
-
         db.session.commit()
         return redirect(url_for('index'))
 
-    # GET request to edit_event, typically shows a form.
-    # Your current implementation redirects to index for GET.
-    # If you want an edit form, you'd render a template here.
-    # For now, sticking to original behavior of redirecting.
-    return redirect(url_for('index'))
+    teams = Team.query.order_by(Team.name).all()
+    duration = f"{(event.event_time - datetime.now()).days}d {((event.event_time - datetime.now()).seconds // 3600)}h {(((event.event_time - datetime.now()).seconds % 3600) // 60)}m"
+    return render_template('event_form.html', event=event, teams=teams, action='Edit', duration=duration)
 
 if __name__ == '__main__':
     with app.app_context():
